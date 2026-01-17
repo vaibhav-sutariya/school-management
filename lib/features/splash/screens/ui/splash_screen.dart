@@ -10,7 +10,7 @@ import '../../../../core/utils/preference_utils.dart';
 import '../../../../core/utils/show_snackbar.dart';
 import '../../../../cubit/internet/internet_cubit.dart';
 import '../../../../gen/assets.gen.dart';
-import '../cubit/splash_cubit.dart';
+import '../bloc/splash_bloc.dart';
 
 @RoutePage()
 class SplashPage extends StatefulWidget implements AutoRouteWrapper {
@@ -19,11 +19,11 @@ class SplashPage extends StatefulWidget implements AutoRouteWrapper {
   @override
   State<SplashPage> createState() => _SplashPageState();
 
-  /// ✅ Wrap with BlocProvider instead of ChangeNotifierProvider
+  /// ✅ Wrap with BlocProvider
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (_) => SplashCubit(
+      create: (_) => SplashBloc(
         sl.get(),
         context.read<InternetCubit>(),
       ), // inject your SplashRepository via sl()
@@ -66,7 +66,7 @@ class _SplashPageState extends State<SplashPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SplashCubit, SplashState>(
+    return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
         final isOnboarded = getBool('isOnboarded');
         if (!isOnboarded) {

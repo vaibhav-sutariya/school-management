@@ -13,40 +13,76 @@ import '../../../../core/utils/preference_utils.dart';
 import '../../../../cubit/internet/internet_cubit.dart';
 import '../../repositories/splash_repository.dart';
 
+part 'splash_event.dart';
 part 'splash_state.dart';
 
-class SplashCubit extends Cubit<SplashState> {
+class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final SplashRepository _splashRepository;
   final InternetCubit _internetCubit;
   late final StreamSubscription internetSub;
 
-  SplashCubit(this._splashRepository, this._internetCubit)
-    : super(SplashInitial()) {
+  SplashBloc(this._splashRepository, this._internetCubit)
+      : super(SplashInitial()) {
     // Start listening to internet status
     internetSub = _internetCubit.stream.listen((status) {
       final connectivity = _internetCubit.state.type;
       if (connectivity != ConnectivityResult.none) {
-        _onInternetRestored();
+        add(const SplashInternetRestored());
       }
     });
 
-    _startAppFlow();
+    // Register event handlers
+    on<SplashStartAppFlow>(_onStartAppFlow);
+    on<SplashInternetRestored>(_onInternetRestored);
+    on<SplashInitializeApp>(_onInitializeApp);
+    on<SplashValidateToken>(_onValidateToken);
+
+    // Start the app flow automatically
+    add(const SplashStartAppFlow());
   }
 
-  Future<void> _startAppFlow() async {
+  Future<void> _onStartAppFlow(
+    SplashStartAppFlow event,
+    Emitter<SplashState> emit,
+  ) async {
     final connectivity = _internetCubit.state.type;
     if (connectivity == ConnectivityResult.none) {
       emit(SplashNoInternet());
       return;
     }
+    
+    // If internet is available, validate token and navigate
+    emit(SplashChecking());
+    await Future.delayed(const Duration(milliseconds: 300));
+    
+    final tokenStatus = await _validateTokenInternal(emit);
+    
+    switch (tokenStatus) {
+      case TokenStatus.valid:
+        log('✅ Token valid — go to Dashboard');
+        emit(SplashNavigate(const OnboardingRoute()));
+        break;
+      case TokenStatus.invalid:
+      case TokenStatus.init:
+        log('⚠️ Token invalid/init — go to Login');
+        emit(SplashNavigate(const LoginRoute()));
+        break;
+      case TokenStatus.error:
+        log('🚨 Token validation error');
+        emit(SplashError(Failure(type: FailureType.network)));
+        break;
+    }
   }
 
-  Future<void> _onInternetRestored() async {
+  Future<void> _onInternetRestored(
+    SplashInternetRestored event,
+    Emitter<SplashState> emit,
+  ) async {
     emit(SplashChecking());
 
     await Future.delayed(const Duration(milliseconds: 300));
 
-    final tokenStatus = await validateToken();
+    final tokenStatus = await _validateTokenInternal(emit);
 
     switch (tokenStatus) {
       case TokenStatus.valid:
@@ -69,21 +105,24 @@ class SplashCubit extends Cubit<SplashState> {
     }
   }
 
-  Future<void> initialize(BuildContext context) async {
+  Future<void> _onInitializeApp(
+    SplashInitializeApp event,
+    Emitter<SplashState> emit,
+  ) async {
     emit(SplashLoading());
     try {
-      final tokenStatus = await validateToken();
+      final tokenStatus = await _validateTokenInternal(emit);
 
       switch (tokenStatus) {
         case TokenStatus.valid:
-          _navigateToDashboard(context);
+          _navigateToDashboard(event.context, emit);
           break;
         case TokenStatus.invalid:
         case TokenStatus.init:
-          _navigateToLogin(context);
+          _navigateToLogin(event.context, emit);
           break;
         case TokenStatus.error:
-          _navigateToLogin(context);
+          _navigateToLogin(event.context, emit);
           break;
       }
     } catch (e, st) {
@@ -92,8 +131,15 @@ class SplashCubit extends Cubit<SplashState> {
     }
   }
 
+  Future<void> _onValidateToken(
+    SplashValidateToken event,
+    Emitter<SplashState> emit,
+  ) async {
+    await _validateTokenInternal(emit);
+  }
+
   /// ✅ Validate token using repository
-  Future<TokenStatus> validateToken() async {
+  Future<TokenStatus> _validateTokenInternal(Emitter<SplashState> emit) async {
     emit(const SplashLoading());
 
     final isConnected = _internetCubit.state.isConnected;
@@ -133,12 +179,18 @@ class SplashCubit extends Cubit<SplashState> {
     }
   }
 
-  void _navigateToDashboard(BuildContext context) {
+  void _navigateToDashboard(
+    BuildContext context,
+    Emitter<SplashState> emit,
+  ) {
     emit(SplashNavigate(const OnboardingRoute()));
     context.router.replaceAll([const OnboardingRoute()]);
   }
 
-  void _navigateToLogin(BuildContext context) {
+  void _navigateToLogin(
+    BuildContext context,
+    Emitter<SplashState> emit,
+  ) {
     emit(SplashNavigate(const LoginRoute()));
     context.router.replaceAll([const LoginRoute()]);
   }

@@ -1,4 +1,4 @@
-part of 'splash_cubit.dart';
+part of 'splash_bloc.dart';
 
 enum TokenStatus { valid, invalid, error, init }
 
