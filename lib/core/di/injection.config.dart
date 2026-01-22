@@ -1,5 +1,5 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -28,7 +28,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i635.ConnectionChecker>(
       () => _i635.ConnectionCheckerImpl(gh<_i895.Connectivity>()),
     );
-    gh.factory<_i452.SplashRepository>(() => _i119.SplashRepositoryImpl.new());
+    gh.factory<_i452.SplashRepository>(() => _i119.SplashRepositoryImpl());
     return this;
   }
 }

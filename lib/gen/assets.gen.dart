@@ -17,11 +17,15 @@ class $AssetsLogoGen {
   /// File path: assets/logo/app_logo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/logo/app_logo.png');
 
+  /// File path: assets/logo/school_logo.png
+  AssetGenImage get schoolLogo =>
+      const AssetGenImage('assets/logo/school_logo.png');
+
   /// File path: assets/logo/splash_icon.svg
   String get splashIcon => 'assets/logo/splash_icon.svg';
 
   /// List of all assets
-  List<dynamic> get values => [appLogo, splashIcon];
+  List<dynamic> get values => [appLogo, schoolLogo, splashIcon];
 }
 
 class $AssetsLottieGen {
