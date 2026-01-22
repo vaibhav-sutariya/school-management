@@ -80,18 +80,44 @@ class _SplashPageState extends State<SplashPage>
       },
       child: Scaffold(
         body: SafeArea(
-          child: Center(
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: Image.asset(
-                  Assets.logo.schoolLogo.path,
-                  // width: 200,
-                  // height: 200,
+          child: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.secondary,
+                    ],
+                  ),
                 ),
               ),
-            ),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(Assets.images.backgroundSquare),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Image.asset(
+                      Assets.logo.schoolLogo.path,
+                      // width: 200,
+                      // height: 200,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

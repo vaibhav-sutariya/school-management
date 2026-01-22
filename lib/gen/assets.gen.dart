@@ -11,6 +11,16 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/Background_square.svg
+  String get backgroundSquare => 'assets/images/Background_square.svg';
+
+  /// List of all assets
+  List<String> get values => [backgroundSquare];
+}
+
 class $AssetsLogoGen {
   const $AssetsLogoGen();
 
@@ -41,6 +51,7 @@ class $AssetsLottieGen {
 class Assets {
   const Assets._();
 
+  static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLogoGen logo = $AssetsLogoGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
 }
