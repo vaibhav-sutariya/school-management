@@ -14,11 +14,14 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Background_round.svg
+  String get backgroundRound => 'assets/images/Background_round.svg';
+
   /// File path: assets/images/Background_square.svg
   String get backgroundSquare => 'assets/images/Background_square.svg';
 
   /// List of all assets
-  List<String> get values => [backgroundSquare];
+  List<String> get values => [backgroundRound, backgroundSquare];
 }
 
 class $AssetsLogoGen {

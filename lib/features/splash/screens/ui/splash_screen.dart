@@ -83,7 +83,7 @@ class _SplashPageState extends State<SplashPage>
         body: Stack(
           children: [
             SvgPicture.asset(
-              Assets.images.backgroundSquare,
+              Assets.images.backgroundRound,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
