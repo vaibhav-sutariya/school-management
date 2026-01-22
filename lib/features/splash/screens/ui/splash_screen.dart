@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../cubit/internet/internet_cubit.dart';
@@ -79,46 +80,28 @@ class _SplashPageState extends State<SplashPage>
         // }
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
+        body: Stack(
+          children: [
+            SvgPicture.asset(
+              Assets.images.backgroundSquare,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Center(
+              child: ScaleTransition(
+                scale: _scaleAnimation,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Image.asset(
+                    Assets.logo.schoolLogo.path,
+                    // width: 200,
+                    // height: 200,
                   ),
                 ),
               ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(Assets.images.backgroundSquare),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Center(
-                child: ScaleTransition(
-                  scale: _scaleAnimation,
-                  child: FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: Image.asset(
-                      Assets.logo.schoolLogo.path,
-                      // width: 200,
-                      // height: 200,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
