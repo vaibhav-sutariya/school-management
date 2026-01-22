@@ -44,9 +44,7 @@ class LanguageSwitcher extends StatelessWidget {
                       : context.colors.primary3rd,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: isSelected
-                        ? context.colors.primary
-                        : Colors.transparent,
+                    color: isSelected ? Colors.red : Colors.transparent,
                     width: 1.2,
                   ),
                 ),
