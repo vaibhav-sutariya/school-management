@@ -1,13 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/di/injection.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/routes/app_router.dart';
-import '../../../../core/utils/preference_utils.dart';
-import '../../../../core/utils/show_snackbar.dart';
 import '../../../../cubit/internet/internet_cubit.dart';
 import '../../../../gen/assets.gen.dart';
 import '../bloc/splash_bloc.dart';
@@ -68,30 +63,33 @@ class _SplashPageState extends State<SplashPage>
   Widget build(BuildContext context) {
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
-        final isOnboarded = getBool('isOnboarded');
-        if (!isOnboarded) {
-          context.router.replaceAll([const OnboardingRoute()]);
-          return;
-        } else if (state is SplashNavigate) {
-          context.router.replaceAll([state.route]);
-        } else if (state is SplashError) {
-          state.failure.type == FailureType.network
-              ? showFlushbar(
-                  context: context,
-                  message: 'No Internet Connection',
-                )
-              : showFlushbar(context: context, message: state.failure.message);
-        }
+        // final isOnboarded = getBool('isOnboarded');
+        // if (!isOnboarded) {
+        //   context.router.replaceAll([const OnboardingRoute()]);
+        //   return;
+        // } else if (state is SplashNavigate) {
+        //   context.router.replaceAll([state.route]);
+        // } else if (state is SplashError) {
+        //   state.failure.type == FailureType.network
+        //       ? showFlushbar(
+        //           context: context,
+        //           message: 'No Internet Connection',
+        //         )
+        //       : showFlushbar(context: context, message: state.failure.message);
+        // }
       },
       child: Scaffold(
-        appBar: AppBar(automaticallyImplyLeading: false),
         body: SafeArea(
           child: Center(
             child: ScaleTransition(
               scale: _scaleAnimation,
               child: FadeTransition(
                 opacity: _fadeAnimation,
-                child: SvgPicture.asset(Assets.logo.splashIcon),
+                child: Image.asset(
+                  Assets.logo.schoolLogo.path,
+                  // width: 200,
+                  // height: 200,
+                ),
               ),
             ),
           ),
