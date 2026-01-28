@@ -37,35 +37,54 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: fillColor ?? const Color(0xFFF4F6F9), // Light greyish blue
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: borderSide?.color ?? Colors.grey.withValues(alpha: 0.2),
+    final theme = Theme.of(context);
+    final inputDecorationTheme = theme.inputDecorationTheme;
+
+    // Standard Reference Color from NewPasswordPage: Color(0xFFF8F9FB)
+    // The Container wrapper is removed to rely on InputDecoration for correct filling and borders.
+    // If borderSide is provided, we can use 'enabledBorder' / 'focusedBorder' overrides with that side.
+    // But typically we should rely on the theme's borders.
+    // To support `borderSide` param, we can construct the OutlineInputBorder locally.
+
+    final effectiveColor =
+        fillColor ?? inputDecorationTheme.fillColor ?? const Color(0xFFF8F9FB);
+    // Using 0xFFF8F9FB as hard fallback if theme doesn't have it, though theme should be updated.
+
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      onChanged: onChanged,
+      onTap: onTap,
+      readOnly: readOnly,
+      autofocus: autofocus,
+      style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+      decoration: InputDecoration(
+        hintText: hintText,
+        labelText: labelText,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        fillColor: effectiveColor,
+        filled: true, // Always filled as per design
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
         ),
-      ),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        onChanged: onChanged,
-        onTap: onTap,
-        readOnly: readOnly,
-        autofocus: autofocus,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
-        ),
+        enabledBorder: borderSide != null
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: borderSide!,
+              )
+            : null, // Fallback to theme
+        focusedBorder: borderSide != null
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: borderSide!.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
+              )
+            : null, // Fallback to theme
       ),
     );
   }

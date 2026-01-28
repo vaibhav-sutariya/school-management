@@ -55,8 +55,8 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
               color: Colors.grey,
             ),
           ),
-          fillColor: Colors.white,
-          borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
+          // fillColor: Colors.white, // Removed to use Theme Standard (0xFFF8F9FB)
+          // borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)), // Removed to use Theme Standard
         ),
         const SizedBox(height: 12),
         Align(
@@ -111,8 +111,7 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
             // Navigate to OTP Login
           },
           text: 'Login with OTP',
-          color: Colors.white,
-          borderRadius: 30,
+          // borderRadius: 30, // Removed to standardize on 16
           // child: Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
           //   children: [

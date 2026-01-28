@@ -24,8 +24,8 @@ class LightTheme extends AppTheme {
   OutlinedButtonThemeData get outlinedButtonTheme => OutlinedButtonThemeData(
     style:
         OutlinedButton.styleFrom(
-          backgroundColor: colors.primary,
-          foregroundColor: colors.buttonTextColor,
+          backgroundColor: Colors.transparent,
+          foregroundColor: colors.primary,
           padding: const EdgeInsets.all(16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -45,7 +45,7 @@ class LightTheme extends AppTheme {
   @override
   InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     filled: true,
-    fillColor: colors.surface50,
+    fillColor: const Color(0xFFF8F9FB), // Matches NewPasswordPage standard
     suffixIconColor: colors.surface500,
     labelStyle: TextStyles.labelMedium.copyWith(
       color: colors.surface400,
@@ -57,7 +57,7 @@ class LightTheme extends AppTheme {
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: Colors.transparent),
+      borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
     ),
   );
 

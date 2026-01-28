@@ -11,8 +11,8 @@ class LoginTabSwitcher extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xFFF4F6F9), // Light grey background
-        borderRadius: BorderRadius.circular(30),
+        color: Color(0xFFF8F9FB), // Light grey background
+        borderRadius: BorderRadius.circular(16),
       ),
       child: ValueListenableBuilder<int>(
         valueListenable: selectedIndexNotifier,
@@ -52,7 +52,7 @@ class LoginTabSwitcher extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: isSelected ? context.colors.primary : Colors.transparent,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(16),
           ),
           alignment: Alignment.center,
           child: Text(

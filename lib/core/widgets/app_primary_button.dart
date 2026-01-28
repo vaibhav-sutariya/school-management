@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -27,13 +26,34 @@ class AppPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // We primarily use the theme, but allow overrides.
+    // The theme definition in light_theme.dart uses FilledButtonThemeData but the code uses ElevatedButton.
+    // In Flutter, FilledButton is the 'new' standard for primary actions.
+    // However, AppPrimaryButton currently uses ElevatedButton.
+    // Let's migrate it to FilledButton to match the theme definition properly, OR use ElevatedButtonTheme if that's what we want.
+    // The LightTheme defines `filledButtonTheme`.
+    // Let's try to align with the theme's intent. If the theme defines FilledButton, we should probably use FilledButton.
+    // BUT to avoid Breaking Changes if the user really wants ElevatedButton, we should check if we can just style ElevatedButton with the theme.
+
+    // We primarily use the theme, but allow overrides.
+    // If the project uses ElevatedButton everywhere, we might stick to it, but then the theme props for filledButton won't apply automatically unless we manually map them.
+    // Let's stick to ElevatedButton for now as per the file, BUT apply the theme styles manually if needed,
+    // OR switch to FilledButton if that's the intended "Primary" button.
+    // Given "AppPrimaryButton", FilledButton is the modern primary.
+    // Let's switch to FilledButton if safe, or stick to ElevatedButton and grab theme.filledButtonTheme?.style
+
+    // Actually, let's keep ElevatedButton but try to assume the theme has `elevatedButtonTheme` set up or we bridge it.
+    // Wait, looking at `light_theme.dart` (Step 813), it defines `filledButtonTheme` and `outlinedButtonTheme`. It does NOT define `elevatedButtonTheme`.
+    // So if we use `ElevatedButton`, it won't pick up the theme styles automatically unless we manualy apply `filledButtonTheme` styles.
+    // SWICHING TO `FilledButton` is the correct move for "Primary" actions with that theme data.
+
     return SizedBox(
       width: fullWidth ? double.infinity : null,
       height: height,
-      child: ElevatedButton(
+      child: FilledButton(
         onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color ?? context.colors.primary,
+        style: FilledButton.styleFrom(
+          backgroundColor: color, // If null, defaults to theme
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
@@ -54,7 +74,8 @@ class AppPrimaryButton extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: textColor ?? Colors.white,
+                      color:
+                          textColor, // If null, inherits from FilledButton theme (White)
                     ),
                   ),
       ),

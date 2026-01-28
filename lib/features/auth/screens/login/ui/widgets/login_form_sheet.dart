@@ -116,7 +116,7 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
                 context.router.push(PasswordLoginRoute(email: email));
               }
             },
-            borderRadius: 30,
+            // borderRadius: 30, // Removed to standardize on 16
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

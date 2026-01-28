@@ -100,7 +100,7 @@ class VerificationBottomSheet extends StatelessWidget {
             onPressed: () {
               // Verify Action
             },
-            borderRadius: 16,
+            // borderRadius: 16, // Already default, can function without explicitness, but file had 16. Cleaning up consistency.
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
