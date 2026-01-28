@@ -124,22 +124,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ),
                     ),
-
-                    const Spacer(),
-
-                    Center(
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        color: Colors.grey[100], // Image placeholder
-                        child: const Icon(
-                          Icons.lock_reset,
-                          color: Colors.grey,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),
