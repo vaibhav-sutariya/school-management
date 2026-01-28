@@ -17,20 +17,29 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: const Column(
-          children: [
-            Expanded(
-              flex: 2, // Header takes ~30-35% of screen
-              child: Center(child: PortalHeader()),
+      // resizeToAvoidBottomInset: true, // Default is true, allowing keyboard checks
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 2, // Header takes ~30-35% of screen
+                      child: Center(child: PortalHeader()),
+                    ),
+                    Expanded(
+                      flex: 5, // Bottom sheet takes remaining space
+                      child: LoginFormSheet(),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Expanded(
-              flex: 5, // Bottom sheet takes remaining space
-              child: LoginFormSheet(),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

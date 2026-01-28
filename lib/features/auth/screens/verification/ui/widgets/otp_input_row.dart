@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:starter_app/core/widgets/app_text_field.dart';
 
 class OtpInputRow extends StatelessWidget {
   const OtpInputRow({super.key});
@@ -23,51 +23,34 @@ class _OtpDigitField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white, // Or slightly off-white if needed
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFE0E0E0), // Light grey border
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
+    return SizedBox(
+      width: 50,
+      child: AppTextField(
+        autofocus: autoFocus,
+        // textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(1),
+          FilteringTextInputFormatter.digitsOnly,
         ],
-      ),
-      child: Center(
-        child: TextFormField(
-          autofocus: autoFocus,
-          textAlign: TextAlign.center,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(1),
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: context.colors.primary, // Primary Blue
-          ),
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.zero,
-            counterText: '', // Hide counter
-          ),
-          onChanged: (value) {
-            if (value.isNotEmpty) {
-              FocusScope.of(context).nextFocus();
-            } else {
-              FocusScope.of(context).previousFocus();
-            }
-          },
-        ),
+        obscureText: true,
+        // style: TextStyle(
+        //   fontSize: 24,
+        //   fontWeight: FontWeight.bold,
+        //   color: context.colors.primary, // Primary Blue
+        // ),
+        // decoration: const InputDecoration(
+        //   border: InputBorder.none,
+        //   contentPadding: EdgeInsets.zero,
+        //   counterText: '', // Hide counter
+        // ),
+        onChanged: (value) {
+          if (value.isNotEmpty) {
+            FocusScope.of(context).nextFocus();
+          } else {
+            FocusScope.of(context).previousFocus();
+          }
+        },
       ),
     );
   }

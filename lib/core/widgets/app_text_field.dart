@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:starter_app/cubit/theme_cubit.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
   final String? labelText;
@@ -16,6 +17,15 @@ class AppTextField extends StatelessWidget {
   final bool autofocus;
   final Color? fillColor;
   final BorderSide? borderSide;
+  final String? Function(String?)? validator;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onFieldSubmitted;
+  final Iterable<String>? autofillHints;
+  final TextCapitalization textCapitalization;
+  final int? maxLines;
+  final int? minLines;
+  final bool enabled;
 
   const AppTextField({
     super.key,
@@ -33,7 +43,23 @@ class AppTextField extends StatelessWidget {
     this.autofocus = false,
     this.fillColor,
     this.borderSide,
+    this.validator,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
+    this.autofillHints,
+    this.textCapitalization = TextCapitalization.none,
+    this.maxLines = 1,
+    this.minLines,
+    this.enabled = true,
   });
+
+  @override
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  final GlobalKey<FormFieldState> _fieldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -41,47 +67,78 @@ class AppTextField extends StatelessWidget {
     final inputDecorationTheme = theme.inputDecorationTheme;
 
     // Standard Reference Color from NewPasswordPage: Color(0xFFF8F9FB)
-    // The Container wrapper is removed to rely on InputDecoration for correct filling and borders.
-    // If borderSide is provided, we can use 'enabledBorder' / 'focusedBorder' overrides with that side.
-    // But typically we should rely on the theme's borders.
-    // To support `borderSide` param, we can construct the OutlineInputBorder locally.
-
     final effectiveColor =
-        fillColor ?? inputDecorationTheme.fillColor ?? const Color(0xFFF8F9FB);
-    // Using 0xFFF8F9FB as hard fallback if theme doesn't have it, though theme should be updated.
+        widget.fillColor ??
+        inputDecorationTheme.fillColor ??
+        const Color(0xFFF8F9FB);
 
     return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      onChanged: onChanged,
-      onTap: onTap,
-      readOnly: readOnly,
-      autofocus: autofocus,
-      style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+      key: _fieldKey,
+      controller: widget.controller,
+      focusNode: widget.focusNode,
+      obscureText: widget.obscureText,
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormatters,
+      textInputAction: widget.textInputAction,
+      autofillHints: widget.autofillHints,
+      textCapitalization: widget.textCapitalization,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
+      enabled: widget.enabled,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+        if (widget.validator != null) {
+          // Auto-validate on change if validator is present, mimicking text_field.dart behavior
+          _fieldKey.currentState?.validate();
+        }
+      },
+      onTap: widget.onTap,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      validator: widget.validator,
+      readOnly: widget.readOnly,
+      autofocus: widget.autofocus,
+      style: theme.textTheme.bodyMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
       decoration: InputDecoration(
-        hintText: hintText,
-        labelText: labelText,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+        hintText: widget.hintText,
+        labelText: widget.labelText,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.suffixIcon,
         fillColor: effectiveColor,
-        filled: true, // Always filled as per design
+        filled: true,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 14,
         ),
-        enabledBorder: borderSide != null
+        enabledBorder: widget.borderSide != null
             ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: borderSide!,
+                borderSide: widget.borderSide!,
+              )
+            : null, // Fallback to theme (which is now correctly standard)
+        focusedBorder: widget.borderSide != null
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: widget.borderSide!.copyWith(
+                  color: context.colors.primary,
+                ),
+              )
+            : null,
+        errorBorder: widget.borderSide != null
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: widget.borderSide!.copyWith(
+                  color: context.colors.error,
+                ),
               )
             : null, // Fallback to theme
-        focusedBorder: borderSide != null
+        focusedErrorBorder: widget.borderSide != null
             ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: borderSide!.copyWith(
-                  color: theme.colorScheme.primary,
+                borderSide: widget.borderSide!.copyWith(
+                  color: theme.colorScheme.error,
                 ),
               )
             : null, // Fallback to theme

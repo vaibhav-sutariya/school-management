@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/routes/app_router.gr.dart';
+import '../../../../../../core/utils/app_validators.dart';
 import '../../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../../core/widgets/app_text_field.dart';
 import '../../../../../../cubit/theme_cubit.dart';
@@ -15,11 +16,24 @@ class LoginFormSheet extends StatefulWidget {
 }
 
 class _LoginFormSheetState extends State<LoginFormSheet> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ValueNotifier<int> _tabNotifier = ValueNotifier<int>(0);
   final TextEditingController _inputController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _tabNotifier.addListener(_handleTabChange);
+  }
+
+  void _handleTabChange() {
+    _inputController.clear(); // Clear text
+    _formKey.currentState?.reset(); // Clear validation errors
+  }
+
+  @override
   void dispose() {
+    _tabNotifier.removeListener(_handleTabChange);
     _tabNotifier.dispose();
     _inputController.dispose();
     super.dispose();
@@ -69,20 +83,35 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
           ),
           const SizedBox(height: 12),
 
-          ValueListenableBuilder<int>(
-            valueListenable: _tabNotifier,
-            builder: (context, index, _) {
-              return AppTextField(
-                controller: _inputController,
-                hintText: index == 0 ? 'Phone Number' : 'School Email',
-                prefixIcon: Icon(
-                  index == 0
-                      ? Icons.phone_android_rounded
-                      : Icons.email_rounded,
-                  color: const Color(0xFF5C6BC0), // Reference blue-ish
-                ),
-              );
-            },
+          Form(
+            key: _formKey, // Added Form
+            child: ValueListenableBuilder<int>(
+              valueListenable: _tabNotifier,
+              builder: (context, index, _) {
+                return AppTextField(
+                  key: ValueKey(index), // Force unmount/remount on tab switch
+                  controller: _inputController,
+                  hintText: index == 0 ? 'Phone Number' : 'School Email',
+                  prefixIcon: Icon(
+                    index == 0
+                        ? Icons.phone_android_rounded
+                        : Icons.email_rounded,
+                    color: const Color(0xFF5C6BC0), // Reference blue-ish
+                  ),
+                  keyboardType: index == 0
+                      ? TextInputType.phone
+                      : TextInputType.emailAddress,
+                  validator: (value) {
+                    // Added Validator
+                    if (index == 0) {
+                      return AppValidators.validatePhone(value);
+                    } else {
+                      return AppValidators.validateEmail(value);
+                    }
+                  },
+                );
+              },
+            ),
           ),
 
           const SizedBox(height: 24),
@@ -103,17 +132,16 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
 
           AppPrimaryButton(
             onPressed: () {
-              if (_tabNotifier.value == 0) {
-                // Phone Number -> Open OTP Verification
-                context.router.push(const VerificationRoute());
-              } else {
-                // Email Address -> Open Password Login
-                // Assuming the email was entered
-                final email = _inputController.text.isNotEmpty
-                    ? _inputController.text
-                    : 'john.doe@school.edu'; // Fallback or empty logic
-
-                context.router.push(PasswordLoginRoute(email: email));
+              if (_formKey.currentState?.validate() == true) {
+                // Validate before proceeding
+                if (_tabNotifier.value == 0) {
+                  // Phone Number -> Open OTP Verification
+                  context.router.push(const VerificationRoute());
+                } else {
+                  // Email Address -> Open Password Login
+                  final email = _inputController.text; // Assuming valid
+                  context.router.push(PasswordLoginRoute(email: email));
+                }
               }
             },
             // borderRadius: 30, // Removed to standardize on 16

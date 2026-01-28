@@ -59,6 +59,14 @@ class LightTheme extends AppTheme {
       borderRadius: BorderRadius.circular(16),
       borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
     ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(color: colors.error),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(color: colors.error),
+    ),
   );
 
   @override

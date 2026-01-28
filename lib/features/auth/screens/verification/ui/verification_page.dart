@@ -16,14 +16,25 @@ class VerificationPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            VerificationHeader(),
-            SizedBox(height: 20), // Spacing below header
-            Expanded(child: VerificationBottomSheet()),
-          ],
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      VerificationHeader(),
+                      SizedBox(height: 20), // Spacing below header
+                      Expanded(child: VerificationBottomSheet()),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
