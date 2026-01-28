@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/routes/app_router.dart';
+import '../../../../../../core/routes/app_router.gr.dart';
 import '../../../../../../cubit/theme_cubit.dart';
 import 'login_tab_switcher.dart';
 

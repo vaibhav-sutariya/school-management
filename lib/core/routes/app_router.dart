@@ -1,14 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:starter_app/core/routes/app_router.gr.dart';
 
-import '../../features/auth/screens/login/ui/login_page.dart';
-import '../../features/auth/screens/password_login/ui/password_login_page.dart';
-import '../../features/auth/screens/verification/ui/verification_page.dart';
-import '../../features/onboarding/onboarding_page.dart';
-import '../../features/splash/screens/ui/splash_screen.dart';
+import '../../features/auth/screens/forgot_password/ui/forgot_password_page.dart';
+import '../../features/auth/screens/forgot_password/ui/new_password_page.dart';
+import '../../features/auth/screens/forgot_password/ui/password_success_page.dart';
+import 'app_router.gr.dart';
 import 'auth_guard.dart';
-
-part 'app_router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
@@ -21,6 +18,9 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: VerificationRoute.page),
     AutoRoute(page: PasswordLoginRoute.page),
+    AutoRoute(page: ForgotPasswordRoute.page),
+    AutoRoute(page: NewPasswordRoute.page),
+    AutoRoute(page: PasswordSuccessRoute.page),
     AutoRoute(page: OnboardingRoute.page),
   ];
 }

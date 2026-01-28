@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/error/failure_mapper.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/routes/app_router.dart';
+import '../../../../core/routes/app_router.gr.dart';
 import '../../../../core/utils/preference_utils.dart';
 import '../../../../cubit/internet/internet_cubit.dart';
 import '../../repositories/splash_repository.dart';
@@ -22,7 +22,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   late final StreamSubscription internetSub;
 
   SplashBloc(this._splashRepository, this._internetCubit)
-      : super(SplashInitial()) {
+    : super(SplashInitial()) {
     // Start listening to internet status
     internetSub = _internetCubit.stream.listen((status) {
       final connectivity = _internetCubit.state.type;
@@ -50,13 +50,13 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       emit(SplashNoInternet());
       return;
     }
-    
+
     // If internet is available, validate token and navigate
     emit(SplashChecking());
     await Future.delayed(const Duration(milliseconds: 300));
-    
+
     final tokenStatus = await _validateTokenInternal(emit);
-    
+
     switch (tokenStatus) {
       case TokenStatus.valid:
         log('✅ Token valid — go to Dashboard');
@@ -179,18 +179,12 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     }
   }
 
-  void _navigateToDashboard(
-    BuildContext context,
-    Emitter<SplashState> emit,
-  ) {
+  void _navigateToDashboard(BuildContext context, Emitter<SplashState> emit) {
     emit(SplashNavigate(const OnboardingRoute()));
     context.router.replaceAll([const OnboardingRoute()]);
   }
 
-  void _navigateToLogin(
-    BuildContext context,
-    Emitter<SplashState> emit,
-  ) {
+  void _navigateToLogin(BuildContext context, Emitter<SplashState> emit) {
     emit(SplashNavigate(const LoginRoute()));
     context.router.replaceAll([const LoginRoute()]);
   }

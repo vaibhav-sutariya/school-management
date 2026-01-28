@@ -1,4 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../../core/routes/app_router.gr.dart';
 
 class PasswordLoginForm extends StatefulWidget {
   const PasswordLoginForm({super.key});
@@ -77,6 +80,7 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
           child: TextButton(
             onPressed: () {
               // Forgot password logic
+              context.router.push(const ForgotPasswordRoute());
             },
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,

@@ -1,0 +1,286 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:starter_app/core/routes/app_router.gr.dart';
+
+import '../../../common/auth_header.dart';
+
+@RoutePage()
+class NewPasswordPage extends StatefulWidget {
+  const NewPasswordPage({super.key});
+
+  @override
+  State<NewPasswordPage> createState() => _NewPasswordPageState();
+}
+
+class _NewPasswordPageState extends State<NewPasswordPage> {
+  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
+
+  final ValueNotifier<bool> _isLengthValid = ValueNotifier(false);
+  final ValueNotifier<bool> _isSymbolValid = ValueNotifier(false);
+  final ValueNotifier<bool> _isUpperValid = ValueNotifier(false);
+
+  bool _hidePass = true;
+  bool _hideConfirm = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _passController.addListener(_validatePassword);
+  }
+
+  void _validatePassword() {
+    final pass = _passController.text;
+    _isLengthValid.value = pass.length >= 8;
+    _isSymbolValid.value = RegExp(r'[0-9!@#\$%^&*(),.?":{}|<>]').hasMatch(pass);
+    _isUpperValid.value = RegExp(r'[A-Z]').hasMatch(pass);
+  }
+
+  @override
+  void dispose() {
+    _passController.dispose();
+    _confirmController.dispose();
+    _isLengthValid.dispose();
+    _isSymbolValid.dispose();
+    _isUpperValid.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const backgroundColor = Color(0xFF0D078B);
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const AuthPageHeader(title: 'Security'),
+            const SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                ),
+                padding: const EdgeInsets.all(24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Create New\nPassword',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0D078B),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Set a strong password to protect your\nschool management account.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+
+                      const Text(
+                        'New Password',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildPasswordField(
+                        controller: _passController,
+                        hint: 'Enter new password',
+                        isObscured: _hidePass,
+                        onToggleVisibility: () =>
+                            setState(() => _hidePass = !_hidePass),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      const Text(
+                        'Confirm New Password',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildPasswordField(
+                        controller: _confirmController,
+                        hint: 'Confirm your password',
+                        isObscured: _hideConfirm,
+                        isConfirm: true,
+                        onToggleVisibility: () =>
+                            setState(() => _hideConfirm = !_hideConfirm),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF8F9FB),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'PASSWORD REQUIREMENTS',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            _buildRequirementRow(
+                              _isLengthValid,
+                              'At least 8 characters long',
+                            ),
+                            const SizedBox(height: 8),
+                            _buildRequirementRow(
+                              _isSymbolValid,
+                              'Contains a symbol or number',
+                            ),
+                            const SizedBox(height: 8),
+                            _buildRequirementRow(
+                              _isUpperValid,
+                              'One uppercase letter',
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      SizedBox(
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Validate confirmation and Update
+                            if (_passController.text ==
+                                    _confirmController.text &&
+                                _isLengthValid.value) {
+                              context.router.push(const PasswordSuccessRoute());
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF0D078B),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 2,
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Update Password',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.cached_rounded,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField({
+    required TextEditingController controller,
+    required String hint,
+    required bool isObscured,
+    required VoidCallback onToggleVisibility,
+    bool isConfirm = false,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8F9FB),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isObscured,
+        decoration: InputDecoration(
+          hintText: hint,
+          prefixIcon: Icon(
+            isConfirm ? Icons.lock_reset_rounded : Icons.lock_outline_rounded,
+            color: Colors.grey,
+            size: 20,
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              isObscured
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
+              color: Colors.grey,
+              size: 20,
+            ),
+            onPressed: onToggleVisibility,
+          ),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRequirementRow(ValueNotifier<bool> validNotifier, String text) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: validNotifier,
+      builder: (context, isValid, _) {
+        return Row(
+          children: [
+            Icon(
+              isValid
+                  ? Icons.check_circle_rounded
+                  : Icons.check_circle_outline_rounded,
+              color: isValid ? const Color(0xFF0D078B) : Colors.grey[400],
+              size: 16,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              text,
+              style: TextStyle(
+                color: isValid ? Colors.black87 : Colors.grey[600],
+                fontSize: 12,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

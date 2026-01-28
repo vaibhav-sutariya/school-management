@@ -8,7 +8,7 @@ import 'package:starter_app/core/helpers/extensions/locale_extensions.dart';
 import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
 import 'package:starter_app/cubit/theme_cubit.dart';
 
-import '../../core/routes/app_router.dart';
+import '../../core/routes/app_router.gr.dart';
 import '../../core/selector/language_switcher.dart';
 import '../../core/theme/dark_theme.dart';
 import '../../core/utils/preference_utils.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/error/failures.dart';
-import '../../../../core/routes/app_router.dart';
+import '../../../../core/routes/app_router.gr.dart';
 import '../../../../core/utils/preference_utils.dart';
 import '../../../../core/utils/show_snackbar.dart';
 import '../../../../cubit/internet/internet_cubit.dart';
