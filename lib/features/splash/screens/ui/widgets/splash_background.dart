@@ -10,6 +10,7 @@ class SplashBackground extends StatelessWidget {
 
   static const Color _primaryColor = Color(0xFF050076);
   static const Color _secondaryColor = Color(0xFF00B8FF);
+
   const SplashBackground({
     super.key,
     required this.scaleAnimation,
@@ -100,15 +101,17 @@ class SplashBackground extends StatelessWidget {
         Positioned(
           bottom: 70,
           left: 170,
-          child: RotationTransition(
-            turns: breathingController,
-            child: FadeTransition(
-              opacity: fadeAnimation,
-              child: SplashBubble(
-                size: 25,
-                color: _secondaryColor,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(4),
+          child: RepaintBoundary(
+            child: RotationTransition(
+              turns: breathingController,
+              child: FadeTransition(
+                opacity: fadeAnimation,
+                child: SplashBubble(
+                  size: 25,
+                  color: _secondaryColor,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ),
             ),
           ),
@@ -197,7 +200,7 @@ class SplashBackground extends StatelessWidget {
         opacity: fadeAnimation,
         child: SplashBubble(
           size: size,
-          color: color ?? const Color(0xFF00B8FF).withOpacity(0.2),
+          color: color ?? const Color(0xFF00B8FF).withValues(alpha: 0.2),
           shape: BoxShape.circle,
         ),
       ),
