@@ -47,7 +47,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
     _entranceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(seconds: 2),
     );
 
     _breathingController = AnimationController(
