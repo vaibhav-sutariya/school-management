@@ -8,7 +8,7 @@ class SplashBackground extends StatelessWidget {
   final Animation<double> breatheAnimation;
   final AnimationController breathingController;
 
-  static const Color _primaryColor = Color(0xFF050076);
+  static const Color _primaryColor = Color(0xFF0D078B);
   static const Color _secondaryColor = Color(0xFF00B8FF);
 
   const SplashBackground({

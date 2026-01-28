@@ -112,7 +112,7 @@ class LightTheme extends AppTheme {
 
 class LightColors extends AppColors {
   @override
-  Color get primary => const Color(0xFF050076); // Base color #050076
+  Color get primary => const Color(0xFF0D078B); // Base color #050076
 
   @override
   Color get primary2nd => const Color(0xFF0A00B8); // Lighter
