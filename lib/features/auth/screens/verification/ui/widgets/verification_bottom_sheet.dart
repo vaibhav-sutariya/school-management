@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../cubit/theme_cubit.dart';
 import 'otp_input_row.dart';
 
 class VerificationBottomSheet extends StatelessWidget {
@@ -17,12 +18,12 @@ class VerificationBottomSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
+          Text(
             'Verify Identity',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0D078B),
+              color: context.colors.primary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -31,7 +32,7 @@ class VerificationBottomSheet extends StatelessWidget {
             textAlign: TextAlign.center,
             text: TextSpan(
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              children: const [
+              children: [
                 TextSpan(
                   text:
                       'A 4-digit security code has been sent to\nyour registered number ',
@@ -40,7 +41,7 @@ class VerificationBottomSheet extends StatelessWidget {
                   text: '+1 ••• ••• 88',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0D078B),
+                    color: context.colors.primary,
                   ),
                 ),
               ],
@@ -101,7 +102,7 @@ class VerificationBottomSheet extends StatelessWidget {
                 // Verify Action
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0D078B),
+                backgroundColor: context.colors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

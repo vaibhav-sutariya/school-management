@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/routes/app_router.gr.dart';
+import '../../../../../cubit/theme_cubit.dart';
 
 @RoutePage()
 class PasswordSuccessPage extends StatelessWidget {
@@ -9,7 +10,7 @@ class PasswordSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color(0xFF0D078B);
+    final backgroundColor = context.colors.primary;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -77,12 +78,12 @@ class PasswordSuccessPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Back to Login',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF0D078B),
+                      color: context.colors.primary,
                     ),
                   ),
                 ),

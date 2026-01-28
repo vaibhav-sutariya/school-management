@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:starter_app/core/routes/app_router.gr.dart';
 
+import '../../../../../cubit/theme_cubit.dart';
 import '../../../common/auth_header.dart';
 
 @RoutePage()
@@ -48,7 +49,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color(0xFF0D078B);
+    final backgroundColor = context.colors.primary;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -69,12 +70,12 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
+                      Text(
                         'Create New\nPassword',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF0D078B),
+                          color: context.colors.primary,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -176,7 +177,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0D078B),
+                            backgroundColor: context.colors.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -267,7 +268,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
               isValid
                   ? Icons.check_circle_rounded
                   : Icons.check_circle_outline_rounded,
-              color: isValid ? const Color(0xFF0D078B) : Colors.grey[400],
+              color: isValid ? context.colors.primary : Colors.grey[400],
               size: 16,
             ),
             const SizedBox(width: 8),

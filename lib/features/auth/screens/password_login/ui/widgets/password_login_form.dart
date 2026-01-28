@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/routes/app_router.gr.dart';
+import '../../../../../../cubit/theme_cubit.dart';
 
 class PasswordLoginForm extends StatefulWidget {
   const PasswordLoginForm({super.key});
@@ -87,10 +88,10 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: const Text(
+            child: Text(
               'Forgot Password?',
               style: TextStyle(
-                color: Color(0xFF0D078B),
+                color: context.colors.primary,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
               ),
@@ -105,7 +106,7 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
               // Login Action
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0D078B),
+              backgroundColor: context.colors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -150,20 +151,24 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
                 borderRadius: BorderRadius.circular(30),
               ),
               side: BorderSide(
-                color: const Color(0xFF0D078B).withValues(alpha: 0.2),
+                color: context.colors.primary.withValues(alpha: 0.2),
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.message_rounded, size: 20, color: Color(0xFF0D078B)),
+                Icon(
+                  Icons.message_rounded,
+                  size: 20,
+                  color: context.colors.primary,
+                ),
                 SizedBox(width: 8),
                 Text(
                   'Login with OTP',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF0D078B),
+                    color: context.colors.primary,
                   ),
                 ),
               ],

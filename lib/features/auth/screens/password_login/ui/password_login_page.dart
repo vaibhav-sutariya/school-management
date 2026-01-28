@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../cubit/theme_cubit.dart';
 import 'widgets/password_login_form.dart';
 import 'widgets/password_login_header.dart';
 import 'widgets/welcome_back_card.dart';
@@ -14,7 +15,7 @@ class PasswordLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ensuring the Primary Color (Dark Blue) is used for the background header
-    const backgroundColor = Color(0xFF0D078B);
+    final backgroundColor = context.colors.primary;
 
     return Scaffold(
       backgroundColor: Colors.white, // Main body is white/greyish
@@ -24,7 +25,7 @@ class PasswordLoginPage extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../cubit/theme_cubit.dart';
+
 class WelcomeBackCard extends StatelessWidget {
   final String email;
 
@@ -25,12 +27,12 @@ class WelcomeBackCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Welcome back!',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0D078B),
+              color: context.colors.primary,
             ),
           ),
           const SizedBox(height: 8),
@@ -47,9 +49,9 @@ class WelcomeBackCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 12,
-                  backgroundColor: Color(0xFF0D078B), // Primary Blue
+                  backgroundColor: context.colors.primary, // Primary Blue
                   child: Icon(Icons.person, size: 16, color: Colors.white),
                 ),
                 const SizedBox(width: 12),

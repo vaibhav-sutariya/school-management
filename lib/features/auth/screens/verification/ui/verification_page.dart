@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../cubit/theme_cubit.dart';
 import 'widgets/verification_bottom_sheet.dart';
 import 'widgets/verification_header.dart';
 
@@ -11,9 +12,9 @@ class VerificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ensuring the Primary Color (Dark Blue) is used for the background
-    const backgroundColor = Color(0xFF0D078B);
+    final backgroundColor = context.colors.primary;
 
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:starter_app/cubit/theme_cubit.dart';
 
 class OtpInputRow extends StatelessWidget {
   const OtpInputRow({super.key});
@@ -49,10 +50,10 @@ class _OtpDigitField extends StatelessWidget {
             LengthLimitingTextInputFormatter(1),
             FilteringTextInputFormatter.digitsOnly,
           ],
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF0D078B), // Primary Blue
+            color: context.colors.primary, // Primary Blue
           ),
           decoration: const InputDecoration(
             border: InputBorder.none,

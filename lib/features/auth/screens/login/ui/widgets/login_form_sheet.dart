@@ -101,10 +101,10 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
           Center(
             child: TextButton(
               onPressed: () {},
-              child: const Text(
+              child: Text(
                 'Trouble logging in?',
                 style: TextStyle(
-                  color: Color(0xFF0D078B),
+                  color: context.colors.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -131,7 +131,7 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0D078B),
+                backgroundColor: context.colors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

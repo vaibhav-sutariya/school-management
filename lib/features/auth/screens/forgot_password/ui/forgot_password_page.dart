@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/routes/app_router.gr.dart';
+import '../../../../../cubit/theme_cubit.dart';
 import '../../../common/auth_header.dart';
 
 @RoutePage()
@@ -23,7 +24,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color(0xFF0D078B);
+    final backgroundColor = context.colors.primary;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -44,12 +45,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'Recovery',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF0D078B),
+                        color: context.colors.primary,
                       ),
                       textAlign: TextAlign.start,
                     ),
@@ -96,7 +97,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           context.router.push(const NewPasswordRoute());
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0D078B),
+                          backgroundColor: context.colors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
