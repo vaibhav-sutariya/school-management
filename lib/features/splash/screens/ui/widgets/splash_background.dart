@@ -10,7 +10,6 @@ class SplashBackground extends StatelessWidget {
 
   static const Color _primaryColor = Color(0xFF050076);
   static const Color _secondaryColor = Color(0xFF00B8FF);
-
   const SplashBackground({
     super.key,
     required this.scaleAnimation,
@@ -23,109 +22,90 @@ class SplashBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Top Right Large Bubble
+        // Top Right Large Yellow Bubble
         Positioned(
-          top: -100,
-          right: -100,
+          top: -60,
+          right: -80,
           child: ScaleTransition(
             scale: scaleAnimation,
             child: const SplashBubble(
-              size: 350,
+              size: 280,
               color: _primaryColor,
               shape: BoxShape.circle,
             ),
           ),
         ),
-        // Bottom Left Large Bubble
+
+        // Top Right Blue Hollow Circle (near the yellow one)
         Positioned(
-          bottom: -150,
-          left: -100,
+          top: 40,
+          right: 30,
+          child: FadeTransition(
+            opacity: fadeAnimation,
+            child: const SplashBubble(
+              size: 50,
+              color: _secondaryColor,
+              shape: BoxShape.circle,
+              isOutlined: true,
+              strokeWidth: 3,
+            ),
+          ),
+        ),
+
+        // Top Right Small Solid Blue Dot
+        Positioned(
+          top: 15,
+          right: 90,
           child: ScaleTransition(
             scale: scaleAnimation,
             child: const SplashBubble(
-              size: 450,
+              size: 18,
+              color: _secondaryColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+
+        // Bottom Left Large Yellow Bubble
+        Positioned(
+          bottom: -100,
+          left: -80,
+          child: ScaleTransition(
+            scale: scaleAnimation,
+            child: const SplashBubble(
+              size: 380,
               color: _primaryColor,
               shape: BoxShape.circle,
             ),
           ),
         ),
-        // Top Left Small Ring
+
+        // Purple hollow circle inside/near bottom yellow bubble
         Positioned(
-          top: 50,
-          left: -20,
+          bottom: 120,
+          left: 60,
           child: FadeTransition(
             opacity: fadeAnimation,
-            child: AnimatedBuilder(
-              animation: breatheAnimation,
-              builder: (context, child) =>
-                  Transform.scale(scale: breatheAnimation.value, child: child),
-              child: SplashBubble(
-                size: 100,
-                color: _secondaryColor.withValues(alpha: 0.2),
-                shape: BoxShape.circle,
-                isOutlined: true,
-              ),
-            ),
-          ),
-        ),
-        // Top Center Floating Ring
-        Positioned(
-          top: 80,
-          left: MediaQuery.of(context).size.width * 0.6,
-          child: FadeTransition(
-            opacity: fadeAnimation,
-            child: AnimatedBuilder(
-              animation: breatheAnimation,
-              builder: (context, child) => Transform.scale(
-                scale: breatheAnimation.value * 1.1, // Offset phase
-                child: child,
-              ),
-              child: const SplashBubble(
-                size: 60,
-                color: _primaryColor,
-                shape: BoxShape.circle,
-                isOutlined: true,
-                strokeWidth: 2,
-              ),
-            ),
-          ),
-        ),
-        // Bottom Right Small Dot
-        Positioned(
-          bottom: 250,
-          right: 80,
-          child: ScaleTransition(
-            scale: scaleAnimation,
             child: const SplashBubble(
-              size: 20,
+              size: 45,
               color: _secondaryColor,
               shape: BoxShape.circle,
+              isOutlined: true,
+              strokeWidth: 3,
             ),
           ),
         ),
-        // Center Left Small Dot
+
+        // Small blue square near bottom
         Positioned(
-          bottom: MediaQuery.of(context).size.height * 0.4,
-          left: 40,
-          child: ScaleTransition(
-            scale: scaleAnimation,
-            child: const SplashBubble(
-              size: 15,
-              color: _secondaryColor,
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
-        // Random decorative square/diamond
-        Positioned(
-          bottom: 180,
-          left: 120,
+          bottom: 70,
+          left: 170,
           child: RotationTransition(
             turns: breathingController,
             child: FadeTransition(
               opacity: fadeAnimation,
               child: SplashBubble(
-                size: 30,
+                size: 25,
                 color: _secondaryColor,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(4),
@@ -133,58 +113,94 @@ class SplashBackground extends StatelessWidget {
             ),
           ),
         ),
-        // Ring near bottom large bubble
+
+        // Top Curved Line (Arc)
         Positioned(
-          bottom: 120,
-          left: 160,
+          top: 180,
+          right: 50,
           child: FadeTransition(
             opacity: fadeAnimation,
-            child: const SplashBubble(
-              size: 40,
-              color: _primaryColor,
-              shape: BoxShape.circle,
-              isOutlined: true,
+            child: Transform.rotate(
+              angle: 0.5,
+              child: Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: _secondaryColor.withValues(alpha: 0.3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
-        // Arc/Line decoration
+
+        // Bottom Curved Line (Arc)
         Positioned(
+          bottom: 150,
+          left: 40,
+          child: FadeTransition(
+            opacity: fadeAnimation,
+            child: Transform.rotate(
+              angle: -0.5,
+              child: Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border(
+                    top: BorderSide(
+                      color: _secondaryColor.withValues(alpha: 0.3),
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        // Scattered small shapes (bg pattern simulation) - simplified
+        _buildScatteredDot(context, top: 100, left: 40),
+        _buildScatteredDot(context, top: 250, left: 20, size: 8),
+        _buildScatteredDot(
+          context,
           top: 150,
-          right: 40,
-          child: FadeTransition(
-            opacity: fadeAnimation,
-            child: Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: _primaryColor.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-            ),
-          ),
+          right: 150,
+          color: _secondaryColor.withValues(alpha: 0.2),
         ),
-        Positioned(
-          bottom: 200,
-          left: -50,
-          child: FadeTransition(
-            opacity: fadeAnimation,
-            child: Container(
-              width: 300,
-              height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: _primaryColor.withValues(alpha: 0.3),
-                  width: 1,
-                ),
-              ),
-            ),
-          ),
-        ),
+        _buildScatteredDot(context, bottom: 200, right: 30),
+        _buildScatteredDot(context, bottom: 300, left: 100, size: 6),
       ],
+    );
+  }
+
+  Widget _buildScatteredDot(
+    BuildContext context, {
+    double? top,
+    double? bottom,
+    double? left,
+    double? right,
+    double size = 10,
+    Color? color,
+  }) {
+    return Positioned(
+      top: top,
+      bottom: bottom,
+      left: left,
+      right: right,
+      child: FadeTransition(
+        opacity: fadeAnimation,
+        child: SplashBubble(
+          size: size,
+          color: color ?? const Color(0xFF00B8FF).withOpacity(0.2),
+          shape: BoxShape.circle,
+        ),
+      ),
     );
   }
 }

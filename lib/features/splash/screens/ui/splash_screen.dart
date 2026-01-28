@@ -94,7 +94,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         final isOnboarded = getBool('isOnboarded');
         if (state is SplashNavigate) {
           // Add a delay to keep the splash visible for a while
-          await Future.delayed(const Duration(seconds: 2));
+          await Future.delayed(const Duration(milliseconds: 1500));
 
           // Play expand animation (exit)
           try {
