@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 
 import '../../features/auth/screens/login/ui/login_page.dart';
+import '../../features/auth/screens/password_login/ui/password_login_page.dart';
+import '../../features/auth/screens/verification/ui/verification_page.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/splash/screens/ui/splash_screen.dart';
 import 'auth_guard.dart';
@@ -16,6 +19,8 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(page: SplashRoute.page, initial: true),
     AutoRoute(page: LoginRoute.page),
+    AutoRoute(page: VerificationRoute.page),
+    AutoRoute(page: PasswordLoginRoute.page),
     AutoRoute(page: OnboardingRoute.page),
   ];
 }
