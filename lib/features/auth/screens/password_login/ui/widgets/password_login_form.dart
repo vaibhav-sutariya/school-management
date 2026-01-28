@@ -2,6 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/routes/app_router.gr.dart';
+import '../../../../../../core/widgets/app_outlined_button.dart';
+import '../../../../../../core/widgets/app_primary_button.dart';
+import '../../../../../../core/widgets/app_text_field.dart';
 import '../../../../../../cubit/theme_cubit.dart';
 
 class PasswordLoginForm extends StatefulWidget {
@@ -35,45 +38,25 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: TextField(
-            controller: _passwordController,
-            obscureText: !_isPasswordVisible,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-            decoration: InputDecoration(
-              hintText: '••••••••••',
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 14,
-              ),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isPasswordVisible = !_isPasswordVisible;
-                  });
-                },
-                icon: Icon(
-                  _isPasswordVisible
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  color: Colors.grey,
-                ),
-              ),
+        AppTextField(
+          controller: _passwordController,
+          hintText: '••••••••••',
+          obscureText: !_isPasswordVisible,
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+            icon: Icon(
+              _isPasswordVisible
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              color: Colors.grey,
             ),
           ),
+          fillColor: Colors.white,
+          borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
         ),
         const SizedBox(height: 12),
         Align(
@@ -99,28 +82,11 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
           ),
         ),
         const SizedBox(height: 32),
-        SizedBox(
-          height: 55,
-          child: ElevatedButton(
-            onPressed: () {
-              // Login Action
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.colors.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 2,
-            ),
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
+        AppPrimaryButton(
+          onPressed: () {
+            // Login Action
+          },
+          text: 'Login',
         ),
         const SizedBox(height: 32),
         Row(
@@ -140,40 +106,32 @@ class _PasswordLoginFormState extends State<PasswordLoginForm> {
           ],
         ),
         const SizedBox(height: 32),
-        SizedBox(
-          height: 55,
-          child: OutlinedButton(
-            onPressed: () {
-              // Navigate to OTP Login
-            },
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              side: BorderSide(
-                color: context.colors.primary.withValues(alpha: 0.2),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.message_rounded,
-                  size: 20,
-                  color: context.colors.primary,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'Login with OTP',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: context.colors.primary,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        AppOutlinedButton(
+          onPressed: () {
+            // Navigate to OTP Login
+          },
+          text: 'Login with OTP',
+          color: Colors.white,
+          borderRadius: 30,
+          // child: Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Icon(
+          //       Icons.message_rounded,
+          //       size: 20,
+          //       color: context.colors.primary,
+          //     ),
+          //     const SizedBox(width: 8),
+          //     Text(
+          //       'Login with OTP',
+          //       style: TextStyle(
+          //         fontSize: 16,
+          //         fontWeight: FontWeight.bold,
+          //         color: context.colors.primary,
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ),
         const SizedBox(height: 60), // Spacer for bottom
         Row(

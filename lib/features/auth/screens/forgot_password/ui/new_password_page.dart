@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:starter_app/core/routes/app_router.gr.dart';
 
+import '../../../../../core/widgets/app_primary_button.dart';
+import '../../../../../core/widgets/app_text_field.dart';
 import '../../../../../cubit/theme_cubit.dart';
 import '../../../common/auth_header.dart';
 
@@ -165,43 +167,33 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
 
                       const SizedBox(height: 32),
 
-                      SizedBox(
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Validate confirmation and Update
-                            if (_passController.text ==
-                                    _confirmController.text &&
-                                _isLengthValid.value) {
-                              context.router.push(const PasswordSuccessRoute());
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: context.colors.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 2,
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Update Password',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.cached_rounded,
-                                size: 18,
+                      AppPrimaryButton(
+                        onPressed: () {
+                          // Validate confirmation and Update
+                          if (_passController.text == _confirmController.text &&
+                              _isLengthValid.value) {
+                            context.router.push(const PasswordSuccessRoute());
+                          }
+                        },
+                        borderRadius: 16,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Update Password',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(
+                              Icons.cached_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -223,38 +215,28 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     required VoidCallback onToggleVisibility,
     bool isConfirm = false,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FB),
-        borderRadius: BorderRadius.circular(12),
+    return AppTextField(
+      controller: controller,
+      hintText: hint,
+      obscureText: isObscured,
+      prefixIcon: Icon(
+        isConfirm ? Icons.lock_reset_rounded : Icons.lock_outline_rounded,
+        color: Colors.grey,
+        size: 20,
       ),
-      child: TextField(
-        controller: controller,
-        obscureText: isObscured,
-        decoration: InputDecoration(
-          hintText: hint,
-          prefixIcon: Icon(
-            isConfirm ? Icons.lock_reset_rounded : Icons.lock_outline_rounded,
-            color: Colors.grey,
-            size: 20,
-          ),
-          suffixIcon: IconButton(
-            icon: Icon(
-              isObscured
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
-              color: Colors.grey,
-              size: 20,
-            ),
-            onPressed: onToggleVisibility,
-          ),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
+      suffixIcon: IconButton(
+        icon: Icon(
+          isObscured
+              ? Icons.visibility_off_outlined
+              : Icons.visibility_outlined,
+          color: Colors.grey,
+          size: 20,
         ),
+        onPressed: onToggleVisibility,
       ),
+      fillColor: const Color(0xFFF8F9FB),
+      borderSide:
+          null, // Default border handling in widget or override here if needed, AppTextField defaults to greyish border
     );
   }
 

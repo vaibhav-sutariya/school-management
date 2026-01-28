@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/routes/app_router.gr.dart';
+import '../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../cubit/theme_cubit.dart';
 
 @RoutePage()
@@ -64,27 +65,19 @@ class PasswordSuccessPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 60),
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate Back to Login (Clear Stack)
-                    context.router.replaceAll([const LoginRoute()]);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(
-                    'Back to Login',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: context.colors.primary,
-                    ),
+              AppPrimaryButton(
+                onPressed: () {
+                  // Navigate Back to Login (Clear Stack)
+                  context.router.replaceAll([const LoginRoute()]);
+                },
+                color: Colors.white,
+                borderRadius: 30,
+                child: Text(
+                  'Back to Login',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: context.colors.primary,
                   ),
                 ),
               ),

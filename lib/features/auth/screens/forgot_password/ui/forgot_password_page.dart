@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/routes/app_router.gr.dart';
+import '../../../../../core/widgets/app_primary_button.dart';
+import '../../../../../core/widgets/app_text_field.dart';
 import '../../../../../cubit/theme_cubit.dart';
 import '../../../common/auth_header.dart';
 
@@ -64,64 +66,40 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF8F9FB),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Colors.grey.withValues(alpha: 0.1),
-                        ),
-                      ),
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          hintText: 'Email or Phone Number',
-                          prefixIcon: Icon(
-                            Icons.alternate_email_rounded,
-                            color: Colors.grey,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
-                        ),
+                    const SizedBox(height: 32),
+                    AppTextField(
+                      controller: _emailController,
+                      hintText: 'Email or Phone Number',
+                      prefixIcon: const Icon(
+                        Icons.alternate_email_rounded,
+                        color: Colors.grey,
                       ),
                     ),
                     const SizedBox(height: 32),
-                    SizedBox(
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Mock send link and navigate to NewPassword
-                          context.router.push(const NewPasswordRoute());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.colors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 2,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Send Reset Link',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Icon(
-                              Icons.send_rounded,
-                              size: 18,
+                    AppPrimaryButton(
+                      onPressed: () {
+                        // Mock send link and navigate to NewPassword
+                        context.router.push(const NewPasswordRoute());
+                      },
+                      borderRadius: 16,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Send Reset Link',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.send_rounded,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        ],
                       ),
                     ),
                   ],

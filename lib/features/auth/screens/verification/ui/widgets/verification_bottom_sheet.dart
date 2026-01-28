@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../../cubit/theme_cubit.dart';
 import 'otp_input_row.dart';
 
@@ -95,38 +96,29 @@ class VerificationBottomSheet extends StatelessWidget {
 
           const Spacer(),
 
-          SizedBox(
-            height: 55,
-            child: ElevatedButton(
-              onPressed: () {
-                // Verify Action
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: context.colors.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 2,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Verify & Proceed',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 20,
+          AppPrimaryButton(
+            onPressed: () {
+              // Verify Action
+            },
+            borderRadius: 16,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Verify & Proceed',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ],
             ),
           ),
           // const SizedBox(height: 24),
