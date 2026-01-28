@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../style/text_styles.dart';
 import 'app_theme.dart';
@@ -113,6 +114,7 @@ class LightTheme extends AppTheme {
     filledButtonTheme: filledButtonTheme,
     outlinedButtonTheme: outlinedButtonTheme,
     textTheme: textTheme,
+    fontFamily: GoogleFonts.radioCanada().fontFamily,
     inputDecorationTheme: inputDecorationTheme,
     bottomNavigationBarTheme: bottomNavigationBarThemeData,
   );
