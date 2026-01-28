@@ -18,24 +18,14 @@ class LoginFormSheet extends StatefulWidget {
 class _LoginFormSheetState extends State<LoginFormSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ValueNotifier<int> _tabNotifier = ValueNotifier<int>(0);
-  final TextEditingController _inputController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _tabNotifier.addListener(_handleTabChange);
-  }
-
-  void _handleTabChange() {
-    _inputController.clear(); // Clear text
-    _formKey.currentState?.reset(); // Clear validation errors
-  }
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   void dispose() {
-    _tabNotifier.removeListener(_handleTabChange);
     _tabNotifier.dispose();
-    _inputController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -90,7 +80,7 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
               builder: (context, index, _) {
                 return AppTextField(
                   key: ValueKey(index), // Force unmount/remount on tab switch
-                  controller: _inputController,
+                  controller: index == 0 ? _phoneController : _emailController,
                   hintText: index == 0 ? 'Phone Number' : 'School Email',
                   prefixIcon: Icon(
                     index == 0
@@ -132,14 +122,14 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
 
           AppPrimaryButton(
             onPressed: () {
+              // Ensure we check validation
               if (_formKey.currentState?.validate() == true) {
-                // Validate before proceeding
                 if (_tabNotifier.value == 0) {
                   // Phone Number -> Open OTP Verification
                   context.router.push(const VerificationRoute());
                 } else {
                   // Email Address -> Open Password Login
-                  final email = _inputController.text; // Assuming valid
+                  final email = _emailController.text; // Use email controller
                   context.router.push(PasswordLoginRoute(email: email));
                 }
               }
