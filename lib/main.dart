@@ -31,9 +31,9 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light, // White icons
+      statusBarBrightness: Brightness.dark, // White icons (iOS)
     ),
   );
 
@@ -63,28 +63,35 @@ class MyApp extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous?.languageCode != current?.languageCode,
             builder: (context, localeState) {
-              return MaterialApp.router(
-                title: 'Vendox',
-                debugShowCheckedModeBanner: false,
-                theme: themeState.theme,
-                locale: localeState ?? const Locale('en'),
-                supportedLocales: S.supportedLocales,
-                localizationsDelegates: const [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                // routerConfig: _appRouter.config(
-                //   navigatorObservers: () => [autoRouteObserver],
-                // ),
-                routerDelegate: _appRouter.delegate(
-                  navigatorObservers: () => [
-                    // Add a global observer to handle snackbars
-                    GlobalConnectivityObserver(context.read<InternetCubit>()),
-                  ],
+              return AnnotatedRegion<SystemUiOverlayStyle>(
+                value: const SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  statusBarIconBrightness: Brightness.light, // White icons
+                  statusBarBrightness: Brightness.dark, // White icons (iOS)
                 ),
-                routeInformationParser: _appRouter.defaultRouteParser(),
+                child: MaterialApp.router(
+                  title: 'Vendox',
+                  debugShowCheckedModeBanner: false,
+                  theme: themeState.theme,
+                  locale: localeState ?? const Locale('en'),
+                  supportedLocales: S.supportedLocales,
+                  localizationsDelegates: const [
+                    S.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  // routerConfig: _appRouter.config(
+                  //   navigatorObservers: () => [autoRouteObserver],
+                  // ),
+                  routerDelegate: _appRouter.delegate(
+                    navigatorObservers: () => [
+                      // Add a global observer to handle snackbars
+                      GlobalConnectivityObserver(context.read<InternetCubit>()),
+                    ],
+                  ),
+                  routeInformationParser: _appRouter.defaultRouteParser(),
+                ),
               );
             },
           );
