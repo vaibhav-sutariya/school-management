@@ -23,6 +23,7 @@ class VerificationPage extends StatelessWidget {
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: SafeArea(
+                  bottom: false,
                   child: Column(
                     children: [
                       VerificationHeader(),

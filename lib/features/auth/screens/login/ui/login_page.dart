@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget {
       backgroundColor: backgroundColor,
       // resizeToAvoidBottomInset: true, // Default is true, allowing keyboard checks
       body: SafeArea(
+        bottom: false,
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(

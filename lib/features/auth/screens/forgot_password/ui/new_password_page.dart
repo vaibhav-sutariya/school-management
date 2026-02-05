@@ -56,6 +56,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             const AuthPageHeader(title: 'Security'),
@@ -68,136 +69,140 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                 ),
                 padding: const EdgeInsets.all(24),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'Create New\nPassword',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: context.colors.primary,
+                child: SafeArea(
+                  top: false,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Create New\nPassword',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: context.colors.primary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Set a strong password to protect your\nschool management account.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                          height: 1.5,
+                        const SizedBox(height: 12),
+                        Text(
+                          'Set a strong password to protect your\nschool management account.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                            height: 1.5,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 32),
+                        const SizedBox(height: 32),
 
-                      const Text(
-                        'New Password',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                        const Text(
+                          'New Password',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildPasswordField(
-                        controller: _passController,
-                        hint: 'Enter new password',
-                        isObscured: _hidePass,
-                        onToggleVisibility: () =>
-                            setState(() => _hidePass = !_hidePass),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      const Text(
-                        'Confirm New Password',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                        const SizedBox(height: 8),
+                        _buildPasswordField(
+                          controller: _passController,
+                          hint: 'Enter new password',
+                          isObscured: _hidePass,
+                          onToggleVisibility: () =>
+                              setState(() => _hidePass = !_hidePass),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildPasswordField(
-                        controller: _confirmController,
-                        hint: 'Confirm your password',
-                        isObscured: _hideConfirm,
-                        isConfirm: true,
-                        onToggleVisibility: () =>
-                            setState(() => _hideConfirm = !_hideConfirm),
-                      ),
 
-                      const SizedBox(height: 32),
+                        const SizedBox(height: 20),
 
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF8F9FB),
-                          borderRadius: BorderRadius.circular(12),
+                        const Text(
+                          'Confirm New Password',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'PASSWORD REQUIREMENTS',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                letterSpacing: 1.0,
+                        const SizedBox(height: 8),
+                        _buildPasswordField(
+                          controller: _confirmController,
+                          hint: 'Confirm your password',
+                          isObscured: _hideConfirm,
+                          isConfirm: true,
+                          onToggleVisibility: () =>
+                              setState(() => _hideConfirm = !_hideConfirm),
+                        ),
+
+                        const SizedBox(height: 32),
+
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F9FB),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'PASSWORD REQUIREMENTS',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  letterSpacing: 1.0,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            _buildRequirementRow(
-                              _isLengthValid,
-                              'At least 8 characters long',
-                            ),
-                            const SizedBox(height: 8),
-                            _buildRequirementRow(
-                              _isSymbolValid,
-                              'Contains a symbol or number',
-                            ),
-                            const SizedBox(height: 8),
-                            _buildRequirementRow(
-                              _isUpperValid,
-                              'One uppercase letter',
-                            ),
-                          ],
+                              const SizedBox(height: 12),
+                              _buildRequirementRow(
+                                _isLengthValid,
+                                'At least 8 characters long',
+                              ),
+                              const SizedBox(height: 8),
+                              _buildRequirementRow(
+                                _isSymbolValid,
+                                'Contains a symbol or number',
+                              ),
+                              const SizedBox(height: 8),
+                              _buildRequirementRow(
+                                _isUpperValid,
+                                'One uppercase letter',
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
 
-                      const SizedBox(height: 32),
+                        const SizedBox(height: 32),
 
-                      AppPrimaryButton(
-                        onPressed: () {
-                          // Validate confirmation and Update
-                          if (_passController.text == _confirmController.text &&
-                              _isLengthValid.value) {
-                            context.router.push(const PasswordSuccessRoute());
-                          }
-                        },
-                        borderRadius: 16,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Update Password',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                        AppPrimaryButton(
+                          onPressed: () {
+                            // Validate confirmation and Update
+                            if (_passController.text ==
+                                    _confirmController.text &&
+                                _isLengthValid.value) {
+                              context.router.push(const PasswordSuccessRoute());
+                            }
+                          },
+                          borderRadius: 16,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Update Password',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.cached_rounded,
+                                size: 18,
                                 color: Colors.white,
                               ),
-                            ),
-                            SizedBox(width: 8),
-                            Icon(
-                              Icons.cached_rounded,
-                              size: 18,
-                              color: Colors.white,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 32),
-                    ],
+                        const SizedBox(height: 32),
+                      ],
+                    ),
                   ),
                 ),
               ),
