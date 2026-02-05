@@ -190,7 +190,6 @@ class _LoginFormSheetState extends State<LoginFormSheet> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
           ],
         ),
       ),
