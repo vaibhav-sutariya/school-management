@@ -1,110 +1,154 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:starter_app/core/helpers/extensions/locale_extensions.dart';
 import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:starter_app/core/routes/app_router.gr.dart';
+import 'package:starter_app/core/utils/preference_utils.dart';
 import 'package:starter_app/cubit/theme_cubit.dart';
 
-import '../../core/routes/app_router.gr.dart';
-import '../../core/selector/language_switcher.dart';
-import '../../core/theme/dark_theme.dart';
-import '../../core/utils/preference_utils.dart';
-import '../../core/utils/show_snackbar.dart';
-import '../../cubit/internet/internet_cubit.dart';
+import 'models/onboarding_item.dart';
+import 'widgets/onboarding_indicator.dart';
+import 'widgets/onboarding_slide.dart';
 
 @RoutePage()
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
   @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  final PageController _pageController = PageController();
+  int _currentIndex = 0;
+
+  final List<OnboardingItem> _items = [
+    OnboardingItem(
+      icon: Icons.hub, // Placeholder for "Stay Connected" icon
+      title: 'Stay Connected',
+      description:
+          'Real-time updates and seamless communication between teachers, parents, and students.',
+    ),
+    OnboardingItem(
+      icon: Icons.analytics, // Placeholder for "Track Progress" icon
+      title: 'Track Progress',
+      description:
+          'Monitor real-time academic results, attendance trends, and detailed performance reports in one place.',
+    ),
+    OnboardingItem(
+      icon: Icons.directions_bus, // Placeholder for "Smart Management" icon
+      title: 'Smart Management',
+      description:
+          'Track school transport, manage attendance, and stay updated with real-time notifications effortlessly.',
+    ),
+  ];
+
+  void _onNext() {
+    if (_currentIndex < _items.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      _finishOnboarding();
+    }
+  }
+
+  void _finishOnboarding() async {
+    await setBool('isOnboarded', true);
+    if (mounted) {
+      context.router.replace(const LoginRoute());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Specific blue color from design approx
+    final backgroundColor = context.colors.primary;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          context.loc.welcome,
-          style: context.textTheme.labelLarge?.copyWith(
-            color: context.colors.primary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [LanguageSwitcher()],
-      ),
-      body: Padding(
-        padding: context.symmetricPadding,
+      backgroundColor: backgroundColor,
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Locale: ${context.loc.localeName}',
-              style: context.textTheme.displayLarge?.copyWith(
-                color: context.colors.primary2nd,
-                fontSize: context.scaleFont(24),
+            // Top Navigation (Skip)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: context.scale(16),
+                vertical: context.scaleHeight(8),
               ),
-              textAlign: TextAlign.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (_currentIndex < _items.length - 1)
+                    TextButton(
+                      onPressed: _finishOnboarding,
+                      child: Text(
+                        'Skip',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: context.scaleFont(16),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
+                  else
+                    const SizedBox(
+                      height: 48,
+                    ), // Placeholder to keep layout stable
+                ],
+              ),
             ),
-            SizedBox(height: context.mediumSpacing),
-            CupertinoSwitch(
-              value: context.theme is DarkTheme,
-              onChanged: (value) => context.toggleTheme(),
-              activeTrackColor: context.colors.primary,
-              thumbColor: context.colors.background,
+
+            // Page View
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: _items.length,
+                onPageChanged: (index) {
+                  setState(() => _currentIndex = index);
+                },
+                itemBuilder: (context, index) {
+                  return OnboardingSlide(item: _items[index]);
+                },
+              ),
             ),
-            SizedBox(height: context.mediumSpacing),
-            BlocSelector<InternetCubit, InternetState, bool>(
-              selector: (state) {
-                if (state.isConnected) {
-                  return true;
-                }
-                return false;
-              },
-              builder: (context, isConnected) {
-                return Text(
-                  isConnected
-                      ? context.loc.connected
-                      : context.loc.disconnected,
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: isConnected
-                        ? context.colors.success
-                        : context.colors.error,
-                    fontSize: context.scaleFont(16),
+
+            // Indicators
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(_items.length, (index) {
+                return OnboardingIndicator(isActive: _currentIndex == index);
+              }),
+            ),
+
+            SizedBox(height: context.scaleHeight(32)),
+
+            // Bottom Button
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: context.scale(24),
+                vertical: context.scaleHeight(32),
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: context.scaleHeight(56),
+                child: ElevatedButton(
+                  onPressed: _onNext,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: backgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 0,
                   ),
-                );
-              },
-            ),
-            SizedBox(height: context.mediumSpacing),
-            FilledButton(
-              onPressed: () async {
-                try {
-                  await setBool('isOnboarded', true);
-                  log('Onboarding status saved as true');
-                  if (context.mounted) {
-                    log('Onboarding completed, navigating to Login');
-                    await context.router.push(const LoginRoute());
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    showFlushbar(
-                      context: context,
-                      message: 'Failed to save onboarding status: $e',
-                      isError: true,
-                    );
-                  }
-                }
-              },
-              style: context.theme.filledButtonTheme.style?.copyWith(
-                minimumSize: WidgetStateProperty.all(
-                  Size(context.scale(200), context.scaleHeight(48)),
-                ),
-              ),
-              child: Text(
-                'Next',
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: context.colors.buttonTextColor,
-                  fontSize: context.scaleFont(16),
+                  child: Text(
+                    _currentIndex == _items.length - 1 ? 'Get Started' : 'Next',
+                    style: TextStyle(
+                      fontSize: context.scaleFont(18),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
