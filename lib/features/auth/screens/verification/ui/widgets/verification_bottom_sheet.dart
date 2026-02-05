@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/routes/app_router.gr.dart';
 import '../../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../../cubit/theme_cubit.dart';
 import 'otp_input_row.dart';
@@ -104,6 +106,7 @@ class VerificationBottomSheet extends StatelessWidget {
             AppPrimaryButton(
               onPressed: () {
                 // Verify Action
+                context.router.push(DashboardRoute());
               },
               // borderRadius: 16, // Already default, can function without explicitness, but file had 16. Cleaning up consistency.
               child: const Row(
