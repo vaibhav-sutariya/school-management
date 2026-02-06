@@ -27,10 +27,10 @@ class DashboardBottomBar extends StatelessWidget {
             child: Container(
               height: Responsive().scaleHeight(80),
               margin: EdgeInsets.fromLTRB(
-                Responsive().scale(20),
+                Responsive().scale(15),
                 0,
-                Responsive().scale(20),
-                Responsive().scaleHeight(20),
+                Responsive().scale(15),
+                Responsive().scaleHeight(15),
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -138,7 +138,7 @@ class DashboardBottomBar extends StatelessWidget {
                   Text(
                     'Home',
                     style: TextStyle(
-                      fontSize: Responsive().scaleFont(11),
+                      fontSize: Responsive().scaleFont(12),
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
                       color: activeIndex == 0
@@ -174,13 +174,13 @@ class DashboardBottomBar extends StatelessWidget {
           Icon(
             icon,
             color: isSelected ? primaryColor : Colors.grey[600],
-            size: Responsive().scale(20),
+            size: Responsive().scale(22),
           ),
           SizedBox(height: Responsive().scaleHeight(4)),
           Text(
             label,
             style: TextStyle(
-              fontSize: Responsive().scaleFont(11),
+              fontSize: Responsive().scaleFont(12),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               color: isSelected ? primaryColor : Colors.grey[600],
             ),
