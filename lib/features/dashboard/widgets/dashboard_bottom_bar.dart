@@ -15,9 +15,6 @@ class DashboardBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure Responsive is initialized if not already (it should be from main, but for safety)
-    // Responsive().init(context); // removed as it is initialized in main.dart context extension
-
     return SizedBox(
       height: Responsive().scaleHeight(70),
       child: Stack(
@@ -37,7 +34,7 @@ class DashboardBottomBar extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(Responsive().scale(30)),
+                borderRadius: BorderRadius.circular(Responsive().scale(15)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.15),
@@ -118,9 +115,9 @@ class DashboardBottomBar extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                           color: const Color(0xFFFFA726).withOpacity(0.5),
-                          blurRadius: Responsive().scale(16),
-                          spreadRadius: Responsive().scale(2),
-                          offset: Offset(0, Responsive().scaleHeight(6)),
+                          blurRadius: Responsive().scale(8),
+                          // spreadRadius: Responsive().scale(1),
+                          offset: Offset(0, Responsive().scaleHeight(2)),
                         ),
                       ],
                       // Highlight if selected
@@ -134,7 +131,7 @@ class DashboardBottomBar extends StatelessWidget {
                     child: Icon(
                       Icons.home_rounded,
                       color: activeIndex == 0 ? Colors.white : Colors.black,
-                      size: Responsive().scale(28),
+                      size: Responsive().scale(26),
                     ),
                   ),
                   SizedBox(height: Responsive().scaleHeight(5)),

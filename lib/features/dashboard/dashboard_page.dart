@@ -10,23 +10,26 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-      extendBody: true,
-      routes: const [
-        HomeRoute(),
-        CalendarRoute(),
-        SummaryRoute(),
-        NoticeRoute(),
-        ProfileRoute(),
-      ],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return DashboardBottomBar(
-          activeIndex: tabsRouter.activeIndex,
-          onTabSelected: (index) {
-            tabsRouter.setActiveIndex(index);
-          },
-        );
-      },
+    return SafeArea(
+      top: false,
+      child: AutoTabsScaffold(
+        extendBody: true,
+        routes: const [
+          HomeRoute(),
+          CalendarRoute(),
+          SummaryRoute(),
+          NoticeRoute(),
+          ProfileRoute(),
+        ],
+        bottomNavigationBuilder: (_, tabsRouter) {
+          return DashboardBottomBar(
+            activeIndex: tabsRouter.activeIndex,
+            onTabSelected: (index) {
+              tabsRouter.setActiveIndex(index);
+            },
+          );
+        },
+      ),
     );
   }
 }
