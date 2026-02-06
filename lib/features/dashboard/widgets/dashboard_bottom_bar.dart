@@ -108,13 +108,13 @@ class DashboardBottomBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: const LinearGradient(
-                        colors: [Color(0xFFFFA726), Color(0xFFFFCC80)],
+                        colors: [Color(0xFF150E9F), Color(0xFF342AF2)],
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFFFA726).withOpacity(0.5),
+                          color: const Color(0xFF150E9F).withOpacity(0.5),
                           blurRadius: context.scale(8),
                           // spreadRadius: context.scale(1),
                           offset: Offset(0, context.scaleHeight(2)),
@@ -130,7 +130,7 @@ class DashboardBottomBar extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.home_rounded,
-                      color: activeIndex == 0 ? Colors.white : Colors.black,
+                      color: activeIndex == 0 ? Colors.white : Colors.white,
                       size: context.scale(26),
                     ),
                   ),
