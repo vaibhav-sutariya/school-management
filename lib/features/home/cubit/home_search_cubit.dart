@@ -10,7 +10,7 @@ class HomeSearchCubit extends Cubit<HomeSearchState> {
     : super(const HomeSearchState(filteredSections: QuickMenuData.sections));
 
   Timer? _debounceTimer;
-  static const _debounceDuration = Duration(milliseconds: 300);
+  static const _debounceDuration = Duration(milliseconds: 200);
 
   @override
   Future<void> close() {
