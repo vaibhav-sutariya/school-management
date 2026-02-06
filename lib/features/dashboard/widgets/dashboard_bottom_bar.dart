@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../cubit/theme_cubit.dart';
 
 class DashboardBottomBar extends StatelessWidget {
@@ -14,8 +15,11 @@ class DashboardBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure Responsive is initialized if not already (it should be from main, but for safety)
+    // Responsive().init(context); // removed as it is initialized in main.dart context extension
+
     return SizedBox(
-      height: 110,
+      height: Responsive().scaleHeight(70),
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
@@ -24,53 +28,86 @@ class DashboardBottomBar extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 80,
-              margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              height: Responsive().scaleHeight(80),
+              margin: EdgeInsets.fromLTRB(
+                Responsive().scale(20),
+                0,
+                Responsive().scale(20),
+                Responsive().scaleHeight(20),
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(Responsive().scale(30)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: Responsive().scale(25),
+                    spreadRadius: Responsive().scale(2),
+                    offset: Offset(0, Responsive().scaleHeight(8)),
                   ),
                 ],
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavItem(
-                    context,
-                    0,
-                    Icons.calendar_month_rounded,
-                    'Calendar',
+                  Expanded(
+                    child: Center(
+                      child: _buildNavItem(
+                        context,
+                        1,
+                        Icons.calendar_month_rounded,
+                        'Calendar',
+                      ),
+                    ),
                   ),
-                  _buildNavItem(context, 1, Icons.explore_rounded, 'Summary'),
-                  const SizedBox(width: 48), // Space for floating button
-                  _buildNavItem(
-                    context,
-                    3,
-                    Icons.notifications_rounded,
-                    'Notice',
+                  Expanded(
+                    child: Center(
+                      child: _buildNavItem(
+                        context,
+                        2,
+                        Icons.explore_rounded,
+                        'Summary',
+                      ),
+                    ),
                   ),
-                  _buildNavItem(context, 4, Icons.person_rounded, 'Me'),
+                  const Expanded(
+                    child: SizedBox(),
+                  ), // Space for floating button
+                  Expanded(
+                    child: Center(
+                      child: _buildNavItem(
+                        context,
+                        3,
+                        Icons.notifications_rounded,
+                        'Notice',
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: _buildNavItem(
+                        context,
+                        4,
+                        Icons.person_rounded,
+                        'Me',
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
           Positioned(
-            top: 0,
+            top: -30,
             child: GestureDetector(
               onTap: () {
-                onTabSelected(2); // Select Home tab (index 2)
+                onTabSelected(0); // Select Home tab (index 0)
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 60,
-                    height: 60,
+                    width: Responsive().scale(50),
+                    height: Responsive().scale(50),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: const LinearGradient(
@@ -80,30 +117,34 @@ class DashboardBottomBar extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFFFA726).withOpacity(0.4),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          color: const Color(0xFFFFA726).withOpacity(0.5),
+                          blurRadius: Responsive().scale(16),
+                          spreadRadius: Responsive().scale(2),
+                          offset: Offset(0, Responsive().scaleHeight(6)),
                         ),
                       ],
                       // Highlight if selected
-                      border: activeIndex == 2
-                          ? Border.all(color: Colors.white, width: 2)
+                      border: activeIndex == 0
+                          ? Border.all(
+                              color: Colors.white,
+                              width: Responsive().scale(2),
+                            )
                           : null,
                     ),
                     child: Icon(
                       Icons.home_rounded,
-                      color: activeIndex == 2 ? Colors.white : Colors.black,
-                      size: 32,
+                      color: activeIndex == 0 ? Colors.white : Colors.black,
+                      size: Responsive().scale(28),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive().scaleHeight(5)),
                   Text(
                     'Home',
                     style: TextStyle(
-                      fontSize: 12, // Increased font size slightly
+                      fontSize: Responsive().scaleFont(11),
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
-                      color: activeIndex == 2
+                      color: activeIndex == 0
                           ? context.colors.primary
                           : Colors.black87,
                     ),
@@ -136,13 +177,13 @@ class DashboardBottomBar extends StatelessWidget {
           Icon(
             icon,
             color: isSelected ? primaryColor : Colors.grey[600],
-            size: 28,
+            size: Responsive().scale(20),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: Responsive().scaleHeight(4)),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: Responsive().scaleFont(11),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               color: isSelected ? primaryColor : Colors.grey[600],
             ),
