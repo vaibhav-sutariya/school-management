@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../core/widgets/scroll_aware_bottom_bar_controller.dart';
 import '../../cubit/theme_cubit.dart';
 import 'cubit/home_search_cubit.dart';
 import 'widgets/home_header.dart';
@@ -11,7 +12,9 @@ import 'widgets/quick_menu_overlay.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final ScrollAwareBottomBarController? bottomBarController;
+
+  const HomePage({super.key, this.bottomBarController});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,15 @@ class HomePage extends StatelessWidget {
                   ), // Consitent spacing
                   // Quick Menu (Expanded to fill bottom)
                   // With margin in QuickMenuOverlay, it will show blue bg on sides
-                  const Expanded(child: QuickMenuOverlay()),
+                  Expanded(
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        bottomBarController?.handleScroll(notification);
+                        return false;
+                      },
+                      child: const QuickMenuOverlay(),
+                    ),
+                  ),
                 ],
               ),
             ),

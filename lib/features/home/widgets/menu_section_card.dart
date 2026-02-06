@@ -82,7 +82,7 @@ class MenuSectionCard extends StatelessWidget {
         crossAxisCount: 3,
         mainAxisSpacing: context.scaleHeight(8),
         crossAxisSpacing: context.scale(25),
-        childAspectRatio: 0.95,
+        childAspectRatio: 0.999,
       ),
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {

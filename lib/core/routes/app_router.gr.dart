@@ -11,6 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i15;
 import 'package:flutter/material.dart' as _i16;
+import 'package:starter_app/core/widgets/scroll_aware_bottom_bar_controller.dart'
+    as _i17;
 import 'package:starter_app/features/auth/screens/forgot_password/ui/forgot_password_page.dart'
     as _i3;
 import 'package:starter_app/features/auth/screens/forgot_password/ui/new_password_page.dart'
@@ -83,18 +85,57 @@ class ForgotPasswordRoute extends _i15.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.HomePage]
-class HomeRoute extends _i15.PageRouteInfo<void> {
-  const HomeRoute({List<_i15.PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+class HomeRoute extends _i15.PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({
+    _i16.Key? key,
+    _i17.ScrollAwareBottomBarController? bottomBarController,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
+         HomeRoute.name,
+         args: HomeRouteArgs(
+           key: key,
+           bottomBarController: bottomBarController,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'HomeRoute';
 
   static _i15.PageInfo page = _i15.PageInfo(
     name,
     builder: (data) {
-      return const _i4.HomePage();
+      final args = data.argsAs<HomeRouteArgs>(
+        orElse: () => const HomeRouteArgs(),
+      );
+      return _i4.HomePage(
+        key: args.key,
+        bottomBarController: args.bottomBarController,
+      );
     },
   );
+}
+
+class HomeRouteArgs {
+  const HomeRouteArgs({this.key, this.bottomBarController});
+
+  final _i16.Key? key;
+
+  final _i17.ScrollAwareBottomBarController? bottomBarController;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{key: $key, bottomBarController: $bottomBarController}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! HomeRouteArgs) return false;
+    return key == other.key && bottomBarController == other.bottomBarController;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ bottomBarController.hashCode;
 }
 
 /// generated route for
