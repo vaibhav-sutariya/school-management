@@ -20,8 +20,11 @@ class $AssetsImagesGen {
   /// File path: assets/images/Background_square.svg
   String get backgroundSquare => 'assets/images/Background_square.svg';
 
+  /// File path: assets/images/tile_bg.jpg
+  AssetGenImage get tileBg => const AssetGenImage('assets/images/tile_bg.jpg');
+
   /// List of all assets
-  List<String> get values => [backgroundRound, backgroundSquare];
+  List<dynamic> get values => [backgroundRound, backgroundSquare, tileBg];
 }
 
 class $AssetsLogoGen {
