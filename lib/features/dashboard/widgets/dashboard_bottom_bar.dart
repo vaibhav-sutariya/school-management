@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/responsive.dart';
+import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../cubit/theme_cubit.dart';
 
 class DashboardBottomBar extends StatelessWidget {
@@ -16,7 +16,7 @@ class DashboardBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Responsive().scaleHeight(70),
+      height: context.scaleHeight(70),
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
@@ -25,22 +25,22 @@ class DashboardBottomBar extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: Responsive().scaleHeight(80),
+              height: context.scaleHeight(80),
               margin: EdgeInsets.fromLTRB(
-                Responsive().scale(15),
+                context.scale(15),
                 0,
-                Responsive().scale(15),
-                Responsive().scaleHeight(15),
+                context.scale(15),
+                context.scaleHeight(15),
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(Responsive().scale(15)),
+                borderRadius: BorderRadius.circular(context.scale(15)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.15),
-                    blurRadius: Responsive().scale(25),
-                    spreadRadius: Responsive().scale(2),
-                    offset: Offset(0, Responsive().scaleHeight(8)),
+                    blurRadius: context.scale(25),
+                    spreadRadius: context.scale(2),
+                    offset: Offset(0, context.scaleHeight(8)),
                   ),
                 ],
               ),
@@ -103,8 +103,8 @@ class DashboardBottomBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: Responsive().scale(50),
-                    height: Responsive().scale(50),
+                    width: context.scale(50),
+                    height: context.scale(50),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: const LinearGradient(
@@ -115,30 +115,30 @@ class DashboardBottomBar extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                           color: const Color(0xFFFFA726).withOpacity(0.5),
-                          blurRadius: Responsive().scale(8),
-                          // spreadRadius: Responsive().scale(1),
-                          offset: Offset(0, Responsive().scaleHeight(2)),
+                          blurRadius: context.scale(8),
+                          // spreadRadius: context.scale(1),
+                          offset: Offset(0, context.scaleHeight(2)),
                         ),
                       ],
                       // Highlight if selected
                       border: activeIndex == 0
                           ? Border.all(
                               color: Colors.white,
-                              width: Responsive().scale(2),
+                              width: context.scale(2),
                             )
                           : null,
                     ),
                     child: Icon(
                       Icons.home_rounded,
                       color: activeIndex == 0 ? Colors.white : Colors.black,
-                      size: Responsive().scale(26),
+                      size: context.scale(26),
                     ),
                   ),
-                  SizedBox(height: Responsive().scaleHeight(5)),
+                  SizedBox(height: context.scaleHeight(5)),
                   Text(
                     'Home',
                     style: TextStyle(
-                      fontSize: Responsive().scaleFont(12),
+                      fontSize: context.scaleFont(12),
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
                       color: activeIndex == 0
@@ -174,13 +174,13 @@ class DashboardBottomBar extends StatelessWidget {
           Icon(
             icon,
             color: isSelected ? primaryColor : Colors.grey[600],
-            size: Responsive().scale(22),
+            size: context.scale(22),
           ),
-          SizedBox(height: Responsive().scaleHeight(4)),
+          SizedBox(height: context.scaleHeight(4)),
           Text(
             label,
             style: TextStyle(
-              fontSize: Responsive().scaleFont(12),
+              fontSize: context.scaleFont(12),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               color: isSelected ? primaryColor : Colors.grey[600],
             ),
