@@ -25,12 +25,12 @@ class DashboardBottomBar extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: context.scaleHeight(80),
+              height: context.scaleHeight(50),
               margin: EdgeInsets.fromLTRB(
                 context.scale(15),
                 0,
                 context.scale(15),
-                context.scaleHeight(15),
+                context.scaleHeight(5),
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -94,7 +94,7 @@ class DashboardBottomBar extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: -30,
+            top: -15,
             child: GestureDetector(
               onTap: () {
                 onTabSelected(0); // Select Home tab (index 0)
