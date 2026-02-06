@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../cubit/home_search_cubit.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({super.key});
@@ -24,13 +26,33 @@ class HomeSearchBar extends StatelessWidget {
           children: [
             SizedBox(width: context.scale(16)),
             Expanded(
-              child: Text(
-                'Search here...',
+              child: TextField(
+                onChanged: (value) {
+                  context.read<HomeSearchCubit>().search(value);
+                },
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
-                  fontSize: context.scaleFont(13), // Reduced font size
+                  color: Colors.white,
+                  fontSize: context.scaleFont(14),
                   letterSpacing: 0.3,
                 ),
+                decoration: InputDecoration(
+                  fillColor: Colors.transparent,
+                  hintText: 'Search here...',
+                  hintStyle: TextStyle(
+                    color: Colors.white.withOpacity(0.6),
+                    fontSize: context.scaleFont(13),
+                    letterSpacing: 0.3,
+                  ),
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
+                  // Explicitly remove all borders to override theme
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
+                ),
+                cursorColor: Colors.white,
               ),
             ),
             Container(
