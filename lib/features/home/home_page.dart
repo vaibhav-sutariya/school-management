@@ -58,6 +58,12 @@ class HomePage extends StatelessWidget {
                     child: NotificationListener<ScrollNotification>(
                       onNotification: (notification) {
                         bottomBarController?.handleScroll(notification);
+                        // Production-ready: Unfocus search bar when user starts scrolling
+                        // This is a common UX pattern (like WhatsApp, Instagram, etc.)
+                        // Unfocuses keyboard when user interacts with scrollable content
+                        if (notification is ScrollStartNotification) {
+                          FocusScope.of(context).unfocus();
+                        }
                         return false;
                       },
                       child: const QuickMenuOverlay(),

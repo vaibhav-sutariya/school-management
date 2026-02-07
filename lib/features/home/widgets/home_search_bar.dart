@@ -4,22 +4,46 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../cubit/home_search_cubit.dart';
 
-class HomeSearchBar extends StatelessWidget {
+/// Production-ready search bar with focus management
+/// Handles tap outside to unfocus efficiently
+class HomeSearchBar extends StatefulWidget {
   const HomeSearchBar({super.key});
 
   @override
+  State<HomeSearchBar> createState() => _HomeSearchBarState();
+}
+
+class _HomeSearchBarState extends State<HomeSearchBar> {
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final horizontalPadding = context.scale(20);
+    final containerHeight = context.scaleHeight(35);
+    final borderRadius = context.scale(12);
+    final iconSize = context.scale(18);
+    final fontSize = context.scaleFont(14);
+    final hintFontSize = context.scaleFont(13);
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: context.scale(20)),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Container(
-        height: context.scaleHeight(35), // Reduced from 50
+        height: containerHeight,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(
-            0.15,
-          ), // Slightly more visible for clarity
-          borderRadius: BorderRadius.circular(
-            context.scale(12),
-          ), // Reduced radius
+          color: Colors.white.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(color: Colors.white.withOpacity(0.15), width: 1),
         ),
         child: Row(
@@ -27,12 +51,17 @@ class HomeSearchBar extends StatelessWidget {
             SizedBox(width: context.scale(16)),
             Expanded(
               child: TextField(
+                focusNode: _focusNode,
                 onChanged: (value) {
                   context.read<HomeSearchCubit>().search(value);
                 },
+                onTapOutside: (_) {
+                  // Unfocus when tapping outside - production-ready approach
+                  _focusNode.unfocus();
+                },
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: context.scaleFont(14),
+                  fontSize: fontSize,
                   letterSpacing: 0.3,
                 ),
                 decoration: InputDecoration(
@@ -40,7 +69,7 @@ class HomeSearchBar extends StatelessWidget {
                   hintText: 'Search here...',
                   hintStyle: TextStyle(
                     color: Colors.white.withOpacity(0.6),
-                    fontSize: context.scaleFont(13),
+                    fontSize: hintFontSize,
                     letterSpacing: 0.3,
                   ),
                   isDense: true,
@@ -57,7 +86,7 @@ class HomeSearchBar extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.all(context.scale(6)),
-              padding: EdgeInsets.all(context.scale(6)), // Reduced padding
+              padding: EdgeInsets.all(context.scale(6)),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(context.scale(8)),
@@ -65,7 +94,7 @@ class HomeSearchBar extends StatelessWidget {
               child: Icon(
                 Icons.search,
                 color: Colors.white,
-                size: context.scale(18), // Reduced size
+                size: iconSize,
               ),
             ),
           ],
