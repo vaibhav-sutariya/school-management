@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../core/routes/app_router.gr.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/app_loader.dart';
 import '../../../core/widgets/error_state.dart';
@@ -156,8 +157,9 @@ class _GalleryScrollView extends StatelessWidget {
                           child: GalleryCard(
                             gallery: gallery,
                             onTap: () {
-                              // Navigate to gallery detail page (to be implemented)
-                              // context.router.push(GalleryDetailRoute(galleryId: gallery.id));
+                              context.router.push(
+                                GalleryDetailRoute(gallery: gallery),
+                              );
                             },
                           ),
                         );
