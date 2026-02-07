@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
 
+/// Production-optimized menu item widget
+/// Uses const where possible and optimized layout
 class MenuItem extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -20,36 +22,43 @@ class MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(context.scale(16));
+    final iconSize = context.scale(22);
+    final iconPadding = context.scale(10);
+    final spacing = context.scaleHeight(8);
+    final fontSize = context.scaleFont(11);
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
         color: Colors.white,
-        elevation: 4, // Increased elevation
-        shadowColor: Colors.black.withOpacity(0.5), // Darker shadow
+        elevation: 4,
+        shadowColor: Colors.black.withOpacity(0.5),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(context.scale(16)),
+          borderRadius: borderRadius,
           side: const BorderSide(
-            color: Color(0xFFEEEEEE), // Solid light grey border
+            color: Color(0xFFEEEEEE),
             width: 1,
           ),
         ),
-        margin: EdgeInsets.zero, // Let grid spacing handle margins
+        margin: EdgeInsets.zero,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: EdgeInsets.all(context.scale(10)),
+              padding: EdgeInsets.all(iconPadding),
               decoration: BoxDecoration(
                 color: backgroundColor,
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: color, size: context.scale(22)),
+              child: Icon(icon, color: color, size: iconSize),
             ),
-            SizedBox(height: context.scaleHeight(8)),
+            SizedBox(height: spacing),
             Text(
               label,
               style: TextStyle(
-                fontSize: context.scaleFont(11),
+                fontSize: fontSize,
                 fontWeight: FontWeight.w600,
                 color: Colors.black87,
                 letterSpacing: 0.3,
