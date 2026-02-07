@@ -37,5 +37,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: VideoDetailRoute.page),
     AutoRoute(page: VideoViewerRoute.page),
     AutoRoute(page: RemarksRoute.page),
+    AutoRoute(page: RemarkDetailRoute.page),
   ];
 }

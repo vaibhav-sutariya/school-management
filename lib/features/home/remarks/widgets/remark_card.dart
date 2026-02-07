@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../core/routes/app_router.gr.dart';
 import '../models/remark_model.dart';
 
 /// Production-ready remark card widget
@@ -18,37 +20,43 @@ class RemarkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       key: ValueKey(remark.id),
-      child: Container(
-        margin: EdgeInsets.only(
-          left: context.scale(16),
-          right: context.scale(16),
-          bottom: context.scaleHeight(8),
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(context.scale(12)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(context.scale(16)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Icon container
-              _buildIcon(context),
-              SizedBox(width: context.scale(12)),
-              // Content
-              Expanded(
-                child: _buildContent(context),
+      child: InkWell(
+        onTap: () {
+          context.router.push(RemarkDetailRoute(remark: remark));
+        },
+        borderRadius: BorderRadius.circular(context.scale(12)),
+        child: Container(
+          margin: EdgeInsets.only(
+            left: context.scale(16),
+            right: context.scale(16),
+            bottom: context.scaleHeight(8),
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(context.scale(12)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
               ),
             ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(context.scale(16)),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Icon container
+                _buildIcon(context),
+                SizedBox(width: context.scale(12)),
+                // Content
+                Expanded(
+                  child: _buildContent(context),
+                ),
+              ],
+            ),
           ),
         ),
       ),
