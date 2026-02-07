@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/app_loader.dart';
+import '../../../core/widgets/end_of_list_indicator.dart';
 import '../../../core/widgets/error_state.dart';
 import '../../../cubit/theme_cubit.dart';
 import 'bloc/remark_bloc.dart';
@@ -198,7 +199,6 @@ class _RemarksContent extends StatelessWidget {
                 return SliverPadding(
                   padding: EdgeInsets.only(
                     top: context.scaleHeight(16),
-                    bottom: context.scaleHeight(100), // Space for FAB
                   ),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -228,7 +228,10 @@ class _RemarksContent extends StatelessWidget {
                 }
                 return SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: context.scaleHeight(16)),
+                    padding: EdgeInsets.only(
+                      top: context.scaleHeight(8),
+                      bottom: context.scaleHeight(8),
+                    ),
                     child: const Center(child: AppLoader()),
                   ),
                 );
@@ -236,32 +239,25 @@ class _RemarksContent extends StatelessWidget {
             ),
             // End of list indicator
             BlocSelector<RemarkBloc, RemarkState, bool>(
-              selector: (state) => state.hasMore,
-              builder: (context, hasMore) {
-                if (hasMore) {
-                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                }
-                final remarks = context.read<RemarkBloc>().state.remarks;
-                if (remarks.isEmpty) {
-                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                }
-                return SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: context.scaleHeight(100),
-                      top: context.scaleHeight(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'No more remarks',
-                        style: TextStyle(
-                          fontSize: context.scaleFont(14),
-                          color: Colors.grey[600],
+              selector: (state) => !state.hasMore && state.remarks.isNotEmpty,
+              builder: (context, showEndIndicator) {
+                if (showEndIndicator) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: context.scaleHeight(4),
+                        bottom: context.scaleHeight(100), // Space for FAB
+                      ),
+                      child: EndOfListIndicator(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: context.scale(20),
+                          vertical: context.scaleHeight(12),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
               },
             ),
           ],

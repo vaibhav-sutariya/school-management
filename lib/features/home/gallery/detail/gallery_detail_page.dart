@@ -7,6 +7,7 @@ import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../core/routes/app_router.gr.dart';
 import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/end_of_list_indicator.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../models/gallery_image_model.dart';
 import '../models/gallery_model.dart';
@@ -220,30 +221,8 @@ class _GalleryDetailScrollView extends StatelessWidget {
               selector: (state) => !state.hasMore && state.images.isNotEmpty,
               builder: (context, showEndIndicator) {
                 if (showEndIndicator) {
-                  return SliverToBoxAdapter(
-                    child: RepaintBoundary(
-                      child: Padding(
-                        padding: EdgeInsets.all(context.scaleHeight(24)),
-                        child: Column(
-                          children: [
-                            Text(
-                              'You reached at the end',
-                              style: TextStyle(
-                                fontSize: context.scaleFont(12),
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                            SizedBox(height: context.scaleHeight(8)),
-                            Divider(
-                              color: Colors.grey[300],
-                              thickness: 1,
-                              indent: context.scale(40),
-                              endIndent: context.scale(40),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  return const SliverToBoxAdapter(
+                    child: EndOfListIndicator(),
                   );
                 }
                 return const SliverToBoxAdapter(child: SizedBox.shrink());
