@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:starter_app/cubit/theme_cubit.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../core/routes/app_router.gr.dart';
 import '../data/category_theme_config.dart';
 import '../data/menu_data.dart';
 import 'menu_item.dart';
@@ -114,9 +116,7 @@ class MenuSectionCard extends StatelessWidget {
             label: item.label,
             color: item.iconColor,
             backgroundColor: item.backgroundColor,
-            onTap: () {
-              // Handle navigation
-            },
+            onTap: () => _handleNavigation(context, item.label),
           ),
         );
       },
@@ -178,5 +178,18 @@ class MenuSectionCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Handle navigation based on menu item label
+  void _handleNavigation(BuildContext context, String label) {
+    switch (label.toLowerCase()) {
+      case 'attendance':
+        context.router.push(const AttendanceRoute());
+        break;
+      // Add more navigation cases as needed
+      default:
+        // Handle other menu items
+        break;
+    }
   }
 }
