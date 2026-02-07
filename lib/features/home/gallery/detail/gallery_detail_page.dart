@@ -113,9 +113,11 @@ class _GalleryDetailScrollView extends StatelessWidget {
         // Load more when user scrolls near the bottom (80%)
         if (scrollInfo.metrics.pixels >=
             scrollInfo.metrics.maxScrollExtent * 0.8) {
-          final state = context.read<GalleryDetailBloc>().state;
+          // Read BLoC once to avoid multiple reads
+          final bloc = context.read<GalleryDetailBloc>();
+          final state = bloc.state;
           if (state.hasMore && !state.isLoadingMore) {
-            context.read<GalleryDetailBloc>().add(const LoadMoreGalleryImagesEvent());
+            bloc.add(const LoadMoreGalleryImagesEvent());
           }
         }
         return false;
@@ -154,6 +156,7 @@ class _GalleryDetailScrollView extends StatelessWidget {
                               fontSize: context.scaleFont(16),
                               color: Colors.grey[600],
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -174,8 +177,9 @@ class _GalleryDetailScrollView extends StatelessWidget {
                       (context, index) {
                         final image = images[index];
                         return RepaintBoundary(
-                          key: ValueKey(image.id),
+                          key: ValueKey('gallery_image_${image.id}'),
                           child: _GalleryImageItem(
+                            key: ValueKey('gallery_image_item_${image.id}'),
                             image: image,
                             index: index,
                             totalImages: images.length,
@@ -257,30 +261,50 @@ class _GalleryDetailScrollView extends StatelessWidget {
 }
 
 /// Individual gallery image item widget
-class _GalleryImageItem extends StatelessWidget {
+/// Optimized for performance with cached MediaQuery values
+class _GalleryImageItem extends StatefulWidget {
   final GalleryImageModel image;
   final int index;
   final int totalImages;
 
   const _GalleryImageItem({
+    super.key,
     required this.image,
     required this.index,
     required this.totalImages,
   });
 
   @override
+  State<_GalleryImageItem> createState() => _GalleryImageItemState();
+}
+
+class _GalleryImageItemState extends State<_GalleryImageItem> {
+  int? _memCacheWidth;
+  int? _memCacheHeight;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Cache MediaQuery calculations to avoid recalculation on every build
+    if (_memCacheWidth == null || _memCacheHeight == null) {
+      final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+      _memCacheWidth = (context.scale(150) * pixelRatio).round();
+      _memCacheHeight = (context.scale(150) * pixelRatio).round();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Get gallery ID from BLoC state
+        // Read BLoC state once to avoid multiple reads
         final bloc = context.read<GalleryDetailBloc>();
-        final galleryId = bloc.state.galleryId;
-        final allImages = bloc.state.images;
+        final state = bloc.state;
         context.router.push(
           GalleryImageViewerRoute(
-            galleryId: galleryId,
-            initialIndex: index,
-            images: allImages, // Pass images directly for better performance
+            galleryId: state.galleryId,
+            initialIndex: widget.index,
+            images: state.images, // Pass images directly for better performance
           ),
         );
       },
@@ -292,7 +316,7 @@ class _GalleryImageItem extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(context.scale(4)),
           child: CachedNetworkImage(
-            imageUrl: image.thumbnailUrl ?? image.imageUrl ?? '',
+            imageUrl: widget.image.thumbnailUrl ?? widget.image.imageUrl ?? '',
             fit: BoxFit.cover,
             placeholder: (context, url) => Container(
               color: Colors.grey[200],
@@ -313,8 +337,8 @@ class _GalleryImageItem extends StatelessWidget {
                 size: context.scale(24),
               ),
             ),
-            memCacheWidth: (context.scale(150) * MediaQuery.of(context).devicePixelRatio).round(),
-            memCacheHeight: (context.scale(150) * MediaQuery.of(context).devicePixelRatio).round(),
+            memCacheWidth: _memCacheWidth,
+            memCacheHeight: _memCacheHeight,
           ),
         ),
       ),

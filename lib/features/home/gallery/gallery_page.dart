@@ -97,9 +97,11 @@ class _GalleryScrollView extends StatelessWidget {
         // Load more when user scrolls near the bottom (80%)
         if (scrollInfo.metrics.pixels >=
             scrollInfo.metrics.maxScrollExtent * 0.8) {
-          final state = context.read<GalleryBloc>().state;
+          // Read BLoC once to avoid multiple reads
+          final bloc = context.read<GalleryBloc>();
+          final state = bloc.state;
           if (state.hasMore && !state.isLoadingMore) {
-            context.read<GalleryBloc>().add(const LoadMoreGalleryEvent());
+            bloc.add(const LoadMoreGalleryEvent());
           }
         }
         return false;
@@ -133,6 +135,7 @@ class _GalleryScrollView extends StatelessWidget {
                               fontSize: context.scaleFont(16),
                               color: Colors.grey[600],
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -155,6 +158,7 @@ class _GalleryScrollView extends StatelessWidget {
                         return RepaintBoundary(
                           key: ValueKey(gallery.id),
                           child: GalleryCard(
+                            key: ValueKey('gallery_card_${gallery.id}'),
                             gallery: gallery,
                             onTap: () {
                               context.router.push(

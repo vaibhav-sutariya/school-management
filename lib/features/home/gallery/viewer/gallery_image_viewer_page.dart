@@ -77,9 +77,12 @@ class _GalleryImageViewerPageState extends State<GalleryImageViewerPage> {
   }
 
   void _onPageChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    // Only update state if index actually changed to prevent unnecessary rebuilds
+    if (_currentIndex != index) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   void _toggleControls() {
@@ -129,16 +132,24 @@ class _GalleryImageViewerPageState extends State<GalleryImageViewerPage> {
               onPageChanged: _onPageChanged,
               itemBuilder: (context, index) {
                 final image = _images![index];
-                return _ImageViewItem(image: image);
+                return RepaintBoundary(
+                  key: ValueKey('image_viewer_${image.id}_$index'),
+                  child: _ImageViewItem(image: image),
+                );
               },
             ),
           ),
-          // Top bar with counter and back button
-          if (_showControls)
-            _TopBar(
-              currentIndex: _currentIndex,
-              totalImages: _images!.length,
-            ),
+          // Top bar with counter and back button - only rebuilds when showControls or currentIndex changes
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: _showControls
+                ? _TopBar(
+                    key: const ValueKey('top_bar'),
+                    currentIndex: _currentIndex,
+                    totalImages: _images!.length,
+                  )
+                : const SizedBox.shrink(key: ValueKey('empty')),
+          ),
         ],
       ),
     );
@@ -146,10 +157,31 @@ class _GalleryImageViewerPageState extends State<GalleryImageViewerPage> {
 }
 
 /// Individual image view item
-class _ImageViewItem extends StatelessWidget {
+/// Optimized for performance with cached MediaQuery values
+class _ImageViewItem extends StatefulWidget {
   final GalleryImageModel image;
 
   const _ImageViewItem({required this.image});
+
+  @override
+  State<_ImageViewItem> createState() => _ImageViewItemState();
+}
+
+class _ImageViewItemState extends State<_ImageViewItem> {
+  int? _memCacheWidth;
+  int? _memCacheHeight;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Cache MediaQuery calculations to avoid recalculation on every build
+    if (_memCacheWidth == null || _memCacheHeight == null) {
+      final mediaQuery = MediaQuery.of(context);
+      final pixelRatio = mediaQuery.devicePixelRatio;
+      _memCacheWidth = (mediaQuery.size.width * pixelRatio).round();
+      _memCacheHeight = (mediaQuery.size.height * pixelRatio).round();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +190,7 @@ class _ImageViewItem extends StatelessWidget {
         minScale: 0.5,
         maxScale: 4.0,
         child: CachedNetworkImage(
-          imageUrl: image.imageUrl ?? '',
+          imageUrl: widget.image.imageUrl ?? '',
           fit: BoxFit.contain,
           placeholder: (context, url) => Container(
             color: Colors.black,
@@ -192,8 +224,8 @@ class _ImageViewItem extends StatelessWidget {
               ),
             ),
           ),
-          memCacheWidth: (MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio).round(),
-          memCacheHeight: (MediaQuery.of(context).size.height * MediaQuery.of(context).devicePixelRatio).round(),
+          memCacheWidth: _memCacheWidth,
+          memCacheHeight: _memCacheHeight,
         ),
       ),
     );
@@ -206,6 +238,7 @@ class _TopBar extends StatelessWidget {
   final int totalImages;
 
   const _TopBar({
+    super.key,
     required this.currentIndex,
     required this.totalImages,
   });

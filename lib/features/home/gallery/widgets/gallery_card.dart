@@ -24,6 +24,8 @@ class _GalleryCardState extends State<GalleryCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
+  int? _memCacheWidth;
+  int? _memCacheHeight;
 
   @override
   void initState() {
@@ -38,6 +40,17 @@ class _GalleryCardState extends State<GalleryCard>
         curve: Curves.easeInOut,
       ),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Cache MediaQuery calculations to avoid recalculation on every build
+    if (_memCacheWidth == null || _memCacheHeight == null) {
+      final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+      _memCacheWidth = (context.scale(200) * pixelRatio).round();
+      _memCacheHeight = (context.scale(200) * pixelRatio).round();
+    }
   }
 
   @override
@@ -147,8 +160,8 @@ class _GalleryCardState extends State<GalleryCard>
               size: context.scale(40),
             ),
           ),
-          memCacheWidth: (context.scale(200) * MediaQuery.of(context).devicePixelRatio).round(),
-          memCacheHeight: (context.scale(200) * MediaQuery.of(context).devicePixelRatio).round(),
+          memCacheWidth: _memCacheWidth,
+          memCacheHeight: _memCacheHeight,
         ),
         // Gradient overlay for better text readability
         Positioned(
