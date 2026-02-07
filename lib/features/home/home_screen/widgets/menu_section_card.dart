@@ -195,6 +195,9 @@ class MenuSectionCard extends StatelessWidget {
       case 'videos':
         context.router.push(const VideosRoute());
         break;
+      case 'remarks':
+        context.router.push(const RemarksRoute());
+        break;
       // Add more navigation cases as needed
       default:
         // Handle other menu items
