@@ -6,6 +6,7 @@ import '../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/app_loader.dart';
 import '../../../core/widgets/error_state.dart';
+import '../../../cubit/theme_cubit.dart';
 import 'bloc/remark_bloc.dart';
 import 'bloc/remark_event.dart';
 import 'bloc/remark_state.dart';
@@ -62,7 +63,7 @@ class _FilterFAB extends StatelessWidget {
       builder: (context, hasActiveFilters) {
         return FloatingActionButton(
           onPressed: () => _showFilterBottomSheet(context),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: context.colors.primary,
           child: Stack(
             children: [
               const Icon(Icons.filter_list, color: Colors.white),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../core/widgets/app_primary_button.dart';
+import '../../../../cubit/theme_cubit.dart';
 import '../models/remark_model.dart';
 
 /// Production-ready filter bottom sheet widget with checkbox support
@@ -105,22 +106,29 @@ class _RemarkFilterBottomSheetState extends State<RemarkFilterBottomSheet> {
                     color: const Color(0xFF1A1A1A),
                   ),
                 ),
-                if (hasActiveFilters)
-                  TextButton(
-                    onPressed: _clearFilters,
-                    child: Text(
-                      'Clear',
-                      style: TextStyle(
-                        fontSize: context.scaleFont(14),
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.primary,
+                // Always reserve space for Clear button to prevent size changes
+                AnimatedOpacity(
+                  opacity: hasActiveFilters ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: IgnorePointer(
+                    ignoring: !hasActiveFilters,
+                    child: TextButton(
+                      onPressed: _clearFilters,
+                      child: Text(
+                        'Clear',
+                        style: TextStyle(
+                          fontSize: context.scaleFont(14),
+                          fontWeight: FontWeight.w600,
+                          color: context.colors.primary,
+                        ),
                       ),
                     ),
                   ),
+                ),
               ],
             ),
           ),
-          SizedBox(height: context.scaleHeight(24)),
+          SizedBox(height: context.scaleHeight(10)),
           // Categories section
           _FilterSection(
             title: 'Categories',
@@ -145,7 +153,7 @@ class _RemarkFilterBottomSheetState extends State<RemarkFilterBottomSheet> {
               ),
             ],
           ),
-          SizedBox(height: context.scaleHeight(24)),
+          SizedBox(height: context.scaleHeight(16)),
           // Types section
           _FilterSection(
             title: 'Type',
@@ -209,7 +217,7 @@ class _FilterSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: context.scaleHeight(12)),
+        // SizedBox(height: context.scaleHeight(12)),
         ...items.map((item) => item),
       ],
     );
@@ -237,18 +245,18 @@ class _FilterItem extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: context.scale(20),
-          vertical: context.scaleHeight(14),
+          vertical: context.scaleHeight(4),
         ),
         child: Row(
           children: [
             // Checkbox
             SizedBox(
-              width: context.scale(24),
-              height: context.scale(24),
+              width: context.scale(28),
+              height: context.scale(28),
               child: Checkbox(
                 value: isSelected,
                 onChanged: (_) => onTap(),
-                activeColor: Theme.of(context).colorScheme.primary,
+                activeColor: context.colors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(context.scale(4)),
                 ),
@@ -259,7 +267,7 @@ class _FilterItem extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                  fontSize: context.scaleFont(15),
+                  fontSize: context.scaleFont(16),
                   fontWeight: FontWeight.w500,
                   color: const Color(0xFF1A1A1A),
                 ),
