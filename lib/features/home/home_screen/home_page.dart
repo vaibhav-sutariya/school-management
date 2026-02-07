@@ -2,9 +2,9 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../../core/widgets/scroll_aware_bottom_bar_controller.dart';
-import '../../cubit/theme_cubit.dart';
+import '../../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../../core/widgets/scroll_aware_bottom_bar_controller.dart';
+import '../../../cubit/theme_cubit.dart';
 import 'cubit/home_search_cubit.dart';
 import 'widgets/home_header.dart';
 import 'widgets/home_search_bar.dart';

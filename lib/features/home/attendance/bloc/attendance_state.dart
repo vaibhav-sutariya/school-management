@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../core/widgets/attendance_calendar.dart';
+import '../../../../core/widgets/attendance_calendar.dart';
 import '../models/attendance_model.dart';
 
 /// Production-ready attendance state with proper equality

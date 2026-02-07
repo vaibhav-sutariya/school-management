@@ -13,7 +13,7 @@ import 'package:auto_route/auto_route.dart' as _i16;
 import 'package:flutter/material.dart' as _i17;
 import 'package:starter_app/core/widgets/scroll_aware_bottom_bar_controller.dart'
     as _i18;
-import 'package:starter_app/features/attendance/attendance_page.dart' as _i1;
+import 'package:starter_app/features/home/attendance/attendance_page.dart' as _i1;
 import 'package:starter_app/features/auth/screens/forgot_password/ui/forgot_password_page.dart'
     as _i4;
 import 'package:starter_app/features/auth/screens/forgot_password/ui/new_password_page.dart'
@@ -28,7 +28,7 @@ import 'package:starter_app/features/auth/screens/verification/ui/verification_p
     as _i15;
 import 'package:starter_app/features/calendar/calendar_page.dart' as _i2;
 import 'package:starter_app/features/dashboard/dashboard_page.dart' as _i3;
-import 'package:starter_app/features/home/home_page.dart' as _i5;
+import 'package:starter_app/features/home/home_screen/home_page.dart' as _i5;
 import 'package:starter_app/features/notice/notice_page.dart' as _i8;
 import 'package:starter_app/features/onboarding/onboarding_page.dart' as _i9;
 import 'package:starter_app/features/profile/profile_page.dart' as _i12;

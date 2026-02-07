@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../../core/helpers/extensions/responsive_extensions.dart';
 
 /// Production-optimized menu item widget
 /// Uses const where possible and optimized layout

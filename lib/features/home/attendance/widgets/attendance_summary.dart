@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../cubit/theme_cubit.dart';
+import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../cubit/theme_cubit.dart';
 
 /// Production-ready attendance summary widget with circular indicators
 class AttendanceSummary extends StatelessWidget {

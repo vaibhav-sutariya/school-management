@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
-import '../../../core/error/failures.dart';
+import '../../../../core/error/failures.dart';
 import '../models/attendance_model.dart';
 
 /// Attendance repository interface - ready for API integration

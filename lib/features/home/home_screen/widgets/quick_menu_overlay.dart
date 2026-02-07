@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../cubit/home_search_cubit.dart';
 import '../cubit/home_search_state.dart';
 import '../data/menu_data.dart';

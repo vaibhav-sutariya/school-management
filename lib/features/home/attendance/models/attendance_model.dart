@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../core/widgets/attendance_calendar.dart';
+import '../../../../core/widgets/attendance_calendar.dart';
 
 part 'attendance_model.freezed.dart';
 part 'attendance_model.g.dart';

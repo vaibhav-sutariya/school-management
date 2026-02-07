@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/widgets/attendance_calendar.dart';
+import '../../../../core/widgets/attendance_calendar.dart';
 import '../models/attendance_model.dart';
 import '../repositories/attendance_repository.dart';
 import 'attendance_event.dart';

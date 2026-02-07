@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../core/widgets/attendance_calendar.dart';
+import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../core/widgets/attendance_calendar.dart';
 
 /// Modern, user-friendly widget to display selected date's attendance status
 /// Features gradient backgrounds, smooth animations, and intuitive design

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../../core/helpers/extensions/responsive_extensions.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});

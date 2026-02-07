@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:starter_app/cubit/theme_cubit.dart';
 
-import '../../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../../core/routes/app_router.gr.dart';
+import '../../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../../core/routes/app_router.gr.dart';
 import '../data/category_theme_config.dart';
 import '../data/menu_data.dart';
 import 'menu_item.dart';

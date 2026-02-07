@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../cubit/theme_cubit.dart';
+import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../cubit/theme_cubit.dart';
 
 /// Production-ready feedback card widget
 class AttendanceFeedbackCard extends StatelessWidget {
