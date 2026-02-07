@@ -89,7 +89,7 @@ class _OptimizedMenuList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: context.scale(16)),
+      padding: EdgeInsets.symmetric(horizontal: context.scale(14)),
       // WhatsApp-like smooth scrolling physics
       physics: const SmoothScrollPhysics(),
       // Optimized cache extent - balances memory and smoothness
