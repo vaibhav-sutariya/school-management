@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../models/video_item_model.dart';
 import '../repositories/video_repository.dart';
+import 'widgets/custom_video_player.dart';
 
 /// Production-ready full-screen video viewer with swiper
 /// Optimized for performance with proper state management
@@ -31,6 +32,7 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
   bool _showControls = true;
   List<VideoItemModel>? _videos;
   bool _isLoading = false;
+  final Map<int, bool> _playingVideos = {}; // Track which videos are playing
 
   @override
   void initState() {
@@ -41,6 +43,8 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
     // Use provided videos or load them
     if (widget.videos != null) {
       _videos = widget.videos;
+      // Auto-play the initial video
+      _playingVideos[widget.initialIndex] = true;
     } else {
       _loadVideos();
     }
@@ -61,6 +65,8 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
         setState(() {
           _videos = videos;
           _isLoading = false;
+          // Auto-play the initial video after loading
+          _playingVideos[widget.initialIndex] = true;
         });
       }
     } catch (e) {
@@ -80,7 +86,11 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
     // Only update state if index actually changed to prevent unnecessary rebuilds
     if (_currentIndex != index) {
       setState(() {
+        // Pause previous video
+        _playingVideos[_currentIndex] = false;
         _currentIndex = index;
+        // Auto-play current video when swiping
+        _playingVideos[index] = true;
       });
     }
   }
@@ -124,20 +134,24 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
       body: Stack(
         children: [
           // Video viewer with PageView
-          GestureDetector(
-            onTap: _toggleControls,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: _videos!.length,
-              onPageChanged: _onPageChanged,
-              itemBuilder: (context, index) {
-                final video = _videos![index];
-                return RepaintBoundary(
-                  key: ValueKey('video_viewer_${video.id}_$index'),
-                  child: _VideoViewItem(video: video),
-                );
-              },
-            ),
+          PageView.builder(
+            controller: _pageController,
+            itemCount: _videos!.length,
+            onPageChanged: _onPageChanged,
+            itemBuilder: (context, index) {
+              final video = _videos![index];
+              final isCurrentVideo = index == _currentIndex;
+              final shouldAutoPlay = isCurrentVideo && (_playingVideos[index] ?? false);
+              
+              return RepaintBoundary(
+                key: ValueKey('video_viewer_${video.id}_$index'),
+                child: _VideoViewItem(
+                  video: video,
+                  autoPlay: shouldAutoPlay,
+                  isActive: isCurrentVideo,
+                ),
+              );
+            },
           ),
           // Top bar with counter and back button - only rebuilds when showControls or currentIndex changes
           AnimatedSwitcher(
@@ -160,39 +174,96 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
 /// Optimized for performance with cached MediaQuery values
 class _VideoViewItem extends StatefulWidget {
   final VideoItemModel video;
+  final bool autoPlay;
+  final bool isActive;
 
-  const _VideoViewItem({required this.video});
+  const _VideoViewItem({
+    required this.video,
+    this.autoPlay = false,
+    this.isActive = false,
+  });
 
   @override
   State<_VideoViewItem> createState() => _VideoViewItemState();
 }
 
 class _VideoViewItemState extends State<_VideoViewItem> {
-  int? _memCacheWidth;
-  int? _memCacheHeight;
+  bool _isPlaying = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Cache MediaQuery calculations to avoid recalculation on every build
-    if (_memCacheWidth == null || _memCacheHeight == null) {
-      final mediaQuery = MediaQuery.of(context);
-      final pixelRatio = mediaQuery.devicePixelRatio;
-      _memCacheWidth = (mediaQuery.size.width * pixelRatio).round();
-      _memCacheHeight = (mediaQuery.size.height * pixelRatio).round();
+  void initState() {
+    super.initState();
+    _isPlaying = widget.autoPlay;
+  }
+
+  @override
+  void didUpdateWidget(_VideoViewItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update playing state when autoPlay changes
+    if (widget.autoPlay != oldWidget.autoPlay) {
+      _isPlaying = widget.autoPlay;
     }
+  }
+
+  void _togglePlay() {
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    // Show video player if playing, otherwise show thumbnail with play button
+    if (_isPlaying && widget.video.videoUrl != null && widget.video.videoUrl!.isNotEmpty) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          // Video player
+          CustomVideoPlayer(
+            key: ValueKey('video_player_${widget.video.id}'),
+            videoUrl: widget.video.videoUrl!,
+            autoPlay: true,
+            looping: false,
+            showControls: true,
+          ),
+          // Duration badge overlay
+          if (widget.video.duration != null)
+            Positioned(
+              bottom: context.scaleHeight(20),
+              right: context.scale(20),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.scale(12),
+                  vertical: context.scaleHeight(6),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(context.scale(8)),
+                ),
+                child: Text(
+                  widget.video.duration ?? '',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: context.scaleFont(14),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      );
+    }
+
+    // Show thumbnail with play button
+    return GestureDetector(
+      onTap: _togglePlay,
       child: Stack(
         fit: StackFit.expand,
         children: [
           // Video thumbnail
           CachedNetworkImage(
             imageUrl: widget.video.thumbnailUrl ?? '',
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
             placeholder: (context, url) => Container(
               color: Colors.black,
               child: Center(
@@ -225,33 +296,19 @@ class _VideoViewItemState extends State<_VideoViewItem> {
                 ),
               ),
             ),
-            memCacheWidth: _memCacheWidth,
-            memCacheHeight: _memCacheHeight,
           ),
           // Play button overlay
           Center(
-            child: GestureDetector(
-              onTap: () {
-                // TODO: Implement video playback
-                // In production, this would open a video player
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Playing: ${widget.video.videoUrl}'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.all(context.scale(20)),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.6),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                  size: context.scale(64),
-                ),
+            child: Container(
+              padding: EdgeInsets.all(context.scale(20)),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.6),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+                size: context.scale(64),
               ),
             ),
           ),
