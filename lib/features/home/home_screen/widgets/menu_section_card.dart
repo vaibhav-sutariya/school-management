@@ -14,11 +14,7 @@ class MenuSectionCard extends StatelessWidget {
   final String title;
   final List<MenuItemData> items;
 
-  const MenuSectionCard({
-    super.key,
-    required this.title,
-    required this.items,
-  });
+  const MenuSectionCard({super.key, required this.title, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +183,7 @@ class MenuSectionCard extends StatelessWidget {
         context.router.push(const AttendanceRoute());
         break;
       case 'homework':
-        // context.router.push(const HomeworkRoute());
+        context.router.push(const HomeworkRoute());
         break;
       case 'gallery':
         context.router.push(const GalleryRoute());
