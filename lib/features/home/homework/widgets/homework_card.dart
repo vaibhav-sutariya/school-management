@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../cubit/theme_cubit.dart';
 import '../models/homework_model.dart';
+import '../../../../core/widgets/app_capsule_button.dart';
 
 class HomeworkCard extends StatelessWidget {
   final HomeworkEntity homework;
@@ -96,41 +97,13 @@ class HomeworkCard extends StatelessWidget {
             if (homework.status == HomeworkStatus.pending)
               Align(
                 alignment: Alignment.centerRight,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.scale(24),
-                    vertical: context.scaleHeight(12),
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.colors.primary,
-                    borderRadius: BorderRadius.circular(context.scale(30)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: context.colors.primary.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Submit',
-                        style: TextStyle(
-                          fontSize: context.scaleFont(16),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(width: context.scale(4)),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        color: Colors.white,
-                        size: context.scale(18),
-                      ),
-                    ],
-                  ),
+                child: AppCapsuleButton(
+                  text: 'Submit',
+                  icon: Icons.arrow_forward_rounded,
+                  isIconRight: true,
+                  fontSize: 16,
+                  iconGap: 4,
+                  // onTap: () {}, // Add functionality later
                 ),
               ),
           ],
