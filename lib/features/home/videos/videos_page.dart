@@ -151,7 +151,8 @@ class _VideosScrollView extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: context.scaleHeight(16),
                       crossAxisSpacing: context.scale(16),
-                      childAspectRatio: 0.72, // Slightly adjusted to prevent overflow
+                      childAspectRatio:
+                          0.72, // Slightly adjusted to prevent overflow
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
@@ -188,9 +189,7 @@ class _VideosScrollView extends StatelessWidget {
                     child: RepaintBoundary(
                       child: Padding(
                         padding: EdgeInsets.all(context.scaleHeight(16)),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        child: const AppLoader(),
                       ),
                     ),
                   );
@@ -203,9 +202,7 @@ class _VideosScrollView extends StatelessWidget {
               selector: (state) => !state.hasMore && state.videoList.isNotEmpty,
               builder: (context, showEndIndicator) {
                 if (showEndIndicator) {
-                  return const SliverToBoxAdapter(
-                    child: EndOfListIndicator(),
-                  );
+                  return const SliverToBoxAdapter(child: EndOfListIndicator());
                 }
                 return const SliverToBoxAdapter(child: SizedBox.shrink());
               },

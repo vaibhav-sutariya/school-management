@@ -5,6 +5,7 @@ import '../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../core/widgets/reusable_calendar_strip.dart';
 import '../../../core/widgets/app_app_bar.dart'; // Assuming this exists based on file list
 import '../../../core/widgets/end_of_list_indicator.dart';
+import '../../../core/widgets/app_loader.dart';
 import 'bloc/homework_bloc.dart';
 import 'widgets/homework_card.dart';
 
@@ -57,7 +58,7 @@ class HomeworkPage extends StatelessWidget {
                 // So let's stick to the pattern but maybe just use the state.
                 builder: (context, state) {
                   if (state is HomeworkLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const AppLoader();
                   } else if (state is HomeworkLoadedState) {
                     if (state.homeworkList.isEmpty) {
                       return Center(

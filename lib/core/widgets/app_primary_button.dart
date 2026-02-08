@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_loader.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -63,9 +64,11 @@ class AppPrimaryButton extends StatelessWidget {
             ? const SizedBox(
                 width: 24,
                 height: 24,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
+                child: const AppLoader(
+                  size: 24,
                   strokeWidth: 2.5,
+                  color: Colors.white,
+                  center: true,
                 ),
               )
             : child ??

@@ -6,6 +6,7 @@ class AppLoader extends StatelessWidget {
   final Color? color;
   final String? message;
   final bool center;
+  final double strokeWidth;
 
   const AppLoader({
     super.key,
@@ -13,18 +14,20 @@ class AppLoader extends StatelessWidget {
     this.color,
     this.message,
     this.center = true,
+    this.strokeWidth = 3,
   });
 
   @override
   Widget build(BuildContext context) {
     final loader = Column(
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: size,
           height: size,
           child: CircularProgressIndicator(
-            strokeWidth: 3,
+            strokeWidth: strokeWidth,
             valueColor: AlwaysStoppedAnimation(
               color ?? Theme.of(context).primaryColor,
             ),
@@ -41,6 +44,9 @@ class AppLoader extends StatelessWidget {
       ],
     );
 
-    return center ? Center(child: loader) : loader;
+    if (center) {
+      return Center(child: loader);
+    }
+    return loader;
   }
 }

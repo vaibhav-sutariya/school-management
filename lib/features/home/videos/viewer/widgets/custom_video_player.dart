@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../../core/helpers/extensions/responsive_extensions.dart';
-
+import '../../../../../core/widgets/app_loader.dart';
 
 /// Production-ready custom video player widget
 /// Optimized for performance with proper lifecycle management
@@ -47,7 +47,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     if (oldWidget.videoUrl != widget.videoUrl) {
       _disposePlayer();
       _initializePlayer();
-    } else if (oldWidget.autoPlay != widget.autoPlay && _chewieController != null) {
+    } else if (oldWidget.autoPlay != widget.autoPlay &&
+        _chewieController != null) {
       // Update autoPlay state
       if (widget.autoPlay) {
         _chewieController!.play();
@@ -93,7 +94,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     Uri? videoUri;
     try {
       videoUri = Uri.parse(widget.videoUrl);
-      if (!videoUri.hasScheme || (!videoUri.isScheme('http') && !videoUri.isScheme('https'))) {
+      if (!videoUri.hasScheme ||
+          (!videoUri.isScheme('http') && !videoUri.isScheme('https'))) {
         throw FormatException('Invalid video URL scheme');
       }
     } catch (e) {
@@ -115,7 +117,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       _videoPlayerController = VideoPlayerController.networkUrl(
         videoUri,
         httpHeaders: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         },
       );
 
@@ -132,13 +135,15 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
       if (mounted && _videoPlayerController!.value.isInitialized) {
         final aspectRatio = _videoPlayerController!.value.aspectRatio;
-        
+
         _chewieController = ChewieController(
           videoPlayerController: _videoPlayerController!,
           autoPlay: widget.autoPlay,
           looping: widget.looping,
           showControls: widget.showControls,
-          aspectRatio: aspectRatio.isFinite && aspectRatio > 0 ? aspectRatio : 16 / 9,
+          aspectRatio: aspectRatio.isFinite && aspectRatio > 0
+              ? aspectRatio
+              : 16 / 9,
           allowFullScreen: true,
           allowMuting: true,
           allowPlaybackSpeedChanging: true,
@@ -150,11 +155,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
           ),
           placeholder: Container(
             color: Colors.black,
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
+            child: const Center(child: AppLoader(color: Colors.white)),
           ),
           errorBuilder: (context, errorMessage) {
             return _buildErrorWidget(errorMessage);
@@ -177,13 +178,14 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
       if (mounted) {
         String errorMsg = 'Video player initialization failed';
         if (e.code == 'channel-error') {
-          errorMsg = 'Video player plugin error. Please:\n1. Stop the app completely\n2. Run: flutter clean\n3. Run: flutter pub get\n4. Rebuild and restart the app';
+          errorMsg =
+              'Video player plugin error. Please:\n1. Stop the app completely\n2. Run: flutter clean\n3. Run: flutter pub get\n4. Rebuild and restart the app';
         } else if (e.message != null && e.message!.isNotEmpty) {
           errorMsg = e.message!;
         } else {
           errorMsg = 'Platform error: ${e.code}';
         }
-        
+
         setState(() {
           _hasError = true;
           _isInitialized = false;
@@ -215,7 +217,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
         if (mounted) {
           setState(() {
             _hasError = true;
-            _errorMessage = _videoPlayerController!.value.errorDescription ?? 'Unknown error';
+            _errorMessage =
+                _videoPlayerController!.value.errorDescription ??
+                'Unknown error';
           });
         }
       }
@@ -353,9 +357,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
+              const AppLoader(color: Colors.white),
               SizedBox(height: context.scaleHeight(16)),
               Text(
                 'Loading video...',

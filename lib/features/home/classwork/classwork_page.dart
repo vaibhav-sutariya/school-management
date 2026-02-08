@@ -5,6 +5,7 @@ import '../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../core/widgets/reusable_calendar_strip.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/end_of_list_indicator.dart';
+import '../../../core/widgets/app_loader.dart';
 import 'bloc/classwork_bloc.dart';
 import 'widgets/classwork_card.dart';
 
@@ -48,7 +49,7 @@ class ClassworkPage extends StatelessWidget {
                     selector: (state) => state,
                     builder: (context, state) {
                       if (state is ClassworkLoading) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const AppLoader();
                       } else if (state is ClassworkLoadedState) {
                         if (state.classworkList.isEmpty) {
                           return Center(

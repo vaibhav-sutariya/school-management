@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/app_loader.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../models/video_item_model.dart';
@@ -39,7 +40,7 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
     super.initState();
     _currentIndex = widget.initialIndex;
     _pageController = PageController(initialPage: widget.initialIndex);
-    
+
     // Use provided videos or load them
     if (widget.videos != null) {
       _videos = widget.videos;
@@ -106,11 +107,7 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
     if (_isLoading || _videos == null) {
       return Scaffold(
         backgroundColor: Colors.black,
-        body: const Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-        ),
+        body: const AppLoader(color: Colors.white, center: true),
       );
     }
 
@@ -141,8 +138,9 @@ class _VideoViewerPageState extends State<VideoViewerPage> {
             itemBuilder: (context, index) {
               final video = _videos![index];
               final isCurrentVideo = index == _currentIndex;
-              final shouldAutoPlay = isCurrentVideo && (_playingVideos[index] ?? false);
-              
+              final shouldAutoPlay =
+                  isCurrentVideo && (_playingVideos[index] ?? false);
+
               return RepaintBoundary(
                 key: ValueKey('video_viewer_${video.id}_$index'),
                 child: _VideoViewItem(
@@ -214,7 +212,9 @@ class _VideoViewItemState extends State<_VideoViewItem> {
   @override
   Widget build(BuildContext context) {
     // Show video player if playing, otherwise show thumbnail with play button
-    if (_isPlaying && widget.video.videoUrl != null && widget.video.videoUrl!.isNotEmpty) {
+    if (_isPlaying &&
+        widget.video.videoUrl != null &&
+        widget.video.videoUrl!.isNotEmpty) {
       return Stack(
         fit: StackFit.expand,
         children: [
@@ -267,10 +267,7 @@ class _VideoViewItemState extends State<_VideoViewItem> {
             placeholder: (context, url) => Container(
               color: Colors.black,
               child: Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
+                child: AppLoader(strokeWidth: 2.5, color: Colors.white),
               ),
             ),
             errorWidget: (context, url, error) => Container(
@@ -365,10 +362,7 @@ class _TopBar extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.black.withValues(alpha: 0.7),
-              Colors.transparent,
-            ],
+            colors: [Colors.black.withValues(alpha: 0.7), Colors.transparent],
           ),
         ),
         child: Row(

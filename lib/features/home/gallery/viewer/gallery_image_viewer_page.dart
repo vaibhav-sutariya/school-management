@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../core/widgets/app_loader.dart';
 import '../models/gallery_image_model.dart';
 import '../repositories/gallery_repository.dart';
 
@@ -37,7 +38,7 @@ class _GalleryImageViewerPageState extends State<GalleryImageViewerPage> {
     super.initState();
     _currentIndex = widget.initialIndex;
     _pageController = PageController(initialPage: widget.initialIndex);
-    
+
     // Use provided images or load them
     if (widget.images != null) {
       _images = widget.images;
@@ -96,11 +97,7 @@ class _GalleryImageViewerPageState extends State<GalleryImageViewerPage> {
     if (_isLoading || _images == null) {
       return Scaffold(
         backgroundColor: Colors.black,
-        body: const Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          ),
-        ),
+        body: const AppLoader(color: Colors.white, center: true),
       );
     }
 
@@ -194,12 +191,7 @@ class _ImageViewItemState extends State<_ImageViewItem> {
           fit: BoxFit.contain,
           placeholder: (context, url) => Container(
             color: Colors.black,
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
+            child: const Center(child: AppLoader(color: Colors.white)),
           ),
           errorWidget: (context, url, error) => Container(
             color: Colors.black,
@@ -255,10 +247,7 @@ class _TopBar extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.black.withValues(alpha: 0.7),
-              Colors.transparent,
-            ],
+            colors: [Colors.black.withValues(alpha: 0.7), Colors.transparent],
           ),
         ),
         child: Row(

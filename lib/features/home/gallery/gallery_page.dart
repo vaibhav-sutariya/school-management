@@ -151,7 +151,8 @@ class _GalleryScrollView extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: context.scaleHeight(16),
                       crossAxisSpacing: context.scale(16),
-                      childAspectRatio: 0.72, // Slightly adjusted to prevent overflow
+                      childAspectRatio:
+                          0.72, // Slightly adjusted to prevent overflow
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
@@ -188,9 +189,7 @@ class _GalleryScrollView extends StatelessWidget {
                     child: RepaintBoundary(
                       child: Padding(
                         padding: EdgeInsets.all(context.scaleHeight(16)),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        child: const AppLoader(),
                       ),
                     ),
                   );
@@ -200,12 +199,11 @@ class _GalleryScrollView extends StatelessWidget {
             ),
             // End of list indicator - only rebuilds when hasMore changes
             BlocSelector<GalleryBloc, GalleryState, bool>(
-              selector: (state) => !state.hasMore && state.galleryList.isNotEmpty,
+              selector: (state) =>
+                  !state.hasMore && state.galleryList.isNotEmpty,
               builder: (context, showEndIndicator) {
                 if (showEndIndicator) {
-                  return const SliverToBoxAdapter(
-                    child: EndOfListIndicator(),
-                  );
+                  return const SliverToBoxAdapter(child: EndOfListIndicator());
                 }
                 return const SliverToBoxAdapter(child: SizedBox.shrink());
               },

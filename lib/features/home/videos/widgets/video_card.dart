@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/helpers/extensions/responsive_extensions.dart';
+import '../../../../core/widgets/app_loader.dart';
 import '../models/video_model.dart';
 
 /// Production-ready video card widget with modern design
@@ -10,11 +11,7 @@ class VideoCard extends StatefulWidget {
   final VideoModel video;
   final VoidCallback? onTap;
 
-  const VideoCard({
-    super.key,
-    required this.video,
-    this.onTap,
-  });
+  const VideoCard({super.key, required this.video, this.onTap});
 
   @override
   State<VideoCard> createState() => _VideoCardState();
@@ -35,10 +32,7 @@ class _VideoCardState extends State<VideoCard>
       duration: const Duration(milliseconds: 150),
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
 
@@ -101,9 +95,7 @@ class _VideoCardState extends State<VideoCard>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Thumbnail with play icon overlay
-                  Flexible(
-                    child: _buildThumbnail(context),
-                  ),
+                  Flexible(child: _buildThumbnail(context)),
                   // Content section
                   _buildContent(context),
                 ],
@@ -128,19 +120,11 @@ class _VideoCardState extends State<VideoCard>
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Colors.grey[200]!,
-                  Colors.grey[300]!,
-                ],
+                colors: [Colors.grey[200]!, Colors.grey[300]!],
               ),
             ),
             child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Colors.grey[500]!,
-                ),
-              ),
+              child: AppLoader(strokeWidth: 2.5, color: Colors.grey[500]),
             ),
           ),
           errorWidget: (context, url, error) => Container(
@@ -148,10 +132,7 @@ class _VideoCardState extends State<VideoCard>
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Colors.grey[200]!,
-                  Colors.grey[300]!,
-                ],
+                colors: [Colors.grey[200]!, Colors.grey[300]!],
               ),
             ),
             child: Icon(

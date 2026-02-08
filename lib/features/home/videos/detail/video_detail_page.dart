@@ -22,17 +22,14 @@ import 'repositories/video_detail_repository.dart';
 class VideoDetailPage extends StatelessWidget {
   final VideoModel video;
 
-  const VideoDetailPage({
-    super.key,
-    required this.video,
-  });
+  const VideoDetailPage({super.key, required this.video});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VideoDetailBloc(
-        repository: VideoDetailRepository(),
-      )..add(LoadVideoItemsEvent(videoAlbumId: video.id ?? '')),
+      create: (context) =>
+          VideoDetailBloc(repository: VideoDetailRepository())
+            ..add(LoadVideoItemsEvent(videoAlbumId: video.id ?? '')),
       child: _VideoDetailPageContent(video: video),
     );
   }
@@ -77,10 +74,13 @@ class _VideoDetailBody extends StatelessWidget {
           return ErrorState(
             message: errorMessage,
             onRetry: () {
-              final videoAlbumId = context.read<VideoDetailBloc>().state.videoAlbumId;
+              final videoAlbumId = context
+                  .read<VideoDetailBloc>()
+                  .state
+                  .videoAlbumId;
               context.read<VideoDetailBloc>().add(
-                    RefreshVideoItemsEvent(videoAlbumId: videoAlbumId),
-                  );
+                RefreshVideoItemsEvent(videoAlbumId: videoAlbumId),
+              );
             },
           );
         }
@@ -124,10 +124,13 @@ class _VideoDetailScrollView extends StatelessWidget {
       },
       child: RefreshIndicator(
         onRefresh: () async {
-          final videoAlbumId = context.read<VideoDetailBloc>().state.videoAlbumId;
+          final videoAlbumId = context
+              .read<VideoDetailBloc>()
+              .state
+              .videoAlbumId;
           context.read<VideoDetailBloc>().add(
-                RefreshVideoItemsEvent(videoAlbumId: videoAlbumId),
-              );
+            RefreshVideoItemsEvent(videoAlbumId: videoAlbumId),
+          );
           // Wait for the event to complete
           await Future.delayed(const Duration(milliseconds: 600));
         },
@@ -135,7 +138,11 @@ class _VideoDetailScrollView extends StatelessWidget {
           cacheExtent: 500.0,
           slivers: [
             // Video grid - only rebuilds when videos change
-            BlocSelector<VideoDetailBloc, VideoDetailState, List<VideoItemModel>>(
+            BlocSelector<
+              VideoDetailBloc,
+              VideoDetailState,
+              List<VideoItemModel>
+            >(
               selector: (state) => state.videos,
               builder: (context, videos) {
                 if (videos.isEmpty) {
@@ -205,9 +212,7 @@ class _VideoDetailScrollView extends StatelessWidget {
                     child: RepaintBoundary(
                       child: Padding(
                         padding: EdgeInsets.all(context.scaleHeight(16)),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        child: const AppLoader(),
                       ),
                     ),
                   );
@@ -220,9 +225,7 @@ class _VideoDetailScrollView extends StatelessWidget {
               selector: (state) => !state.hasMore && state.videos.isNotEmpty,
               builder: (context, showEndIndicator) {
                 if (showEndIndicator) {
-                  return const SliverToBoxAdapter(
-                    child: EndOfListIndicator(),
-                  );
+                  return const SliverToBoxAdapter(child: EndOfListIndicator());
                 }
                 return const SliverToBoxAdapter(child: SizedBox.shrink());
               },
@@ -302,14 +305,10 @@ class _VideoItemState extends State<_VideoItem> {
                 placeholder: (context, url) => Container(
                   color: Colors.grey[200],
                   child: Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.0,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.grey[400]!,
-                      ),
-                    ),
+                    child: AppLoader(strokeWidth: 2.0, color: Colors.grey[400]),
                   ),
                 ),
+
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[200],
                   child: Icon(

@@ -23,17 +23,14 @@ import 'repositories/gallery_detail_repository.dart';
 class GalleryDetailPage extends StatelessWidget {
   final GalleryModel gallery;
 
-  const GalleryDetailPage({
-    super.key,
-    required this.gallery,
-  });
+  const GalleryDetailPage({super.key, required this.gallery});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GalleryDetailBloc(
-        repository: GalleryDetailRepository(),
-      )..add(LoadGalleryImagesEvent(galleryId: gallery.id ?? '')),
+      create: (context) =>
+          GalleryDetailBloc(repository: GalleryDetailRepository())
+            ..add(LoadGalleryImagesEvent(galleryId: gallery.id ?? '')),
       child: _GalleryDetailPageContent(gallery: gallery),
     );
   }
@@ -78,10 +75,13 @@ class _GalleryDetailBody extends StatelessWidget {
           return ErrorState(
             message: errorMessage,
             onRetry: () {
-              final galleryId = context.read<GalleryDetailBloc>().state.galleryId;
+              final galleryId = context
+                  .read<GalleryDetailBloc>()
+                  .state
+                  .galleryId;
               context.read<GalleryDetailBloc>().add(
-                    RefreshGalleryImagesEvent(galleryId: galleryId),
-                  );
+                RefreshGalleryImagesEvent(galleryId: galleryId),
+              );
             },
           );
         }
@@ -127,8 +127,8 @@ class _GalleryDetailScrollView extends StatelessWidget {
         onRefresh: () async {
           final galleryId = context.read<GalleryDetailBloc>().state.galleryId;
           context.read<GalleryDetailBloc>().add(
-                RefreshGalleryImagesEvent(galleryId: galleryId),
-              );
+            RefreshGalleryImagesEvent(galleryId: galleryId),
+          );
           // Wait for the event to complete
           await Future.delayed(const Duration(milliseconds: 600));
         },
@@ -136,7 +136,11 @@ class _GalleryDetailScrollView extends StatelessWidget {
           cacheExtent: 500.0,
           slivers: [
             // Gallery grid - only rebuilds when images change
-            BlocSelector<GalleryDetailBloc, GalleryDetailState, List<GalleryImageModel>>(
+            BlocSelector<
+              GalleryDetailBloc,
+              GalleryDetailState,
+              List<GalleryImageModel>
+            >(
               selector: (state) => state.images,
               builder: (context, images) {
                 if (images.isEmpty) {
@@ -206,9 +210,7 @@ class _GalleryDetailScrollView extends StatelessWidget {
                     child: RepaintBoundary(
                       child: Padding(
                         padding: EdgeInsets.all(context.scaleHeight(16)),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        child: const AppLoader(),
                       ),
                     ),
                   );
@@ -221,9 +223,7 @@ class _GalleryDetailScrollView extends StatelessWidget {
               selector: (state) => !state.hasMore && state.images.isNotEmpty,
               builder: (context, showEndIndicator) {
                 if (showEndIndicator) {
-                  return const SliverToBoxAdapter(
-                    child: EndOfListIndicator(),
-                  );
+                  return const SliverToBoxAdapter(child: EndOfListIndicator());
                 }
                 return const SliverToBoxAdapter(child: SizedBox.shrink());
               },
@@ -299,14 +299,7 @@ class _GalleryImageItemState extends State<_GalleryImageItem> {
             fit: BoxFit.cover,
             placeholder: (context, url) => Container(
               color: Colors.grey[200],
-              child: Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.grey[400]!,
-                  ),
-                ),
-              ),
+              child: AppLoader(strokeWidth: 2.0, color: Colors.grey[400]),
             ),
             errorWidget: (context, url, error) => Container(
               color: Colors.grey[200],

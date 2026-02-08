@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import '../widgets/app_loader.dart';
 
 /// Utility class for showing dialogs and confirmation popups throughout the app.
 class ShowDialogs {
@@ -63,7 +64,7 @@ class ShowDialogs {
         child: AlertDialog(
           content: Row(
             children: [
-              const CircularProgressIndicator(),
+              const AppLoader(center: false, size: 24, strokeWidth: 2.5),
               const SizedBox(width: 20),
               Expanded(child: Text(message ?? 'Please wait...')),
             ],
