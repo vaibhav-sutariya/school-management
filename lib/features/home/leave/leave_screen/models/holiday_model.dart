@@ -1,76 +1,77 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'holiday_model.freezed.dart';
-part 'holiday_model.g.dart';
+import 'package:equatable/equatable.dart';
 
 /// Holiday type enum
-enum HolidayType {
-  @JsonValue('national')
-  national,
-  @JsonValue('festival')
-  festival,
-  @JsonValue('school')
-  school,
-}
+enum HolidayType { national, festival, school }
 
 /// Holiday model - ready for API integration
-@freezed
-abstract class HolidayModel with _$HolidayModel {
-  const factory HolidayModel({
-    @JsonKey(name: 'id') required String id,
-    @JsonKey(name: 'name') required String name,
-    @JsonKey(name: 'date') required DateTime date,
-    @JsonKey(name: 'type') required HolidayType type,
-    @JsonKey(name: 'description') String? description,
-  }) = _HolidayModel;
+class HolidayModel extends Equatable {
+  final String id;
+  final String name;
+  final DateTime date;
+  final HolidayType type;
+  final String? description;
 
-  factory HolidayModel.fromJson(Map<String, dynamic> json) =>
-      _$HolidayModelFromJson(json);
+  const HolidayModel({
+    required this.id,
+    required this.name,
+    required this.date,
+    required this.type,
+    this.description,
+  });
+
+  @override
+  List<Object?> get props => [id, name, date, type, description];
 
   /// Static mock data for development
   static List<HolidayModel> getMockData() {
+    final now = DateTime.now();
     return [
+      // Current month holidays
       HolidayModel(
         id: '1',
+        name: 'School Event',
+        date: DateTime(now.year, now.month, 15),
+        type: HolidayType.school,
+        description: 'Annual Day Celebration',
+      ),
+
+      // Previous month holidays
+      HolidayModel(
+        id: '2',
         name: 'Republic Day',
-        date: DateTime(2024, 1, 26),
+        date: DateTime(now.year, now.month - 1, 26),
         type: HolidayType.national,
         description: 'National Holiday',
       ),
+
+      // Next month holidays
       HolidayModel(
-        id: '2',
+        id: '3',
         name: 'Holi',
-        date: DateTime(2024, 3, 25),
+        date: DateTime(now.year, now.month + 1, 25),
         type: HolidayType.festival,
         description: 'Festival of Colors',
       ),
       HolidayModel(
-        id: '3',
+        id: '4',
         name: 'Summer Break',
-        date: DateTime(2024, 5, 15),
+        date: DateTime(now.year, now.month + 2, 15),
         type: HolidayType.school,
         description: 'Summer vacation starts',
       ),
       HolidayModel(
-        id: '4',
+        id: '5',
         name: 'Independence Day',
-        date: DateTime(2024, 8, 15),
+        date: DateTime(now.year, now.month + 5, 15),
         type: HolidayType.national,
         description: 'National Holiday',
       ),
       HolidayModel(
-        id: '5',
+        id: '6',
         name: 'Diwali',
-        date: DateTime(2024, 11, 1),
+        date: DateTime(now.year, now.month + 8, 1),
         type: HolidayType.festival,
         description: 'Festival of Lights',
-      ),
-      HolidayModel(
-        id: '6',
-        name: 'Christmas',
-        date: DateTime(2024, 12, 25),
-        type: HolidayType.festival,
-        description: 'Christmas Day',
       ),
     ];
   }

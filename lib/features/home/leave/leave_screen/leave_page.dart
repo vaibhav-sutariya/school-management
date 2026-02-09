@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_tab_bar.dart';
+import '../../../../core/widgets/month_calendar.dart';
 import '../../../../cubit/theme_cubit.dart';
 import 'bloc/leave_bloc.dart';
 import 'widgets/holiday_list_tab.dart';
@@ -13,6 +14,7 @@ import 'widgets/view_tab.dart';
 /// Features:
 /// - VIEW tab: Leave applications and balance
 /// - HOLIDAY LIST tab: School holiday calendar
+/// - Month-wise filtering with calendar widget
 /// - High performance with minimal rebuilds
 /// - Production-ready code
 @RoutePage()
@@ -22,7 +24,7 @@ class LeavePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LeaveBloc(),
+      create: (context) => LeaveBloc()..add(LoadLeaveData()),
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F5F5),
         appBar: const AppAppBar(title: 'My Leave'),
@@ -30,7 +32,10 @@ class LeavePage extends StatelessWidget {
           children: [
             // Tab Bar - only rebuilds when selected index changes
             BlocSelector<LeaveBloc, LeaveState, int>(
-              selector: (state) => state.selectedTabIndex,
+              selector: (state) {
+                if (state is LeaveLoadedState) return state.selectedTabIndex;
+                return 0; // Default to first tab
+              },
               builder: (context, selectedIndex) {
                 return AppTabBar(
                   tabs: const ['VIEW', 'HOLIDAY LIST'],
@@ -41,10 +46,33 @@ class LeavePage extends StatelessWidget {
                 );
               },
             ),
+
+            // Month Calendar - only rebuilds when selected month changes
+            BlocSelector<LeaveBloc, LeaveState, DateTime?>(
+              selector: (state) {
+                if (state is LeaveLoadedState) return state.selectedMonth;
+                return null;
+              },
+              builder: (context, selectedMonth) {
+                if (selectedMonth == null) {
+                  return const SizedBox.shrink();
+                }
+                return MonthCalendar(
+                  selectedMonth: selectedMonth,
+                  onMonthChanged: (month) {
+                    context.read<LeaveBloc>().add(MonthChanged(month));
+                  },
+                );
+              },
+            ),
+
             // Tab Content - IndexedStack keeps both tabs alive
             Expanded(
               child: BlocSelector<LeaveBloc, LeaveState, int>(
-                selector: (state) => state.selectedTabIndex,
+                selector: (state) {
+                  if (state is LeaveLoadedState) return state.selectedTabIndex;
+                  return 0; // Default to first tab
+                },
                 builder: (context, selectedIndex) {
                   return IndexedStack(
                     index: selectedIndex,

@@ -1,37 +1,57 @@
 part of 'leave_bloc.dart';
 
-/// State for Leave feature
-class LeaveState {
-  /// Currently selected tab index (0 = VIEW, 1 = HOLIDAY LIST)
+abstract class LeaveState extends Equatable {
+  const LeaveState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class LeaveInitial extends LeaveState {}
+
+class LeaveLoading extends LeaveState {}
+
+class LeaveLoadedState extends LeaveState {
+  final List<LeaveModel> leaveList;
+  final List<HolidayModel> holidayList;
   final int selectedTabIndex;
+  final DateTime selectedMonth;
 
-  /// Loading state
-  final bool isLoading;
-
-  /// Error message if any
-  final String? errorMessage;
-
-  const LeaveState({
+  const LeaveLoadedState({
+    required this.leaveList,
+    required this.holidayList,
     required this.selectedTabIndex,
-    this.isLoading = false,
-    this.errorMessage,
+    required this.selectedMonth,
   });
 
-  /// Initial state
-  factory LeaveState.initial() {
-    return const LeaveState(selectedTabIndex: 0, isLoading: false);
-  }
-
-  /// Copy with method for immutable state updates
-  LeaveState copyWith({
+  LeaveLoadedState copyWith({
+    List<LeaveModel>? leaveList,
+    List<HolidayModel>? holidayList,
     int? selectedTabIndex,
-    bool? isLoading,
-    String? errorMessage,
+    DateTime? selectedMonth,
   }) {
-    return LeaveState(
+    return LeaveLoadedState(
+      leaveList: leaveList ?? this.leaveList,
+      holidayList: holidayList ?? this.holidayList,
       selectedTabIndex: selectedTabIndex ?? this.selectedTabIndex,
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
+      selectedMonth: selectedMonth ?? this.selectedMonth,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    leaveList,
+    holidayList,
+    selectedTabIndex,
+    selectedMonth,
+  ];
+}
+
+class LeaveError extends LeaveState {
+  final String message;
+
+  const LeaveError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

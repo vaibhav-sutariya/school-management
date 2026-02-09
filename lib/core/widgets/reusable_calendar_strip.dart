@@ -101,149 +101,163 @@ class _ReusableCalendarStripState extends State<ReusableCalendarStrip> {
     final monthYearString = DateFormat('MMMM yyyy').format(_currentWeekStart);
 
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(vertical: context.scaleHeight(16)),
+      margin: EdgeInsets.symmetric(
+        horizontal: context.scale(16),
+        vertical: context.scaleHeight(12),
+      ),
+      padding: EdgeInsets.all(context.scale(16)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(context.scale(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           // Header with Navigation
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: context.scale(16)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  monthYearString,
-                  style: TextStyle(
-                    fontSize: context.scaleFont(18),
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF263238),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                monthYearString,
+                style: TextStyle(
+                  fontSize: context.scaleFont(15),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.scale(12),
-                    vertical: context.scaleHeight(6),
+              ),
+              Row(
+                children: [
+                  _NavigationButton(
+                    icon: Icons.chevron_left,
+                    onTap: _previousWeek,
+                    enabled: true,
                   ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8EAF6),
-                    borderRadius: BorderRadius.circular(context.scale(20)),
+                  SizedBox(width: context.scale(8)),
+                  _NavigationButton(
+                    icon: Icons.chevron_right,
+                    onTap: _nextWeek,
+                    enabled: _isNextEnabled(),
                   ),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: _previousWeek,
-                        child: Icon(
-                          Icons.chevron_left_rounded,
-                          color: const Color(0xFF3F51B5),
-                          size: context.scale(24),
-                        ),
-                      ),
-                      SizedBox(width: context.scale(8)),
-                      Container(
-                        height: context.scaleHeight(16),
-                        width: 1,
-                        color: const Color(0xFFC5CAE9),
-                      ),
-                      SizedBox(width: context.scale(8)),
-                      GestureDetector(
-                        onTap: _isNextEnabled() ? _nextWeek : null,
-                        child: Icon(
-                          Icons.chevron_right_rounded,
-                          color: _isNextEnabled()
-                              ? const Color(0xFF3F51B5)
-                              : Colors.grey.withValues(alpha: 0.5),
-                          size: context.scale(24),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-          SizedBox(height: context.scaleHeight(20)),
+          SizedBox(height: context.scaleHeight(16)),
 
           // Seven Days Row
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: context.scale(16)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: weekDays.map((date) {
-                // Check if this date should be disabled
-                final isDisabled = _isDateDisabled(date, today);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: weekDays.map((date) {
+              // Check if this date should be disabled
+              final isDisabled = _isDateDisabled(date, today);
 
-                // Check if this is today's date
-                final isToday = DateUtils.isSameDay(date, today);
+              // Check if this is today's date
+              final isToday = DateUtils.isSameDay(date, today);
 
-                // Use widget.selectedDate instead of local state
-                final isSelected = DateUtils.isSameDay(
-                  date,
-                  widget.selectedDate,
-                );
-                final dayName = DateFormat('E').format(date).toUpperCase();
-                final dayNumber = date.day.toString();
+              // Use widget.selectedDate instead of local state
+              final isSelected = DateUtils.isSameDay(date, widget.selectedDate);
+              final dayName = DateFormat('E').format(date).toUpperCase();
+              final dayNumber = date.day.toString();
 
-                return GestureDetector(
-                  // Disable tap for future dates
-                  onTap: isDisabled
-                      ? null
-                      : () {
-                          // Only notify parent, do not set local state
-                          widget.onDateSelected(date);
-                        },
-                  child: Opacity(
-                    // Reduce opacity for disabled dates
-                    opacity: isDisabled ? 0.4 : 1.0,
-                    child: Container(
-                      width: context.scale(40),
-                      padding: EdgeInsets.symmetric(
-                        vertical: context.scaleHeight(8),
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected && !isDisabled
-                            ? context.colors.primary
-                            : Colors.transparent,
-                        // Add border for today's date when not selected
-                        border: isToday && !isSelected && !isDisabled
-                            ? Border.all(
-                                color: context.colors.primary,
-                                width: 2,
-                              )
-                            : null,
-                        borderRadius: BorderRadius.circular(context.scale(24)),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            dayName,
-                            style: TextStyle(
-                              fontSize: context.scaleFont(11),
-                              fontWeight: FontWeight.w600,
-                              color: isSelected && !isDisabled
-                                  ? Colors.white
-                                  : const Color(0xFF90A4AE),
-                            ),
+              return GestureDetector(
+                // Disable tap for future dates
+                onTap: isDisabled
+                    ? null
+                    : () {
+                        // Only notify parent, do not set local state
+                        widget.onDateSelected(date);
+                      },
+                child: Opacity(
+                  // Reduce opacity for disabled dates
+                  opacity: isDisabled ? 0.4 : 1.0,
+                  child: Container(
+                    width: context.scale(40),
+                    padding: EdgeInsets.symmetric(
+                      vertical: context.scaleHeight(8),
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected && !isDisabled
+                          ? context.colors.primary
+                          : Colors.transparent,
+                      // Add border for today's date when not selected
+                      border: isToday && !isSelected && !isDisabled
+                          ? Border.all(color: context.colors.primary, width: 2)
+                          : null,
+                      borderRadius: BorderRadius.circular(context.scale(24)),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          dayName,
+                          style: TextStyle(
+                            fontSize: context.scaleFont(11),
+                            fontWeight: FontWeight.w600,
+                            color: isSelected && !isDisabled
+                                ? Colors.white
+                                : const Color(0xFF90A4AE),
                           ),
-                          SizedBox(height: context.scaleHeight(4)),
-                          Text(
-                            dayNumber,
-                            style: TextStyle(
-                              fontSize: context.scaleFont(16),
-                              fontWeight: FontWeight.bold,
-                              color: isSelected && !isDisabled
-                                  ? Colors.white
-                                  : const Color(0xFF455A64),
-                            ),
+                        ),
+                        SizedBox(height: context.scaleHeight(4)),
+                        Text(
+                          dayNumber,
+                          style: TextStyle(
+                            fontSize: context.scaleFont(16),
+                            fontWeight: FontWeight.bold,
+                            color: isSelected && !isDisabled
+                                ? Colors.white
+                                : const Color(0xFF455A64),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Circular navigation button for calendar strip
+class _NavigationButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final bool enabled;
+
+  const _NavigationButton({
+    required this.icon,
+    required this.onTap,
+    required this.enabled,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: enabled ? onTap : null,
+      borderRadius: BorderRadius.circular(context.scale(20)),
+      child: Container(
+        width: context.scale(30),
+        height: context.scale(30),
+        decoration: BoxDecoration(
+          color: enabled
+              ? context.colors.primary.withValues(alpha: 0.1)
+              : Colors.grey.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          icon,
+          size: context.scale(20),
+          color: enabled ? Colors.black87 : Colors.grey.withValues(alpha: 0.5),
+        ),
       ),
     );
   }

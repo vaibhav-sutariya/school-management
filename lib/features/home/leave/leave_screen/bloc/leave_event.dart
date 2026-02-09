@@ -1,17 +1,30 @@
 part of 'leave_bloc.dart';
 
-/// Base class for all Leave events
-abstract class LeaveEvent {}
+abstract class LeaveEvent extends Equatable {
+  const LeaveEvent();
 
-/// Event to change the selected tab
+  @override
+  List<Object?> get props => [];
+}
+
+class LoadLeaveData extends LeaveEvent {}
+
 class ChangeTabEvent extends LeaveEvent {
   final int tabIndex;
 
-  ChangeTabEvent(this.tabIndex);
+  const ChangeTabEvent(this.tabIndex);
+
+  @override
+  List<Object?> get props => [tabIndex];
 }
 
-/// Event to load leave data for VIEW tab
-class LoadLeaveDataEvent extends LeaveEvent {}
+class MonthChanged extends LeaveEvent {
+  final DateTime month;
 
-/// Event to load holiday list data
-class LoadHolidayListEvent extends LeaveEvent {}
+  const MonthChanged(this.month);
+
+  @override
+  List<Object?> get props => [month];
+}
+
+class RefreshLeaveData extends LeaveEvent {}

@@ -1,8 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../../core/routes/app_router.gr.dart';
+import '../../../../../core/widgets/app_loader.dart';
+import '../../../../../core/widgets/end_of_list_indicator.dart';
+import '../bloc/leave_bloc.dart';
 import '../models/leave_model.dart';
 
 /// VIEW tab content - displays leave applications and status
@@ -11,23 +15,57 @@ class ViewTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get mock data from model
-    final leaves = LeaveModel.getMockData();
+    return BlocSelector<LeaveBloc, LeaveState, LeaveState>(
+      selector: (state) => state,
+      builder: (context, state) {
+        if (state is LeaveLoading) {
+          return const AppLoader();
+        } else if (state is LeaveLoadedState) {
+          if (state.leaveList.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.event_busy_outlined,
+                    size: context.scale(64),
+                    color: Colors.grey.withValues(alpha: 0.5),
+                  ),
+                  SizedBox(height: context.scaleHeight(16)),
+                  Text(
+                    'No Leave Applications',
+                    style: TextStyle(
+                      fontSize: context.scaleFont(16),
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(context.scale(16)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Leave Applications (without heading)
-          ...leaves.map(
-            (leave) => Padding(
-              padding: EdgeInsets.only(bottom: context.scaleHeight(12)),
-              child: _buildLeaveApplicationCard(context, leave: leave),
-            ),
-          ),
-        ],
-      ),
+          return ListView.builder(
+            padding: EdgeInsets.all(context.scale(16)),
+            itemCount: state.leaveList.length + 1,
+            itemBuilder: (context, index) {
+              if (index == state.leaveList.length) {
+                return const EndOfListIndicator();
+              }
+              return Padding(
+                padding: EdgeInsets.only(bottom: context.scaleHeight(12)),
+                child: _buildLeaveApplicationCard(
+                  context,
+                  leave: state.leaveList[index],
+                ),
+              );
+            },
+          );
+        } else if (state is LeaveError) {
+          return Center(child: Text(state.message));
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 

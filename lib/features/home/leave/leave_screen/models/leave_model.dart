@@ -1,69 +1,105 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'leave_model.freezed.dart';
-part 'leave_model.g.dart';
+import 'package:equatable/equatable.dart';
 
 /// Leave status enum
-enum LeaveStatus {
-  @JsonValue('approved')
-  approved,
-  @JsonValue('pending')
-  pending,
-  @JsonValue('rejected')
-  rejected,
-}
+enum LeaveStatus { approved, pending, rejected }
 
 /// Leave model - ready for API integration
-@freezed
-abstract class LeaveModel with _$LeaveModel {
-  const factory LeaveModel({
-    @JsonKey(name: 'id') required String id,
-    @JsonKey(name: 'studentId') String? studentId,
-    @JsonKey(name: 'startDate') required DateTime startDate,
-    @JsonKey(name: 'endDate') required DateTime endDate,
-    @JsonKey(name: 'reason') required String reason,
-    @JsonKey(name: 'status') required LeaveStatus status,
-    @JsonKey(name: 'days') required int days,
-    @JsonKey(name: 'appliedDate') DateTime? appliedDate,
-    @JsonKey(name: 'approvedBy') String? approvedBy,
-  }) = _LeaveModel;
+class LeaveModel extends Equatable {
+  final String id;
+  final String? studentId;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String reason;
+  final LeaveStatus status;
+  final int days;
+  final DateTime? appliedDate;
+  final String? approvedBy;
 
-  factory LeaveModel.fromJson(Map<String, dynamic> json) =>
-      _$LeaveModelFromJson(json);
+  const LeaveModel({
+    required this.id,
+    this.studentId,
+    required this.startDate,
+    required this.endDate,
+    required this.reason,
+    required this.status,
+    required this.days,
+    this.appliedDate,
+    this.approvedBy,
+  });
+
+  @override
+  List<Object?> get props => [
+    id,
+    studentId,
+    startDate,
+    endDate,
+    reason,
+    status,
+    days,
+    appliedDate,
+    approvedBy,
+  ];
 
   /// Static mock data for development
   static List<LeaveModel> getMockData() {
+    final now = DateTime.now();
     return [
+      // Current month leaves
       LeaveModel(
         id: '1',
         studentId: 'STU001',
-        startDate: DateTime(2024, 1, 15),
-        endDate: DateTime(2024, 1, 17),
+        startDate: DateTime(now.year, now.month, 15),
+        endDate: DateTime(now.year, now.month, 17),
         reason: 'Family Function',
         status: LeaveStatus.approved,
         days: 3,
-        appliedDate: DateTime(2024, 1, 10),
+        appliedDate: DateTime(now.year, now.month, 10),
         approvedBy: 'Jigna Panchal',
       ),
       LeaveModel(
         id: '2',
         studentId: 'STU001',
-        startDate: DateTime(2024, 2, 5),
-        endDate: DateTime(2024, 2, 5),
+        startDate: DateTime(now.year, now.month, 5),
+        endDate: DateTime(now.year, now.month, 5),
         reason: 'Medical Emergency',
         status: LeaveStatus.pending,
         days: 1,
-        appliedDate: DateTime(2024, 2, 3),
+        appliedDate: DateTime(now.year, now.month, 3),
       ),
+
+      // Previous month leaves
       LeaveModel(
         id: '3',
         studentId: 'STU001',
-        startDate: DateTime(2023, 12, 28),
-        endDate: DateTime(2023, 12, 28),
+        startDate: DateTime(now.year, now.month - 1, 20),
+        endDate: DateTime(now.year, now.month - 1, 22),
         reason: 'Personal Work',
+        status: LeaveStatus.approved,
+        days: 3,
+        appliedDate: DateTime(now.year, now.month - 1, 15),
+        approvedBy: 'Jigna Panchal',
+      ),
+      LeaveModel(
+        id: '4',
+        studentId: 'STU001',
+        startDate: DateTime(now.year, now.month - 1, 10),
+        endDate: DateTime(now.year, now.month - 1, 10),
+        reason: 'Sick Leave',
         status: LeaveStatus.rejected,
         days: 1,
-        appliedDate: DateTime(2023, 12, 25),
+        appliedDate: DateTime(now.year, now.month - 1, 8),
+      ),
+
+      // Next month leaves
+      LeaveModel(
+        id: '5',
+        studentId: 'STU001',
+        startDate: DateTime(now.year, now.month + 1, 5),
+        endDate: DateTime(now.year, now.month + 1, 7),
+        reason: 'Planned Vacation',
+        status: LeaveStatus.pending,
+        days: 3,
+        appliedDate: DateTime(now.year, now.month, 25),
       ),
     ];
   }

@@ -40,6 +40,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: RemarksRoute.page),
     AutoRoute(page: RemarkDetailRoute.page),
     AutoRoute(page: LeaveRoute.page),
-    AutoRoute(page: LeaveDetailRoute.page, path: 'leave/:id'),
+    AutoRoute(page: LeaveDetailRoute.page),
   ];
 }
