@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:starter_app/cubit/theme_cubit.dart';
+
 import 'app_loader.dart';
 
 class AppPrimaryButton extends StatelessWidget {
@@ -55,6 +57,10 @@ class AppPrimaryButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: FilledButton.styleFrom(
           backgroundColor: color, // If null, defaults to theme
+          // Use the background color or primary color for the disabled state
+          // to prevent the button from turning grey/white when loading
+          disabledBackgroundColor: color ?? context.colors.primary,
+          disabledForegroundColor: textColor ?? Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
@@ -62,11 +68,11 @@ class AppPrimaryButton extends StatelessWidget {
         ),
         child: isLoading
             ? const SizedBox(
-                width: 24,
-                height: 24,
-                child: const AppLoader(
-                  size: 24,
-                  strokeWidth: 2.5,
+                width: 20,
+                height: 20,
+                child: AppLoader(
+                  size: 20,
+                  strokeWidth: 1.5,
                   color: Colors.white,
                   center: true,
                 ),

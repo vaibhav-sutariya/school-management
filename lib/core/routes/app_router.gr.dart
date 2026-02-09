@@ -43,10 +43,10 @@ import 'package:starter_app/features/home/gallery/viewer_screen/gallery_image_vi
     as _i8;
 import 'package:starter_app/features/home/home_screen/home_page.dart' as _i10;
 import 'package:starter_app/features/home/homework/homework_page.dart' as _i11;
+import 'package:starter_app/features/home/leave/add_leave/add_leave_page.dart'
+    as _i1;
 import 'package:starter_app/features/home/leave/leave_detail_screen/leave_detail_page.dart'
     as _i12;
-import 'package:starter_app/features/home/leave/leave_screen/add_leave_page.dart'
-    as _i1;
 import 'package:starter_app/features/home/leave/leave_screen/leave_page.dart'
     as _i13;
 import 'package:starter_app/features/home/meal_menu/meal_menu_page.dart'

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:starter_app/cubit/theme_cubit.dart';
 
 /// A simple and consistent loader widget used throughout the app.
 class AppLoader extends StatelessWidget {
@@ -19,21 +20,21 @@ class AppLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loader = Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: size,
-          height: size,
-          child: CircularProgressIndicator(
-            strokeWidth: strokeWidth,
-            valueColor: AlwaysStoppedAnimation(
-              color ?? Theme.of(context).primaryColor,
-            ),
-          ),
-        ),
-        if (message != null) ...[
+    Widget loader = SizedBox(
+      width: size,
+      height: size,
+      child: CircularProgressIndicator(
+        strokeWidth: strokeWidth,
+        valueColor: AlwaysStoppedAnimation(color ?? context.colors.primary),
+      ),
+    );
+
+    if (message != null) {
+      loader = Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          loader,
           const SizedBox(height: 12),
           Text(
             message!,
@@ -41,8 +42,8 @@ class AppLoader extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ],
-      ],
-    );
+      );
+    }
 
     if (center) {
       return Center(child: loader);
