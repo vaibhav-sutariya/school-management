@@ -5,22 +5,14 @@ import 'package:starter_app/cubit/theme_cubit.dart';
 import '../helpers/extensions/responsive_extensions.dart';
 
 /// Attendance status enum for calendar dates
-enum AttendanceStatus {
-  present,
-  absent,
-  holiday,
-  notMarked,
-}
+enum AttendanceStatus { present, absent, holiday, notMarked }
 
 /// Calendar date data model
 class CalendarDateData {
   final DateTime date;
   final AttendanceStatus status;
 
-  const CalendarDateData({
-    required this.date,
-    required this.status,
-  });
+  const CalendarDateData({required this.date, required this.status});
 }
 
 /// Production-ready reusable attendance calendar component
@@ -95,7 +87,8 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
     // Convert weekday to Sunday-based (0 = Sunday, 6 = Saturday)
     // DateTime.weekday: 1 = Monday, 7 = Sunday
     // We want: 0 = Sunday, 6 = Saturday
-    final firstDayOfWeek = firstDay.weekday % 7; // 0 = Sunday, 1-6 = Monday-Saturday
+    final firstDayOfWeek =
+        firstDay.weekday % 7; // 0 = Sunday, 1-6 = Monday-Saturday
 
     final days = <DateTime>[];
 
@@ -134,8 +127,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
   }
 
   bool _isCurrentMonth(DateTime date) {
-    return date.month == _currentMonth.month &&
-        date.year == _currentMonth.year;
+    return date.month == _currentMonth.month && date.year == _currentMonth.year;
   }
 
   @override
@@ -174,10 +166,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
     );
   }
 
-  Widget _buildMonthHeader(
-    BuildContext context,
-    String monthYear,
-  ) {
+  Widget _buildMonthHeader(BuildContext context, String monthYear) {
     final monthTextStyle = TextStyle(
       fontSize: context.scaleFont(18),
       fontWeight: FontWeight.bold,
@@ -226,9 +215,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: daysOfWeek.map((day) {
         return Expanded(
-          child: Center(
-            child: Text(day, style: textStyle),
-          ),
+          child: Center(child: Text(day, style: textStyle)),
         );
       }).toList(),
     );
@@ -247,22 +234,23 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
       itemCount: days.length,
       itemBuilder: (context, index) {
         final date = days[index];
-        
+
         // Skip empty placeholder dates (DateTime(0))
         if (date.year == 0) {
           return const SizedBox.shrink();
         }
-        
+
         final isCurrentMonth = _isCurrentMonth(date);
         final isSelected = _isSameDay(date, _selectedDate);
         // Normalize date for lookup (year, month, day only)
         final normalizedDate = DateTime(date.year, date.month, date.day);
-        
+
         // Check if it's Sunday (weekday == 7) - always mark as holiday
         final isSunday = date.weekday == 7;
         final status = isSunday
             ? AttendanceStatus.holiday
-            : (widget.attendanceData[normalizedDate] ?? AttendanceStatus.notMarked);
+            : (widget.attendanceData[normalizedDate] ??
+                  AttendanceStatus.notMarked);
         final hasStatus = status != AttendanceStatus.notMarked;
 
         return _buildDateCell(
@@ -293,52 +281,45 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
     final isFutureDate = normalizedDate.isAfter(normalizedToday);
     final isSelectable = !isFutureDate;
     final isSunday = date.weekday == 7;
-    
+
     // Sundays are always holidays, so always show holiday color
     final effectiveStatus = isSunday ? AttendanceStatus.holiday : status;
     final effectiveHasStatus = isSunday || hasStatus;
 
     return GestureDetector(
       onTap: isSelectable ? () => _selectDate(date) : null,
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isSelected
-              ? context.colors.primary
-              : effectiveHasStatus
-                  ? _getStatusColor(effectiveStatus)
-                  : Colors.transparent,
-          border: isSelected
-              ? null
-              : effectiveHasStatus
-                  ? null
-                  : isToday
-                      ? Border.all(
-                          color: context.colors.primary,
-                          width: 1.5,
-                        )
-                      : isFutureDate && !isSunday
-                          ? Border.all(
-                              color: Colors.grey[300]!,
-                              width: 1,
-                            )
-                          : null,
-        ),
-        child: Center(
-          child: Text(
-            dateText,
-            style: TextStyle(
-              fontSize: context.scaleFont(13),
-              fontWeight: isSelected || effectiveHasStatus
-                  ? FontWeight.w600
-                  : FontWeight.normal,
-              color: isSelected
-                  ? Colors.white
-                  : isFutureDate && !isSunday
-                      ? Colors.grey[400]!
-                      : effectiveHasStatus
-                          ? Colors.white
-                          : Colors.black87,
+      child: Opacity(
+        // Reduce opacity for future dates (not Sundays)
+        opacity: isFutureDate && !isSunday ? 0.4 : 1.0,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isSelected
+                ? context.colors.primary
+                : effectiveHasStatus
+                ? _getStatusColor(effectiveStatus)
+                : Colors.transparent,
+            // Add border for today's date when not selected
+            border: isToday && !isSelected
+                ? Border.all(color: context.colors.primary, width: 2)
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              dateText,
+              style: TextStyle(
+                fontSize: context.scaleFont(13),
+                fontWeight: isSelected || effectiveHasStatus
+                    ? FontWeight.w600
+                    : FontWeight.normal,
+                color: isSelected
+                    ? Colors.white
+                    : isFutureDate && !isSunday
+                    ? Colors.grey[400]!
+                    : effectiveHasStatus
+                    ? Colors.white
+                    : Colors.black87,
+              ),
             ),
           ),
         ),
@@ -391,10 +372,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
         Container(
           width: context.scale(12),
           height: context.scale(12),
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         SizedBox(width: context.scale(6)),
         Text(label, style: textStyle),

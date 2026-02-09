@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../core/widgets/reusable_calendar_strip.dart';
 import '../../../core/widgets/app_app_bar.dart'; // Assuming this exists based on file list
-import '../../../core/widgets/end_of_list_indicator.dart';
 import '../../../core/widgets/app_loader.dart';
+import '../../../core/widgets/end_of_list_indicator.dart';
+import '../../../core/widgets/reusable_calendar_strip.dart';
 import 'bloc/homework_bloc.dart';
 import 'widgets/homework_card.dart';
 
@@ -34,6 +35,7 @@ class HomeworkPage extends StatelessWidget {
                   onDateSelected: (date) {
                     context.read<HomeworkBloc>().add(HomeworkDateChanged(date));
                   },
+                  disableFutureDates: true,
                 );
               },
             ),

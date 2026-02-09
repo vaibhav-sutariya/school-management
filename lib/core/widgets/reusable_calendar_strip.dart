@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../../cubit/theme_cubit.dart';
 import '../helpers/extensions/responsive_extensions.dart';
 
 class ReusableCalendarStrip extends StatefulWidget {
   final DateTime selectedDate;
   final Function(DateTime) onDateSelected;
+  final bool disableFutureDates;
 
   const ReusableCalendarStrip({
     super.key,
     required this.selectedDate,
     required this.onDateSelected,
+    this.disableFutureDates = false,
   });
 
   @override
@@ -77,8 +80,19 @@ class _ReusableCalendarStripState extends State<ReusableCalendarStrip> {
     });
   }
 
+  /// Helper method to check if a date should be disabled
+  /// Returns true if the date is in the future and disableFutureDates is enabled
+  bool _isDateDisabled(DateTime date, DateTime today) {
+    if (!widget.disableFutureDates) return false;
+    return date.isAfter(today);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Cache today's date (normalized) for performance - computed once per build
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
     // Create list of 7 days
     final weekDays = List.generate(7, (index) {
       return _currentWeekStart.add(Duration(days: index));
@@ -155,6 +169,12 @@ class _ReusableCalendarStripState extends State<ReusableCalendarStrip> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: weekDays.map((date) {
+                // Check if this date should be disabled
+                final isDisabled = _isDateDisabled(date, today);
+
+                // Check if this is today's date
+                final isToday = DateUtils.isSameDay(date, today);
+
                 // Use widget.selectedDate instead of local state
                 final isSelected = DateUtils.isSameDay(
                   date,
@@ -164,45 +184,59 @@ class _ReusableCalendarStripState extends State<ReusableCalendarStrip> {
                 final dayNumber = date.day.toString();
 
                 return GestureDetector(
-                  onTap: () {
-                    // Only notify parent, do not set local state
-                    widget.onDateSelected(date);
-                  },
-                  child: Container(
-                    width: context.scale(40),
-                    padding: EdgeInsets.symmetric(
-                      vertical: context.scaleHeight(8),
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? context.colors.primary
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(context.scale(24)),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          dayName,
-                          style: TextStyle(
-                            fontSize: context.scaleFont(11),
-                            fontWeight: FontWeight.w600,
-                            color: isSelected
-                                ? Colors.white
-                                : const Color(0xFF90A4AE),
+                  // Disable tap for future dates
+                  onTap: isDisabled
+                      ? null
+                      : () {
+                          // Only notify parent, do not set local state
+                          widget.onDateSelected(date);
+                        },
+                  child: Opacity(
+                    // Reduce opacity for disabled dates
+                    opacity: isDisabled ? 0.4 : 1.0,
+                    child: Container(
+                      width: context.scale(40),
+                      padding: EdgeInsets.symmetric(
+                        vertical: context.scaleHeight(8),
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected && !isDisabled
+                            ? context.colors.primary
+                            : Colors.transparent,
+                        // Add border for today's date when not selected
+                        border: isToday && !isSelected && !isDisabled
+                            ? Border.all(
+                                color: context.colors.primary,
+                                width: 2,
+                              )
+                            : null,
+                        borderRadius: BorderRadius.circular(context.scale(24)),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            dayName,
+                            style: TextStyle(
+                              fontSize: context.scaleFont(11),
+                              fontWeight: FontWeight.w600,
+                              color: isSelected && !isDisabled
+                                  ? Colors.white
+                                  : const Color(0xFF90A4AE),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: context.scaleHeight(4)),
-                        Text(
-                          dayNumber,
-                          style: TextStyle(
-                            fontSize: context.scaleFont(16),
-                            fontWeight: FontWeight.bold,
-                            color: isSelected
-                                ? Colors.white
-                                : const Color(0xFF455A64),
+                          SizedBox(height: context.scaleHeight(4)),
+                          Text(
+                            dayNumber,
+                            style: TextStyle(
+                              fontSize: context.scaleFont(16),
+                              fontWeight: FontWeight.bold,
+                              color: isSelected && !isDisabled
+                                  ? Colors.white
+                                  : const Color(0xFF455A64),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
