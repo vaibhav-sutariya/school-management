@@ -45,6 +45,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     SplashStartAppFlow event,
     Emitter<SplashState> emit,
   ) async {
+    // Wait for InternetCubit to initialize if it's in the initial state
+    if (_internetCubit.state.type == null) {
+      await _internetCubit.stream.firstWhere((state) => state.type != null);
+    }
+
     final connectivity = _internetCubit.state.type;
     if (connectivity == ConnectivityResult.none) {
       emit(SplashNoInternet());

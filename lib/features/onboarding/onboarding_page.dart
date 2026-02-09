@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
 import 'package:starter_app/core/routes/app_router.gr.dart';
 import 'package:starter_app/core/utils/preference_utils.dart';
+import 'package:starter_app/core/widgets/app_primary_button.dart';
 import 'package:starter_app/cubit/theme_cubit.dart';
 
 import 'models/onboarding_item.dart';
@@ -131,24 +132,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ),
               child: SizedBox(
                 width: double.infinity,
-                height: context.scaleHeight(56),
-                child: ElevatedButton(
+                height: context.scaleHeight(40),
+                child: AppPrimaryButton(
                   onPressed: _onNext,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    _currentIndex == _items.length - 1 ? 'Get Started' : 'Next',
-                    style: TextStyle(
-                      fontSize: context.scaleFont(18),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  color: Colors.white,
+                  textColor: context.colors.primary,
+                  text: _currentIndex == _items.length - 1
+                      ? 'Get Started'
+                      : 'Next',
                 ),
               ),
             ),
