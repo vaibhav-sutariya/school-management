@@ -12,8 +12,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   final AttendanceRepository? _attendanceRepository;
 
   AttendanceBloc({AttendanceRepository? attendanceRepository})
-      : _attendanceRepository = attendanceRepository,
-        super(AttendanceState.initial()) {
+    : _attendanceRepository = attendanceRepository,
+      super(AttendanceState.initial()) {
     // Register event handlers
     on<LoadAttendanceEvent>(_onLoadAttendance);
     on<RefreshAttendanceEvent>(_onRefreshAttendance);
@@ -30,6 +30,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     LoadAttendanceEvent event,
     Emitter<AttendanceState> emit,
   ) async {
+    // Keep existing data, just set loading
     emit(state.copyWith(isLoading: true, clearError: true));
 
     try {
@@ -58,29 +59,33 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
       await Future.delayed(const Duration(milliseconds: 500));
       final mockData = _getMockAttendanceData();
       final calendarData = mockData.getCalendarData();
-      
+
       // Calculate summary from actual calendar data
       final calculatedData = _calculateSummaryFromCalendarData(
         calendarData,
         mockData,
       );
-      
+
       // Calculate yearly summary
       final yearlySummary = _calculateYearlySummary(calendarData);
 
-      emit(state.copyWith(
-        isLoading: false,
-        attendanceData: calculatedData,
-        calendarData: calendarData,
-        yearlyTotalDays: yearlySummary['totalDays'] as int,
-        yearlyPresentDays: yearlySummary['presentDays'] as int,
-        yearlyOverallPercentage: yearlySummary['overallPercentage'] as double,
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          attendanceData: calculatedData,
+          calendarData: calendarData,
+          yearlyTotalDays: yearlySummary['totalDays'] as int,
+          yearlyPresentDays: yearlySummary['presentDays'] as int,
+          yearlyOverallPercentage: yearlySummary['overallPercentage'] as double,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: 'Failed to load attendance data',
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: 'Failed to load attendance data',
+        ),
+      );
     }
   }
 
@@ -93,18 +98,12 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   }
 
   /// Handle select date event
-  void _onSelectDate(
-    SelectDateEvent event,
-    Emitter<AttendanceState> emit,
-  ) {
+  void _onSelectDate(SelectDateEvent event, Emitter<AttendanceState> emit) {
     emit(state.copyWith(selectedDate: event.date));
   }
 
   /// Handle change month event
-  void _onChangeMonth(
-    ChangeMonthEvent event,
-    Emitter<AttendanceState> emit,
-  ) {
+  void _onChangeMonth(ChangeMonthEvent event, Emitter<AttendanceState> emit) {
     emit(state.copyWith(currentMonth: event.month));
     // Optionally load data for the new month
     add(LoadAttendanceForMonthEvent(event.month));
@@ -152,7 +151,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
 
     // Generate data for all months from January to current month
     DateTime currentDate = startOfYear;
-    while (currentDate.isBefore(todayDate) || currentDate.isAtSameMomentAs(todayDate)) {
+    while (currentDate.isBefore(todayDate) ||
+        currentDate.isAtSameMomentAs(todayDate)) {
       final dateString = currentDate.toIso8601String().split('T')[0];
       final weekday = currentDate.weekday; // 1 = Monday, 7 = Sunday
 
@@ -200,7 +200,11 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     final currentMonth = DateTime(now.year, now.month);
     final today = now.day;
     // Get the last day of the current month
-    final lastDayOfMonth = DateTime(currentMonth.year, currentMonth.month + 1, 0).day;
+    final lastDayOfMonth = DateTime(
+      currentMonth.year,
+      currentMonth.month + 1,
+      0,
+    ).day;
 
     int presentCount = 0;
     int absentCount = 0;
@@ -217,7 +221,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
         holidayCount++;
       } else {
         // Get status from calendar data
-        final status = calendarData[normalizedDate] ?? AttendanceStatus.notMarked;
+        final status =
+            calendarData[normalizedDate] ?? AttendanceStatus.notMarked;
         switch (status) {
           case AttendanceStatus.present:
             presentCount++;
@@ -246,7 +251,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
 
     // Total days = all working days in the month (excluding Sundays)
     final totalDays = lastDayOfMonth - totalSundaysInMonth;
-    
+
     // Overall percentage = (Present Days / Working Days up to today) * 100
     // Note: Using working days up to today for percentage calculation (excluding Sundays)
     final workingDaysUpToToday = presentCount + absentCount;
@@ -278,9 +283,10 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     // Count all days from January 1st to today in the current year
     final startOfYear = DateTime(currentYear, 1, 1);
     final endOfYear = today;
-    
+
     DateTime currentDate = startOfYear;
-    while (currentDate.isBefore(endOfYear) || currentDate.isAtSameMomentAs(endOfYear)) {
+    while (currentDate.isBefore(endOfYear) ||
+        currentDate.isAtSameMomentAs(endOfYear)) {
       final normalizedDate = DateTime(
         currentDate.year,
         currentDate.month,
@@ -293,7 +299,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
         holidayCount++;
       } else {
         // Get status from calendar data
-        final status = calendarData[normalizedDate] ?? AttendanceStatus.notMarked;
+        final status =
+            calendarData[normalizedDate] ?? AttendanceStatus.notMarked;
         switch (status) {
           case AttendanceStatus.present:
             presentCount++;
@@ -318,7 +325,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     int totalSundaysInYear = 0;
     final lastDayOfYear = DateTime(currentYear, 12, 31);
     DateTime checkDate = startOfYear;
-    while (checkDate.isBefore(lastDayOfYear) || checkDate.isAtSameMomentAs(lastDayOfYear)) {
+    while (checkDate.isBefore(lastDayOfYear) ||
+        checkDate.isAtSameMomentAs(lastDayOfYear)) {
       if (checkDate.weekday == 7) {
         totalSundaysInYear++;
       }
@@ -327,7 +335,9 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
 
     // Total days = all working days in the year (excluding Sundays)
     // For the year, we count all days from Jan 1 to Dec 31
-    final isLeapYear = currentYear % 4 == 0 && (currentYear % 100 != 0 || currentYear % 400 == 0);
+    final isLeapYear =
+        currentYear % 4 == 0 &&
+        (currentYear % 100 != 0 || currentYear % 400 == 0);
     final actualTotalDaysInYear = isLeapYear ? 366 : 365;
     final totalDays = actualTotalDaysInYear - totalSundaysInYear;
 

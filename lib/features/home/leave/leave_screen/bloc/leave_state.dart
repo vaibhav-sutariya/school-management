@@ -16,12 +16,14 @@ class LeaveLoadedState extends LeaveState {
   final List<HolidayModel> holidayList;
   final int selectedTabIndex;
   final DateTime selectedMonth;
+  final bool isLoading;
 
   const LeaveLoadedState({
     required this.leaveList,
     required this.holidayList,
     required this.selectedTabIndex,
     required this.selectedMonth,
+    this.isLoading = false,
   });
 
   LeaveLoadedState copyWith({
@@ -29,12 +31,14 @@ class LeaveLoadedState extends LeaveState {
     List<HolidayModel>? holidayList,
     int? selectedTabIndex,
     DateTime? selectedMonth,
+    bool? isLoading,
   }) {
     return LeaveLoadedState(
       leaveList: leaveList ?? this.leaveList,
       holidayList: holidayList ?? this.holidayList,
       selectedTabIndex: selectedTabIndex ?? this.selectedTabIndex,
       selectedMonth: selectedMonth ?? this.selectedMonth,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
@@ -44,6 +48,7 @@ class LeaveLoadedState extends LeaveState {
     holidayList,
     selectedTabIndex,
     selectedMonth,
+    isLoading,
   ];
 }
 

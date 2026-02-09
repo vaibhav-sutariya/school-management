@@ -68,9 +68,13 @@ class _ReusableCalendarStripState extends State<ReusableCalendarStrip> {
   }
 
   bool _isNextEnabled() {
+    // If future dates are NOT disabled (e.g., Meal Menu), always allow next week
+    if (!widget.disableFutureDates) return true;
+
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final currentRealWeekStart = _getStartOfWeek(today);
+    // If future dates ARE disabled (e.g., Homework), only allow up to current week
     return _currentWeekStart.isBefore(currentRealWeekStart);
   }
 

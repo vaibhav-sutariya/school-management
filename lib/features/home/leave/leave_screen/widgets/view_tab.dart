@@ -21,6 +21,9 @@ class ViewTab extends StatelessWidget {
         if (state is LeaveLoading) {
           return const AppLoader();
         } else if (state is LeaveLoadedState) {
+          if (state.isLoading) {
+            return const AppLoader();
+          }
           if (state.leaveList.isEmpty) {
             return Center(
               child: Column(

@@ -200,6 +200,9 @@ class MenuSectionCard extends StatelessWidget {
       case 'my leave':
         context.router.push(const LeaveRoute());
         break;
+      case 'meal menu':
+        context.router.push(const MealMenuRoute());
+        break;
       // Add more navigation cases as needed
       default:
         // Handle other menu items

@@ -13,7 +13,16 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   final List<LeaveModel> _allLeaves = LeaveModel.getMockData();
   final List<HolidayModel> _allHolidays = HolidayModel.getMockData();
 
-  LeaveBloc() : super(LeaveInitial()) {
+  LeaveBloc()
+    : super(
+        LeaveLoadedState(
+          leaveList: const [],
+          holidayList: const [],
+          selectedTabIndex: 0,
+          selectedMonth: DateTime(DateTime.now().year, DateTime.now().month, 1),
+          isLoading: true, // Add loading flag to state
+        ),
+      ) {
     on<LoadLeaveData>(_onLoadLeaveData);
     on<ChangeTabEvent>(_onChangeTab);
     on<MonthChanged>(_onMonthChanged);
@@ -25,27 +34,42 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     LoadLeaveData event,
     Emitter<LeaveState> emit,
   ) async {
-    emit(LeaveLoading());
+    // No need to emit LeaveLoading() which wipes state
+    if (state is LeaveLoadedState) {
+      emit((state as LeaveLoadedState).copyWith(isLoading: true));
+    }
 
     try {
       // Simulate API delay
       await Future.delayed(const Duration(milliseconds: 800));
 
-      // Default to current month
-      final now = DateTime.now();
-      final currentMonth = DateTime(now.year, now.month, 1);
+      // Default to current month or keep existing
+      final currentMonth = state is LeaveLoadedState
+          ? (state as LeaveLoadedState).selectedMonth
+          : DateTime(DateTime.now().year, DateTime.now().month, 1);
 
       final filteredLeaves = _filterLeavesByMonth(currentMonth);
       final filteredHolidays = _filterHolidaysByMonth(currentMonth);
 
-      emit(
-        LeaveLoadedState(
-          leaveList: filteredLeaves,
-          holidayList: filteredHolidays,
-          selectedTabIndex: 0,
-          selectedMonth: currentMonth,
-        ),
-      );
+      if (state is LeaveLoadedState) {
+        emit(
+          (state as LeaveLoadedState).copyWith(
+            leaveList: filteredLeaves,
+            holidayList: filteredHolidays,
+            isLoading: false,
+          ),
+        );
+      } else {
+        emit(
+          LeaveLoadedState(
+            leaveList: filteredLeaves,
+            holidayList: filteredHolidays,
+            selectedTabIndex: 0,
+            selectedMonth: currentMonth,
+            isLoading: false,
+          ),
+        );
+      }
     } catch (e) {
       emit(LeaveError(e.toString()));
     }
@@ -89,6 +113,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     if (state is LeaveLoadedState) {
       final currentState = state as LeaveLoadedState;
       try {
+        emit(currentState.copyWith(isLoading: true));
         // Simulate API delay
         await Future.delayed(const Duration(milliseconds: 500));
 
@@ -101,6 +126,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
           currentState.copyWith(
             leaveList: filteredLeaves,
             holidayList: filteredHolidays,
+            isLoading: false,
           ),
         );
       } catch (e) {

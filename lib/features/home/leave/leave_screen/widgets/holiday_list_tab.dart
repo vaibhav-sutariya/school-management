@@ -19,6 +19,9 @@ class HolidayListTab extends StatelessWidget {
         if (state is LeaveLoading) {
           return const AppLoader();
         } else if (state is LeaveLoadedState) {
+          if (state.isLoading) {
+            return const AppLoader();
+          }
           if (state.holidayList.isEmpty) {
             return Center(
               child: Column(

@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../core/widgets/attendance_calendar.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/app_loader.dart';
+import '../../../core/widgets/attendance_calendar.dart';
 import '../../../core/widgets/error_state.dart';
-import '../../../cubit/theme_cubit.dart';
 import 'bloc/attendance_bloc.dart';
 import 'bloc/attendance_event.dart';
 import 'bloc/attendance_state.dart';
@@ -42,31 +41,16 @@ class _AttendancePageContent extends StatelessWidget {
       ),
       body: BlocBuilder<AttendanceBloc, AttendanceState>(
         builder: (context, state) {
-          if (state.isLoading && state.attendanceData == null) {
-            return const Center(child: AppLoader());
-          }
-
-          if (state.errorMessage != null && state.attendanceData == null) {
-            return ErrorState(
-              message: state.errorMessage!,
-              onRetry: () =>
-                  context.read<AttendanceBloc>().add(const RefreshAttendanceEvent()),
-            );
-          }
-
-          final attendanceData = state.attendanceData;
-          if (attendanceData == null) {
-            return const Center(child: Text('No data available'));
-          }
-
           return RefreshIndicator(
             onRefresh: () {
-              context.read<AttendanceBloc>().add(const RefreshAttendanceEvent());
+              context.read<AttendanceBloc>().add(
+                const RefreshAttendanceEvent(),
+              );
               return Future.value();
             },
             child: CustomScrollView(
               slivers: [
-                // Calendar
+                // Calendar - Always visible
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(
@@ -76,66 +60,87 @@ class _AttendancePageContent extends StatelessWidget {
                     child: AttendanceCalendar(
                       selectedDate: state.selectedDate,
                       attendanceData: state.calendarData,
-                      academicYear: attendanceData.academicYear,
+                      academicYear:
+                          state.attendanceData?.academicYear ??
+                          'Loading...', // Show placeholder or data
                       onDateSelected: (date) {
                         context.read<AttendanceBloc>().add(
-                              SelectDateEvent(date),
-                            );
+                          SelectDateEvent(date),
+                        );
                       },
                       onMonthChanged: (month) {
                         context.read<AttendanceBloc>().add(
-                              ChangeMonthEvent(month),
-                            );
-                      },
-                    ),
-                  ),
-                ),
-                // Selected Date Status Card
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: context.scaleHeight(16),
-                    ),
-                    child: Builder(
-                      builder: (_) {
-                        final normalizedDate = DateTime(
-                          state.selectedDate.year,
-                          state.selectedDate.month,
-                          state.selectedDate.day,
-                        );
-                        return SelectedDateStatusCard(
-                          selectedDate: state.selectedDate,
-                          status: state.calendarData[normalizedDate],
+                          ChangeMonthEvent(month),
                         );
                       },
                     ),
                   ),
                 ),
-                // Monthly Summary
-                SliverToBoxAdapter(
-                  child: AttendanceSummary(
-                    title: 'Monthly Attendance Summary',
-                    totalDays: attendanceData.totalDays ?? 0,
-                    presentDays: attendanceData.presentDays ?? 0,
-                    overallPercentage: attendanceData.overallPercentage ?? 0.0,
+
+                // Content Loading State
+                if (state.isLoading && state.attendanceData == null)
+                  const SliverFillRemaining(child: Center(child: AppLoader()))
+                else if (state.errorMessage != null &&
+                    state.attendanceData == null)
+                  SliverFillRemaining(
+                    child: ErrorState(
+                      message: state.errorMessage!,
+                      onRetry: () => context.read<AttendanceBloc>().add(
+                        const RefreshAttendanceEvent(),
+                      ),
+                    ),
+                  )
+                else if (state.attendanceData == null)
+                  const SliverFillRemaining(
+                    child: Center(child: Text('No data available')),
+                  )
+                else ...[
+                  // Selected Date Status Card
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: context.scaleHeight(16)),
+                      child: Builder(
+                        builder: (_) {
+                          final normalizedDate = DateTime(
+                            state.selectedDate.year,
+                            state.selectedDate.month,
+                            state.selectedDate.day,
+                          );
+                          return SelectedDateStatusCard(
+                            selectedDate: state.selectedDate,
+                            status: state.calendarData[normalizedDate],
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
-                // Yearly Summary
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: context.scaleHeight(24)),
+                  // Monthly Summary
+                  SliverToBoxAdapter(
                     child: AttendanceSummary(
-                      title: 'Yearly Attendance Summary',
-                      totalDays: state.yearlyTotalDays ?? 0,
-                      presentDays: state.yearlyPresentDays ?? 0,
-                      overallPercentage: state.yearlyOverallPercentage ?? 0.0,
+                      title: 'Monthly Attendance Summary',
+                      totalDays: state.attendanceData?.totalDays ?? 0,
+                      presentDays: state.attendanceData?.presentDays ?? 0,
+                      overallPercentage:
+                          state.attendanceData?.overallPercentage ?? 0.0,
                     ),
                   ),
-                ),
-                // Bottom padding
-                SliverToBoxAdapter(
-                  child: SizedBox(height: context.scaleHeight(20)),
-                ),
+                  // Yearly Summary
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: context.scaleHeight(24)),
+                      child: AttendanceSummary(
+                        title: 'Yearly Attendance Summary',
+                        totalDays: state.yearlyTotalDays ?? 0,
+                        presentDays: state.yearlyPresentDays ?? 0,
+                        overallPercentage: state.yearlyOverallPercentage ?? 0.0,
+                      ),
+                    ),
+                  ),
+                  // Bottom padding
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: context.scaleHeight(20)),
+                  ),
+                ],
               ],
             ),
           );
