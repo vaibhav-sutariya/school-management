@@ -9,52 +9,52 @@ import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/widgets/end_of_list_indicator.dart';
 import '../../../../core/widgets/error_state.dart';
-import '../videos_screen/models/video_item_model.dart';
-import '../videos_screen/models/video_model.dart';
-import 'bloc/video_detail_bloc.dart';
-import 'bloc/video_detail_event.dart';
-import 'bloc/video_detail_state.dart';
-import 'repositories/video_detail_repository.dart';
+import '../gallery_screen/models/gallery_image_model.dart';
+import '../gallery_screen/models/gallery_model.dart';
+import 'bloc/gallery_detail_bloc.dart';
+import 'bloc/gallery_detail_event.dart';
+import 'bloc/gallery_detail_state.dart';
+import 'repositories/gallery_detail_repository.dart';
 
-/// Production-ready video detail page with 3-column grid
+/// Production-ready gallery detail page with 3-column grid
 /// Optimized for performance with proper state management using BLoC
 @RoutePage()
-class VideoDetailPage extends StatelessWidget {
-  final VideoModel video;
+class GalleryDetailPage extends StatelessWidget {
+  final GalleryModel gallery;
 
-  const VideoDetailPage({super.key, required this.video});
+  const GalleryDetailPage({super.key, required this.gallery});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          VideoDetailBloc(repository: VideoDetailRepository())
-            ..add(LoadVideoItemsEvent(videoAlbumId: video.id ?? '')),
-      child: _VideoDetailPageContent(video: video),
+          GalleryDetailBloc(repository: GalleryDetailRepository())
+            ..add(LoadGalleryImagesEvent(galleryId: gallery.id ?? '')),
+      child: _GalleryDetailPageContent(gallery: gallery),
     );
   }
 }
 
-class _VideoDetailPageContent extends StatelessWidget {
-  final VideoModel video;
+class _GalleryDetailPageContent extends StatelessWidget {
+  final GalleryModel gallery;
 
-  const _VideoDetailPageContent({required this.video});
+  const _GalleryDetailPageContent({required this.gallery});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppAppBar(
-        title: video.title ?? 'Videos',
+        title: gallery.title ?? 'Gallery',
         profileImageUrl: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
       ),
-      body: BlocSelector<VideoDetailBloc, VideoDetailState, bool>(
-        selector: (state) => state.isLoading && state.videos.isEmpty,
+      body: BlocSelector<GalleryDetailBloc, GalleryDetailState, bool>(
+        selector: (state) => state.isLoading && state.images.isEmpty,
         builder: (context, isLoading) {
           if (isLoading) {
             return const Center(child: AppLoader());
           }
-          return const _VideoDetailBody();
+          return const _GalleryDetailBody();
         },
       ),
     );
@@ -62,49 +62,49 @@ class _VideoDetailPageContent extends StatelessWidget {
 }
 
 /// Separated body widget to optimize rebuilds
-class _VideoDetailBody extends StatelessWidget {
-  const _VideoDetailBody();
+class _GalleryDetailBody extends StatelessWidget {
+  const _GalleryDetailBody();
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<VideoDetailBloc, VideoDetailState, String?>(
+    return BlocSelector<GalleryDetailBloc, GalleryDetailState, String?>(
       selector: (state) => state.errorMessage,
       builder: (context, errorMessage) {
         if (errorMessage != null) {
           return ErrorState(
             message: errorMessage,
             onRetry: () {
-              final videoAlbumId = context
-                  .read<VideoDetailBloc>()
+              final galleryId = context
+                  .read<GalleryDetailBloc>()
                   .state
-                  .videoAlbumId;
-              context.read<VideoDetailBloc>().add(
-                RefreshVideoItemsEvent(videoAlbumId: videoAlbumId),
+                  .galleryId;
+              context.read<GalleryDetailBloc>().add(
+                RefreshGalleryImagesEvent(galleryId: galleryId),
               );
             },
           );
         }
-        return const _VideoDetailContent();
+        return const _GalleryDetailContent();
       },
     );
   }
 }
 
-/// Main content widget with video grid
+/// Main content widget with gallery grid
 /// Optimized for high performance with granular rebuilds using BlocSelector
-class _VideoDetailContent extends StatelessWidget {
-  const _VideoDetailContent();
+class _GalleryDetailContent extends StatelessWidget {
+  const _GalleryDetailContent();
 
   @override
   Widget build(BuildContext context) {
-    return _VideoDetailScrollView();
+    return _GalleryDetailScrollView();
   }
 }
 
 /// Scroll view with pagination detection
 /// Separated to optimize rebuilds
-class _VideoDetailScrollView extends StatelessWidget {
-  const _VideoDetailScrollView();
+class _GalleryDetailScrollView extends StatelessWidget {
+  const _GalleryDetailScrollView();
 
   @override
   Widget build(BuildContext context) {
@@ -114,22 +114,19 @@ class _VideoDetailScrollView extends StatelessWidget {
         if (scrollInfo.metrics.pixels >=
             scrollInfo.metrics.maxScrollExtent * 0.8) {
           // Read BLoC once to avoid multiple reads
-          final bloc = context.read<VideoDetailBloc>();
+          final bloc = context.read<GalleryDetailBloc>();
           final state = bloc.state;
           if (state.hasMore && !state.isLoadingMore) {
-            bloc.add(const LoadMoreVideoItemsEvent());
+            bloc.add(const LoadMoreGalleryImagesEvent());
           }
         }
         return false;
       },
       child: RefreshIndicator(
         onRefresh: () async {
-          final videoAlbumId = context
-              .read<VideoDetailBloc>()
-              .state
-              .videoAlbumId;
-          context.read<VideoDetailBloc>().add(
-            RefreshVideoItemsEvent(videoAlbumId: videoAlbumId),
+          final galleryId = context.read<GalleryDetailBloc>().state.galleryId;
+          context.read<GalleryDetailBloc>().add(
+            RefreshGalleryImagesEvent(galleryId: galleryId),
           );
           // Wait for the event to complete
           await Future.delayed(const Duration(milliseconds: 600));
@@ -137,28 +134,28 @@ class _VideoDetailScrollView extends StatelessWidget {
         child: CustomScrollView(
           cacheExtent: 500.0,
           slivers: [
-            // Video grid - only rebuilds when videos change
+            // Gallery grid - only rebuilds when images change
             BlocSelector<
-              VideoDetailBloc,
-              VideoDetailState,
-              List<VideoItemModel>
+              GalleryDetailBloc,
+              GalleryDetailState,
+              List<GalleryImageModel>
             >(
-              selector: (state) => state.videos,
-              builder: (context, videos) {
-                if (videos.isEmpty) {
+              selector: (state) => state.images,
+              builder: (context, images) {
+                if (images.isEmpty) {
                   return SliverFillRemaining(
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.video_library_outlined,
+                            Icons.photo_outlined,
                             size: context.scale(64),
                             color: Colors.grey[400],
                           ),
                           SizedBox(height: context.scaleHeight(16)),
                           Text(
-                            'No videos found',
+                            'No images found',
                             style: TextStyle(
                               fontSize: context.scaleFont(16),
                               color: Colors.grey[600],
@@ -182,18 +179,18 @@ class _VideoDetailScrollView extends StatelessWidget {
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        final video = videos[index];
+                        final image = images[index];
                         return RepaintBoundary(
-                          key: ValueKey('video_item_${video.id}'),
-                          child: _VideoItem(
-                            key: ValueKey('video_item_widget_${video.id}'),
-                            video: video,
+                          key: ValueKey('gallery_image_${image.id}'),
+                          child: _GalleryImageItem(
+                            key: ValueKey('gallery_image_item_${image.id}'),
+                            image: image,
                             index: index,
-                            totalVideos: videos.length,
+                            totalImages: images.length,
                           ),
                         );
                       },
-                      childCount: videos.length,
+                      childCount: images.length,
                       // Critical performance optimizations
                       addAutomaticKeepAlives: false,
                       addRepaintBoundaries: true,
@@ -204,7 +201,7 @@ class _VideoDetailScrollView extends StatelessWidget {
               },
             ),
             // Loading indicator for pagination - only rebuilds when isLoadingMore changes
-            BlocSelector<VideoDetailBloc, VideoDetailState, bool>(
+            BlocSelector<GalleryDetailBloc, GalleryDetailState, bool>(
               selector: (state) => state.isLoadingMore,
               builder: (context, isLoadingMore) {
                 if (isLoadingMore) {
@@ -221,8 +218,8 @@ class _VideoDetailScrollView extends StatelessWidget {
               },
             ),
             // End of list indicator - only rebuilds when hasMore changes
-            BlocSelector<VideoDetailBloc, VideoDetailState, bool>(
-              selector: (state) => !state.hasMore && state.videos.isNotEmpty,
+            BlocSelector<GalleryDetailBloc, GalleryDetailState, bool>(
+              selector: (state) => !state.hasMore && state.images.isNotEmpty,
               builder: (context, showEndIndicator) {
                 if (showEndIndicator) {
                   return const SliverToBoxAdapter(child: EndOfListIndicator());
@@ -241,25 +238,25 @@ class _VideoDetailScrollView extends StatelessWidget {
   }
 }
 
-/// Individual video item widget
+/// Individual gallery image item widget
 /// Optimized for performance with cached MediaQuery values
-class _VideoItem extends StatefulWidget {
-  final VideoItemModel video;
+class _GalleryImageItem extends StatefulWidget {
+  final GalleryImageModel image;
   final int index;
-  final int totalVideos;
+  final int totalImages;
 
-  const _VideoItem({
+  const _GalleryImageItem({
     super.key,
-    required this.video,
+    required this.image,
     required this.index,
-    required this.totalVideos,
+    required this.totalImages,
   });
 
   @override
-  State<_VideoItem> createState() => _VideoItemState();
+  State<_GalleryImageItem> createState() => _GalleryImageItemState();
 }
 
-class _VideoItemState extends State<_VideoItem> {
+class _GalleryImageItemState extends State<_GalleryImageItem> {
   int? _memCacheWidth;
   int? _memCacheHeight;
 
@@ -279,13 +276,13 @@ class _VideoItemState extends State<_VideoItem> {
     return GestureDetector(
       onTap: () {
         // Read BLoC state once to avoid multiple reads
-        final bloc = context.read<VideoDetailBloc>();
+        final bloc = context.read<GalleryDetailBloc>();
         final state = bloc.state;
         context.router.push(
-          VideoViewerRoute(
-            videoAlbumId: state.videoAlbumId,
+          GalleryImageViewerRoute(
+            galleryId: state.galleryId,
             initialIndex: widget.index,
-            videos: state.videos, // Pass videos directly for better performance
+            images: state.images, // Pass images directly for better performance
           ),
         );
       },
@@ -296,70 +293,23 @@ class _VideoItemState extends State<_VideoItem> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(context.scale(4)),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              CachedNetworkImage(
-                imageUrl: widget.video.thumbnailUrl ?? '',
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
-                  child: Center(
-                    child: AppLoader(strokeWidth: 2.0, color: Colors.grey[400]),
-                  ),
-                ),
-
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey[200],
-                  child: Icon(
-                    Icons.video_library_outlined,
-                    color: Colors.grey[400],
-                    size: context.scale(24),
-                  ),
-                ),
-                memCacheWidth: _memCacheWidth,
-                memCacheHeight: _memCacheHeight,
+          child: CachedNetworkImage(
+            imageUrl: widget.image.thumbnailUrl ?? widget.image.imageUrl ?? '',
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Container(
+              color: Colors.grey[200],
+              child: AppLoader(strokeWidth: 2.0, color: Colors.grey[400]),
+            ),
+            errorWidget: (context, url, error) => Container(
+              color: Colors.grey[200],
+              child: Icon(
+                Icons.image_not_supported,
+                color: Colors.grey[400],
+                size: context.scale(24),
               ),
-              // Play icon overlay
-              Center(
-                child: Container(
-                  padding: EdgeInsets.all(context.scale(8)),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: context.scale(24),
-                  ),
-                ),
-              ),
-              // Duration badge
-              if (widget.video.duration != null)
-                Positioned(
-                  bottom: context.scaleHeight(4),
-                  right: context.scale(4),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.scale(6),
-                      vertical: context.scaleHeight(2),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.7),
-                      borderRadius: BorderRadius.circular(context.scale(4)),
-                    ),
-                    child: Text(
-                      widget.video.duration ?? '',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: context.scaleFont(10),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            ),
+            memCacheWidth: _memCacheWidth,
+            memCacheHeight: _memCacheHeight,
           ),
         ),
       ),

@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-import '../../videos_screen/models/video_item_model.dart';
+import '../../gallery_screen/models/gallery_image_model.dart';
 
-/// State for VideoDetailBloc with pagination support
-class VideoDetailState extends Equatable {
-  final String videoAlbumId;
-  final List<VideoItemModel> videos;
+/// State for GalleryDetailBloc with pagination support
+class GalleryDetailState extends Equatable {
+  final String galleryId;
+  final List<GalleryImageModel> images;
   final bool isLoading;
   final bool isLoadingMore;
   final String? errorMessage;
@@ -13,9 +13,9 @@ class VideoDetailState extends Equatable {
   final bool hasMore;
   final int pageSize;
 
-  const VideoDetailState({
-    required this.videoAlbumId,
-    required this.videos,
+  const GalleryDetailState({
+    required this.galleryId,
+    required this.images,
     required this.isLoading,
     this.isLoadingMore = false,
     this.errorMessage,
@@ -24,10 +24,10 @@ class VideoDetailState extends Equatable {
     this.pageSize = 18, // Load 18 items per page (3 columns x 6 rows)
   });
 
-  factory VideoDetailState.initial({String videoAlbumId = ''}) {
-    return VideoDetailState(
-      videoAlbumId: videoAlbumId,
-      videos: [],
+  factory GalleryDetailState.initial({String galleryId = ''}) {
+    return GalleryDetailState(
+      galleryId: galleryId,
+      images: [],
       isLoading: false,
       isLoadingMore: false,
       errorMessage: null,
@@ -37,9 +37,9 @@ class VideoDetailState extends Equatable {
     );
   }
 
-  VideoDetailState copyWith({
-    String? videoAlbumId,
-    List<VideoItemModel>? videos,
+  GalleryDetailState copyWith({
+    String? galleryId,
+    List<GalleryImageModel>? images,
     bool? isLoading,
     bool? isLoadingMore,
     String? errorMessage,
@@ -48,9 +48,9 @@ class VideoDetailState extends Equatable {
     int? pageSize,
     bool clearError = false,
   }) {
-    return VideoDetailState(
-      videoAlbumId: videoAlbumId ?? this.videoAlbumId,
-      videos: videos ?? this.videos,
+    return GalleryDetailState(
+      galleryId: galleryId ?? this.galleryId,
+      images: images ?? this.images,
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
@@ -62,8 +62,8 @@ class VideoDetailState extends Equatable {
 
   @override
   List<Object?> get props => [
-    videoAlbumId,
-    videos,
+    galleryId,
+    images,
     isLoading,
     isLoadingMore,
     errorMessage,

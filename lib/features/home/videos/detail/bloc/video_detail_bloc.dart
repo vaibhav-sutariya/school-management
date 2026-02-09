@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../repositories/video_repository.dart';
+import '../../videos_screen/repositories/video_repository.dart';
 import 'video_detail_event.dart';
 import 'video_detail_state.dart';
 
@@ -9,8 +9,8 @@ class VideoDetailBloc extends Bloc<VideoDetailEvent, VideoDetailState> {
   final VideoRepository _repository;
 
   VideoDetailBloc({required VideoRepository repository})
-      : _repository = repository,
-        super(VideoDetailState.initial()) {
+    : _repository = repository,
+      super(VideoDetailState.initial()) {
     on<LoadVideoItemsEvent>(_onLoadVideoItems);
     on<RefreshVideoItemsEvent>(_onRefreshVideoItems);
     on<LoadMoreVideoItemsEvent>(_onLoadMoreVideoItems);
@@ -20,13 +20,15 @@ class VideoDetailBloc extends Bloc<VideoDetailEvent, VideoDetailState> {
     LoadVideoItemsEvent event,
     Emitter<VideoDetailState> emit,
   ) async {
-    emit(state.copyWith(
-      videoAlbumId: event.videoAlbumId,
-      isLoading: true,
-      errorMessage: null,
-      currentPage: 1,
-      hasMore: true,
-    ));
+    emit(
+      state.copyWith(
+        videoAlbumId: event.videoAlbumId,
+        isLoading: true,
+        errorMessage: null,
+        currentPage: 1,
+        hasMore: true,
+      ),
+    );
 
     try {
       final videos = await _repository.getVideos(
@@ -34,18 +36,22 @@ class VideoDetailBloc extends Bloc<VideoDetailEvent, VideoDetailState> {
         page: 1,
         pageSize: state.pageSize,
       );
-      emit(state.copyWith(
-        videos: videos,
-        isLoading: false,
-        errorMessage: null,
-        currentPage: 1,
-        hasMore: videos.length >= state.pageSize,
-      ));
+      emit(
+        state.copyWith(
+          videos: videos,
+          isLoading: false,
+          errorMessage: null,
+          currentPage: 1,
+          hasMore: videos.length >= state.pageSize,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: 'Failed to load videos: ${e.toString()}',
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: 'Failed to load videos: ${e.toString()}',
+        ),
+      );
     }
   }
 
@@ -53,13 +59,15 @@ class VideoDetailBloc extends Bloc<VideoDetailEvent, VideoDetailState> {
     RefreshVideoItemsEvent event,
     Emitter<VideoDetailState> emit,
   ) async {
-    emit(state.copyWith(
-      videoAlbumId: event.videoAlbumId,
-      isLoading: true,
-      errorMessage: null,
-      currentPage: 1,
-      hasMore: true,
-    ));
+    emit(
+      state.copyWith(
+        videoAlbumId: event.videoAlbumId,
+        isLoading: true,
+        errorMessage: null,
+        currentPage: 1,
+        hasMore: true,
+      ),
+    );
 
     try {
       final videos = await _repository.getVideos(
@@ -67,18 +75,22 @@ class VideoDetailBloc extends Bloc<VideoDetailEvent, VideoDetailState> {
         page: 1,
         pageSize: state.pageSize,
       );
-      emit(state.copyWith(
-        videos: videos,
-        isLoading: false,
-        errorMessage: null,
-        currentPage: 1,
-        hasMore: videos.length >= state.pageSize,
-      ));
+      emit(
+        state.copyWith(
+          videos: videos,
+          isLoading: false,
+          errorMessage: null,
+          currentPage: 1,
+          hasMore: videos.length >= state.pageSize,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: 'Failed to refresh videos: ${e.toString()}',
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: 'Failed to refresh videos: ${e.toString()}',
+        ),
+      );
     }
   }
 
@@ -101,23 +113,24 @@ class VideoDetailBloc extends Bloc<VideoDetailEvent, VideoDetailState> {
       );
 
       if (newVideos.isEmpty) {
-        emit(state.copyWith(
-          isLoadingMore: false,
-          hasMore: false,
-        ));
+        emit(state.copyWith(isLoadingMore: false, hasMore: false));
       } else {
-        emit(state.copyWith(
-          videos: [...state.videos, ...newVideos],
-          isLoadingMore: false,
-          currentPage: nextPage,
-          hasMore: newVideos.length >= state.pageSize,
-        ));
+        emit(
+          state.copyWith(
+            videos: [...state.videos, ...newVideos],
+            isLoadingMore: false,
+            currentPage: nextPage,
+            hasMore: newVideos.length >= state.pageSize,
+          ),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(
-        isLoadingMore: false,
-        errorMessage: 'Failed to load more videos: ${e.toString()}',
-      ));
+      emit(
+        state.copyWith(
+          isLoadingMore: false,
+          errorMessage: 'Failed to load more videos: ${e.toString()}',
+        ),
+      );
     }
   }
 }

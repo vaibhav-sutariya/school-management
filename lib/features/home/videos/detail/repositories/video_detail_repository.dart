@@ -1,5 +1,5 @@
-import '../../repositories/video_repository.dart';
-import '../../models/video_item_model.dart';
+import '../../videos_screen/models/video_item_model.dart';
+import '../../videos_screen/repositories/video_repository.dart';
 
 /// Repository instance for video detail
 /// In production, this would be injected via dependency injection

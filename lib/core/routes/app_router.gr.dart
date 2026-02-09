@@ -31,33 +31,37 @@ import 'package:starter_app/features/dashboard/dashboard_page.dart' as _i4;
 import 'package:starter_app/features/home/attendance/attendance_page.dart'
     as _i1;
 import 'package:starter_app/features/home/classwork/classwork_page.dart' as _i3;
-import 'package:starter_app/features/home/gallery/detail/gallery_detail_page.dart'
+import 'package:starter_app/features/home/gallery/gallery_details_screen/gallery_detail_page.dart'
     as _i6;
-import 'package:starter_app/features/home/gallery/gallery_page.dart' as _i8;
-import 'package:starter_app/features/home/gallery/models/gallery_image_model.dart'
+import 'package:starter_app/features/home/gallery/gallery_screen/gallery_page.dart'
+    as _i8;
+import 'package:starter_app/features/home/gallery/gallery_screen/models/gallery_image_model.dart'
     as _i31;
-import 'package:starter_app/features/home/gallery/models/gallery_model.dart'
+import 'package:starter_app/features/home/gallery/gallery_screen/models/gallery_model.dart'
     as _i30;
-import 'package:starter_app/features/home/gallery/viewer/gallery_image_viewer_page.dart'
+import 'package:starter_app/features/home/gallery/viewer_screen/gallery_image_viewer_page.dart'
     as _i7;
 import 'package:starter_app/features/home/home_screen/home_page.dart' as _i9;
 import 'package:starter_app/features/home/homework/homework_page.dart' as _i10;
-import 'package:starter_app/features/home/leave/detail/leave_detail_page.dart'
+import 'package:starter_app/features/home/leave/leave_detail_screen/leave_detail_page.dart'
     as _i11;
-import 'package:starter_app/features/home/leave/leave_page.dart' as _i12;
-import 'package:starter_app/features/home/remarks/detail/remark_detail_page.dart'
+import 'package:starter_app/features/home/leave/leave_screen/leave_page.dart'
+    as _i12;
+import 'package:starter_app/features/home/remarks/remark_details_screen/remark_detail_page.dart'
     as _i20;
-import 'package:starter_app/features/home/remarks/models/remark_model.dart'
+import 'package:starter_app/features/home/remarks/remarks_screen/models/remark_model.dart'
     as _i34;
-import 'package:starter_app/features/home/remarks/remarks_page.dart' as _i21;
+import 'package:starter_app/features/home/remarks/remarks_screen/remarks_page.dart'
+    as _i21;
 import 'package:starter_app/features/home/videos/detail/video_detail_page.dart'
     as _i25;
-import 'package:starter_app/features/home/videos/models/video_item_model.dart'
+import 'package:starter_app/features/home/videos/videos_screen/models/video_item_model.dart'
     as _i36;
-import 'package:starter_app/features/home/videos/models/video_model.dart'
+import 'package:starter_app/features/home/videos/videos_screen/models/video_model.dart'
     as _i35;
-import 'package:starter_app/features/home/videos/videos_page.dart' as _i27;
-import 'package:starter_app/features/home/videos/viewer/video_viewer_page.dart'
+import 'package:starter_app/features/home/videos/videos_screen/videos_page.dart'
+    as _i27;
+import 'package:starter_app/features/home/videos/viewer_screen/video_viewer_page.dart'
     as _i26;
 import 'package:starter_app/features/notice/notice_page.dart' as _i15;
 import 'package:starter_app/features/onboarding/onboarding_page.dart' as _i16;

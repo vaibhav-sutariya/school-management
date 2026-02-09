@@ -1,58 +1,41 @@
 import 'package:equatable/equatable.dart';
 
-import '../../videos_screen/models/video_item_model.dart';
+import '../models/video_model.dart';
 
-/// State for VideoDetailBloc with pagination support
-class VideoDetailState extends Equatable {
-  final String videoAlbumId;
-  final List<VideoItemModel> videos;
+/// Video state with pagination support
+class VideoState extends Equatable {
   final bool isLoading;
   final bool isLoadingMore;
+  final List<VideoModel> videoList;
   final String? errorMessage;
   final int currentPage;
   final bool hasMore;
   final int pageSize;
 
-  const VideoDetailState({
-    required this.videoAlbumId,
-    required this.videos,
-    required this.isLoading,
+  const VideoState({
+    this.isLoading = false,
     this.isLoadingMore = false,
+    this.videoList = const [],
     this.errorMessage,
     this.currentPage = 1,
     this.hasMore = true,
-    this.pageSize = 18, // Load 18 items per page (3 columns x 6 rows)
+    this.pageSize = 6, // Load 6 items per page (2 columns x 3 rows)
   });
 
-  factory VideoDetailState.initial({String videoAlbumId = ''}) {
-    return VideoDetailState(
-      videoAlbumId: videoAlbumId,
-      videos: [],
-      isLoading: false,
-      isLoadingMore: false,
-      errorMessage: null,
-      currentPage: 1,
-      hasMore: true,
-      pageSize: 18,
-    );
-  }
-
-  VideoDetailState copyWith({
-    String? videoAlbumId,
-    List<VideoItemModel>? videos,
+  VideoState copyWith({
     bool? isLoading,
     bool? isLoadingMore,
+    List<VideoModel>? videoList,
     String? errorMessage,
     int? currentPage,
     bool? hasMore,
     int? pageSize,
     bool clearError = false,
   }) {
-    return VideoDetailState(
-      videoAlbumId: videoAlbumId ?? this.videoAlbumId,
-      videos: videos ?? this.videos,
+    return VideoState(
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      videoList: videoList ?? this.videoList,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       currentPage: currentPage ?? this.currentPage,
       hasMore: hasMore ?? this.hasMore,
@@ -62,10 +45,9 @@ class VideoDetailState extends Equatable {
 
   @override
   List<Object?> get props => [
-    videoAlbumId,
-    videos,
     isLoading,
     isLoadingMore,
+    videoList,
     errorMessage,
     currentPage,
     hasMore,
