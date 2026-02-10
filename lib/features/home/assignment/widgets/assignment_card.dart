@@ -16,10 +16,7 @@ class AssignmentCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.router.push(
-          AssignmentPdfViewerRoute(
-            pdfUrl: assignment.pdfUrl,
-            title: assignment.type,
-          ),
+          PdfViewerRoute(pdfUrl: assignment.pdfUrl, title: assignment.type),
         );
       },
       child: Container(

@@ -5,28 +5,29 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../core/error/failures.dart';
+import '../../../core/error/failures.dart';
 
-abstract interface class SyllabusRepository {
-  Future<Either<Failure, String>> getSyllabusPdf({required String url});
+abstract interface class PdfRepository {
+  Future<Either<Failure, String>> getPdf({required String url});
 }
 
-@Injectable(as: SyllabusRepository)
-class SyllabusRepositoryImpl implements SyllabusRepository {
+@Injectable(as: PdfRepository)
+class PdfRepositoryImpl implements PdfRepository {
   final Dio _dio;
 
-  SyllabusRepositoryImpl(this._dio);
+  PdfRepositoryImpl(this._dio);
 
   @override
-  Future<Either<Failure, String>> getSyllabusPdf({required String url}) async {
+  Future<Either<Failure, String>> getPdf({required String url}) async {
     try {
       final appDocDir = await getApplicationDocumentsDirectory();
 
       // Simple hash-like filename from URL
-      final fileName = 'syllabus_${url.split('/').last}';
+      final fileName = 'pdf_${url.split('/').last}';
       final filePath = '${appDocDir.path}/$fileName';
       final file = File(filePath);
 
+      // Check if file already exists (cached)
       if (await file.exists()) {
         return Right(filePath);
       }

@@ -16,7 +16,7 @@ class SyllabusCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.router.push(
-          SyllabusPdfViewerRoute(pdfUrl: syllabus.pdfUrl, title: syllabus.type),
+          PdfViewerRoute(pdfUrl: syllabus.pdfUrl, title: syllabus.type),
         );
       },
       child: Container(

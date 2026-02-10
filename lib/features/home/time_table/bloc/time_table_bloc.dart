@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../repositories/time_table_repository.dart';
+import '../../../pdf_viewer/repositories/pdf_repository.dart';
 
 part 'time_table_event.dart';
 part 'time_table_state.dart';
 
 class TimeTableBloc extends Bloc<TimeTableEvent, TimeTableState> {
-  final TimeTableRepository _repository;
+  final PdfRepository _repository;
 
-  TimeTableBloc({required TimeTableRepository repository})
+  TimeTableBloc({required PdfRepository repository})
     : _repository = repository,
       super(TimeTableInitial()) {
     on<LoadTimeTable>(_onLoadTimeTable);
@@ -24,7 +24,7 @@ class TimeTableBloc extends Bloc<TimeTableEvent, TimeTableState> {
     const pdfUrl =
         'https://www.aeee.in/wp-content/uploads/2020/08/Sample-pdf.pdf';
 
-    final result = await _repository.getTimeTablePdf(url: pdfUrl);
+    final result = await _repository.getPdf(url: pdfUrl);
 
     result.fold(
       (failure) => emit(TimeTableError(failure.message)),
