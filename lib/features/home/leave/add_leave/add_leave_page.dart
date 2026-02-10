@@ -194,12 +194,13 @@ class _AddLeaveViewState extends State<_AddLeaveView> {
 
               SizedBox(height: context.scaleHeight(24)),
 
-              // Apply Button with Loading State
-              BlocBuilder<AddLeaveBloc, AddLeaveState>(
-                builder: (context, state) {
+              // Apply Button with Loading State - Optimized with BlocSelector
+              BlocSelector<AddLeaveBloc, AddLeaveState, bool>(
+                selector: (state) => state is AddLeaveLoading,
+                builder: (context, isLoading) {
                   return AppPrimaryButton(
                     text: 'Apply Leave',
-                    isLoading: state is AddLeaveLoading,
+                    isLoading: isLoading,
                     onPressed: _handleApplyLeave,
                     height: 50,
                     borderRadius: 16,

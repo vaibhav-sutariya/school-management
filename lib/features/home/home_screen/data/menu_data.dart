@@ -142,7 +142,7 @@ class QuickMenuData {
       items: [
         MenuItemData(
           icon: Icons.calendar_month_rounded,
-          label: 'Time Table',
+          label: 'Exam Time Table',
           iconColor: Color(0xFF26C6DA),
           backgroundColor: Color(0xFFE0F7FA),
         ),

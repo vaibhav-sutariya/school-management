@@ -55,9 +55,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
             // Controller can be used for programmatic navigation
           },
           onPageChanged: (int? page, int? total) {
-            setState(() {
-              currentPage = page;
-            });
+            currentPage = page;
           },
         ),
         if (!isReady) const Center(child: AppLoader()),

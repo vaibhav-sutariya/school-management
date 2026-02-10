@@ -42,22 +42,9 @@ class HomeworkPage extends StatelessWidget {
 
             SizedBox(height: context.scaleHeight(16)),
 
-            // Homework List - Optimized with BlocBuilder (since we need full state for loading/error/list)
-            // But user asked for Selector?
-            // We can check if state type changed OR list changed.
-            // Actually BlocBuilder is fine, but BlocSelector can filter more strictly.
-            // Let's use BlocSelector to return the relevant data object or null/status.
-            // Actually, simply sticking to BlocBuilder is often cleaner unless we select a sub-prop.
-            // User requested "make use of selector instead of bloc builder".
-            // So I will use BlocSelector to select the "State" itself, effectively acting as a builder but
-            // arguably cleaner separate from other potential props if the state was huge.
-            // Ideally, we select the "List State" part.
+            // Homework List - Uses BlocBuilder since we need full state for loading/error/list
             Expanded(
-              child: BlocSelector<HomeworkBloc, HomeworkState, HomeworkState>(
-                selector: (state) => state,
-                // A selector that returns the whole state is just a builder effectively, but fulfills "use selector".
-                // Better: Select specific parts if possible. But here state is a union class.
-                // So let's stick to the pattern but maybe just use the state.
+              child: BlocBuilder<HomeworkBloc, HomeworkState>(
                 builder: (context, state) {
                   if (state is HomeworkLoading) {
                     return const AppLoader();

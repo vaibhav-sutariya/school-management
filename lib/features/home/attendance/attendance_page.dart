@@ -35,10 +35,7 @@ class _AttendancePageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      appBar: AppAppBar(
-        title: 'Attendance',
-        profileImageUrl: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
-      ),
+      appBar: const AppAppBar(title: 'Attendance'),
       body: BlocBuilder<AttendanceBloc, AttendanceState>(
         builder: (context, state) {
           return RefreshIndicator(
