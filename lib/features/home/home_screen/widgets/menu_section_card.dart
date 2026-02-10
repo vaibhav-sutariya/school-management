@@ -212,6 +212,9 @@ class MenuSectionCard extends StatelessWidget {
       case 'assignment':
         context.router.push(const AssignmentRoute());
         break;
+      case 'holiday hw':
+        context.router.push(const HolidayHwRoute());
+        break;
       // Add more navigation cases as needed
       default:
         // Handle other menu items

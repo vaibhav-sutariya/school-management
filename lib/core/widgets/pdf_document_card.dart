@@ -2,22 +2,36 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../../core/routes/app_router.gr.dart';
-import '../models/syllabus_model.dart';
+import '../helpers/extensions/responsive_extensions.dart';
+import '../routes/app_router.gr.dart';
 
-class SyllabusCard extends StatelessWidget {
-  final SyllabusModel syllabus;
+/// Generic reusable card widget for displaying PDF documents
+/// Used by Assignment, Syllabus, and Holiday HW features
+class PdfDocumentCard extends StatelessWidget {
+  final String id;
+  final DateTime date;
+  final String subject;
+  final String type;
+  final Color color;
+  final String pdfUrl;
+  final IconData icon;
 
-  const SyllabusCard({super.key, required this.syllabus});
+  const PdfDocumentCard({
+    super.key,
+    required this.id,
+    required this.date,
+    required this.subject,
+    required this.type,
+    required this.color,
+    required this.pdfUrl,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.router.push(
-          PdfViewerRoute(pdfUrl: syllabus.pdfUrl, title: syllabus.type),
-        );
+        context.router.push(PdfViewerRoute(pdfUrl: pdfUrl, title: type));
       },
       child: Container(
         margin: EdgeInsets.only(bottom: context.scaleHeight(12)),
@@ -40,14 +54,10 @@ class SyllabusCard extends StatelessWidget {
               width: context.scale(45),
               height: context.scale(45),
               decoration: BoxDecoration(
-                color: syllabus.color,
+                color: color,
                 borderRadius: BorderRadius.circular(context.scale(12)),
               ),
-              child: Icon(
-                Icons.description_outlined,
-                color: Colors.white,
-                size: context.scale(24),
-              ),
+              child: Icon(icon, color: Colors.white, size: context.scale(24)),
             ),
 
             SizedBox(width: context.scale(16)),
@@ -59,7 +69,7 @@ class SyllabusCard extends StatelessWidget {
                 children: [
                   // Date
                   Text(
-                    DateFormat('dd/MMM/yyyy').format(syllabus.date),
+                    DateFormat('dd/MMM/yyyy').format(date),
                     style: TextStyle(
                       fontSize: context.scaleFont(14),
                       fontWeight: FontWeight.w700,
@@ -71,7 +81,7 @@ class SyllabusCard extends StatelessWidget {
 
                   // Subject
                   Text(
-                    'Subject : ${syllabus.subject}',
+                    'Subject : $subject',
                     style: TextStyle(
                       fontSize: context.scaleFont(12),
                       fontWeight: FontWeight.w500,
@@ -83,7 +93,7 @@ class SyllabusCard extends StatelessWidget {
 
                   // Type
                   Text(
-                    'Type : ${syllabus.type}',
+                    'Type : $type',
                     style: TextStyle(
                       fontSize: context.scaleFont(12),
                       fontWeight: FontWeight.w500,

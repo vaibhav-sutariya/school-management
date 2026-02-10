@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/app_loader.dart';
+import '../../../core/widgets/pdf_document_card.dart';
 import 'bloc/syllabus_bloc.dart';
-import 'widgets/syllabus_card.dart';
 
 @RoutePage()
 class SyllabusPage extends StatelessWidget {
@@ -52,7 +52,16 @@ class SyllabusPage extends StatelessWidget {
                 padding: EdgeInsets.all(context.scale(16)),
                 itemCount: state.syllabusList.length,
                 itemBuilder: (context, index) {
-                  return SyllabusCard(syllabus: state.syllabusList[index]);
+                  final syllabus = state.syllabusList[index];
+                  return PdfDocumentCard(
+                    id: syllabus.id,
+                    date: syllabus.date,
+                    subject: syllabus.subject,
+                    type: syllabus.type,
+                    color: syllabus.color,
+                    pdfUrl: syllabus.pdfUrl,
+                    icon: Icons.description_outlined,
+                  );
                 },
               );
             } else if (state is SyllabusError) {

@@ -6,37 +6,37 @@ import '../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../core/widgets/app_app_bar.dart';
 import '../../../core/widgets/app_loader.dart';
 import '../../../core/widgets/pdf_document_card.dart';
-import 'bloc/assignment_bloc.dart';
+import 'bloc/holiday_hw_bloc.dart';
 
 @RoutePage()
-class AssignmentPage extends StatelessWidget {
-  const AssignmentPage({super.key});
+class HolidayHwPage extends StatelessWidget {
+  const HolidayHwPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AssignmentBloc()..add(AssignmentLoaded()),
+      create: (context) => HolidayHwBloc()..add(HolidayHwLoaded()),
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F5F5),
-        appBar: const AppAppBar(title: 'Assignment'),
-        body: BlocBuilder<AssignmentBloc, AssignmentState>(
+        appBar: const AppAppBar(title: 'Holiday HW'),
+        body: BlocBuilder<HolidayHwBloc, HolidayHwState>(
           builder: (context, state) {
-            if (state is AssignmentLoading) {
+            if (state is HolidayHwLoading) {
               return const Center(child: AppLoader());
-            } else if (state is AssignmentLoadedState) {
-              if (state.assignmentList.isEmpty) {
+            } else if (state is HolidayHwLoadedState) {
+              if (state.holidayHwList.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.assignment_outlined,
+                        Icons.beach_access_outlined,
                         size: context.scale(64),
                         color: Colors.grey.withOpacity(0.5),
                       ),
                       SizedBox(height: context.scaleHeight(16)),
                       Text(
-                        'No Assignments Available',
+                        'No Holiday Homework Available',
                         style: TextStyle(
                           fontSize: context.scaleFont(16),
                           color: Colors.grey,
@@ -50,21 +50,21 @@ class AssignmentPage extends StatelessWidget {
 
               return ListView.builder(
                 padding: EdgeInsets.all(context.scale(16)),
-                itemCount: state.assignmentList.length,
+                itemCount: state.holidayHwList.length,
                 itemBuilder: (context, index) {
-                  final assignment = state.assignmentList[index];
+                  final holidayHw = state.holidayHwList[index];
                   return PdfDocumentCard(
-                    id: assignment.id,
-                    date: assignment.date,
-                    subject: assignment.subject,
-                    type: assignment.type,
-                    color: assignment.color,
-                    pdfUrl: assignment.pdfUrl,
-                    icon: Icons.assignment_outlined,
+                    id: holidayHw.id,
+                    date: holidayHw.date,
+                    subject: holidayHw.subject,
+                    type: holidayHw.type,
+                    color: holidayHw.color,
+                    pdfUrl: holidayHw.pdfUrl,
+                    icon: Icons.beach_access_outlined,
                   );
                 },
               );
-            } else if (state is AssignmentError) {
+            } else if (state is HolidayHwError) {
               return Center(child: Text(state.message));
             }
             return const SizedBox.shrink();
