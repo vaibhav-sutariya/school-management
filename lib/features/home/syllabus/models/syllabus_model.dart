@@ -6,6 +6,7 @@ class SyllabusModel {
   final String subject;
   final String type;
   final Color color;
+  final String pdfUrl;
 
   const SyllabusModel({
     required this.id,
@@ -13,10 +14,15 @@ class SyllabusModel {
     required this.subject,
     required this.type,
     required this.color,
+    required this.pdfUrl,
   });
 
   // Mock data generator
   static List<SyllabusModel> getMockData() {
+    // Using sample PDF URLs for testing
+    const basePdfUrl =
+        'https://online.op.ac.nz/assets/LearningAdvice/99ab78acca/Weekly-study-timetable.pdf';
+
     return [
       SyllabusModel(
         id: '1',
@@ -24,6 +30,7 @@ class SyllabusModel {
         subject: 'All Subjects',
         type: 'PT-2 SYLLABUS & PAPER STYLE',
         color: const Color(0xFF26C6DA),
+        pdfUrl: basePdfUrl,
       ),
       SyllabusModel(
         id: '2',
@@ -31,6 +38,7 @@ class SyllabusModel {
         subject: 'All Subjects',
         type: 'TERM - 1 SYLLABUS & DRAFT STYLE',
         color: const Color(0xFF5C6BC0),
+        pdfUrl: basePdfUrl,
       ),
       SyllabusModel(
         id: '3',
@@ -38,6 +46,7 @@ class SyllabusModel {
         subject: 'Science Olympiad',
         type: 'NSO QUESTION & PAPER STYLE',
         color: const Color(0xFF26A69A),
+        pdfUrl: basePdfUrl,
       ),
       SyllabusModel(
         id: '4',
@@ -45,6 +54,7 @@ class SyllabusModel {
         subject: 'Academic Plan',
         type: 'YEARLY SPLIT SYLLABUS',
         color: const Color(0xFFFF9800),
+        pdfUrl: basePdfUrl,
       ),
       SyllabusModel(
         id: '5',
@@ -52,6 +62,7 @@ class SyllabusModel {
         subject: 'Pre-Session',
         type: 'FOUNDATION SYLLABUS',
         color: const Color(0xFFEC407A),
+        pdfUrl: basePdfUrl,
       ),
     ];
   }

@@ -45,5 +45,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: MealMenuRoute.page),
     AutoRoute(page: TimeTableRoute.page),
     AutoRoute(page: SyllabusRoute.page),
+    AutoRoute(page: SyllabusPdfViewerRoute.page),
   ];
 }
