@@ -29,8 +29,8 @@ class SyllabusCard extends StatelessWidget {
         children: [
           // Colored Icon
           Container(
-            width: context.scale(56),
-            height: context.scale(56),
+            width: context.scale(45),
+            height: context.scale(45),
             decoration: BoxDecoration(
               color: syllabus.color,
               borderRadius: BorderRadius.circular(context.scale(12)),
@@ -38,7 +38,7 @@ class SyllabusCard extends StatelessWidget {
             child: Icon(
               Icons.description_outlined,
               color: Colors.white,
-              size: context.scale(28),
+              size: context.scale(24),
             ),
           ),
 
@@ -53,19 +53,19 @@ class SyllabusCard extends StatelessWidget {
                 Text(
                   DateFormat('dd/MMM/yyyy').format(syllabus.date),
                   style: TextStyle(
-                    fontSize: context.scaleFont(16),
+                    fontSize: context.scaleFont(14),
                     fontWeight: FontWeight.w700,
                     color: Colors.black87,
                   ),
                 ),
 
-                SizedBox(height: context.scaleHeight(4)),
+                SizedBox(height: context.scaleHeight(2)),
 
                 // Subject
                 Text(
                   'Subject : ${syllabus.subject}',
                   style: TextStyle(
-                    fontSize: context.scaleFont(13),
+                    fontSize: context.scaleFont(12),
                     fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
@@ -77,7 +77,7 @@ class SyllabusCard extends StatelessWidget {
                 Text(
                   'Type : ${syllabus.type}',
                   style: TextStyle(
-                    fontSize: context.scaleFont(13),
+                    fontSize: context.scaleFont(12),
                     fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
