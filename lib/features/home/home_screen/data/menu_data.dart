@@ -40,7 +40,7 @@ class QuickMenuData {
         ),
         MenuItemData(
           icon: Icons.menu_book_rounded,
-          label: 'Homework',
+          label: 'Subjectwise Homework',
           iconColor: Color(0xFFFF7043),
           backgroundColor: Color(0xFFFBE9E7),
         ),
