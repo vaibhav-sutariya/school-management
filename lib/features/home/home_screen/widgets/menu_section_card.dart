@@ -247,6 +247,11 @@ class MenuSectionCard extends StatelessWidget {
           title: 'School Website',
         );
         break;
+
+      case 'gatepass':
+        context.router.push(const GatePassRoute());
+        break;
+
       case 'google map':
         SocialMediaLauncher.launch(
           context,

@@ -55,5 +55,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ConcernRoute.page),
     AutoRoute(page: AddConcernRoute.page),
     AutoRoute(page: ConcernDetailsRoute.page),
+    AutoRoute(page: GatePassRoute.page),
   ];
 }
