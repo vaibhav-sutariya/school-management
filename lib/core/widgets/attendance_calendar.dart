@@ -33,6 +33,24 @@ class AttendanceCalendar extends StatefulWidget {
   /// Academic year text (e.g., "ACADEMIC YEAR 23/24")
   final String? academicYear;
 
+  /// Builder for custom day cell
+  final Widget Function(BuildContext, DateTime, bool, bool)? dayBuilder;
+
+  /// Custom padding for the card
+  final EdgeInsetsGeometry? padding;
+
+  /// Custom margin for the card
+  final EdgeInsetsGeometry? margin;
+
+  /// Whether to show the card elevation
+  final bool showElevation;
+
+  /// Whether to show the legend
+  final bool showLegend;
+
+  /// Whether to allow selecting future dates
+  final bool allowFutureDates;
+
   const AttendanceCalendar({
     super.key,
     this.selectedDate,
@@ -40,6 +58,12 @@ class AttendanceCalendar extends StatefulWidget {
     this.onDateSelected,
     this.onMonthChanged,
     this.academicYear,
+    this.dayBuilder,
+    this.padding,
+    this.margin,
+    this.showElevation = true,
+    this.showLegend = true,
+    this.allowFutureDates = false,
   });
 
   @override
@@ -70,6 +94,13 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
   void _previousMonth() {
     setState(() {
       _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
+    });
+    widget.onMonthChanged?.call(_currentMonth);
+  }
+
+  void _nextMonth() {
+    setState(() {
+      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
     });
     widget.onMonthChanged?.call(_currentMonth);
   }
@@ -137,14 +168,17 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
 
     return Card(
       color: Colors.white,
-      elevation: 2,
-      shadowColor: Colors.black.withOpacity(0.1),
+      elevation: widget.showElevation ? 2 : 0,
+      shadowColor: widget.showElevation
+          ? Colors.black.withValues(alpha: 0.1)
+          : Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(context.scale(20)),
       ),
-      margin: EdgeInsets.symmetric(horizontal: context.scale(16)),
+      margin:
+          widget.margin ?? EdgeInsets.symmetric(horizontal: context.scale(16)),
       child: Padding(
-        padding: EdgeInsets.all(context.scale(16)),
+        padding: widget.padding ?? EdgeInsets.all(context.scale(16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -157,9 +191,11 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
             SizedBox(height: context.scaleHeight(8)),
             // Calendar grid
             _buildCalendarGrid(context, days),
-            SizedBox(height: context.scaleHeight(16)),
-            // Legend
-            _buildLegend(context),
+            if (widget.showLegend) ...[
+              SizedBox(height: context.scaleHeight(16)),
+              // Legend
+              _buildLegend(context),
+            ],
           ],
         ),
       ),
@@ -173,28 +209,54 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
       color: context.colors.primary,
     );
 
+    // Check if next month is allowed
+    // Allowed if allowFutureDates is true OR current month is before current real month
+    final now = DateTime.now();
+    final currentRealMonth = DateTime(now.year, now.month);
+    final isNextMonthAllowed =
+        widget.allowFutureDates || _currentMonth.isBefore(currentRealMonth);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: Icon(
-            Icons.chevron_left,
-            color: context.colors.primary,
-            size: context.scale(24),
+          icon: Container(
+            width: context.scale(30),
+            height: context.scale(30),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: context.colors.primary.withValues(alpha: 0.1),
+            ),
+            child: Icon(
+              Icons.chevron_left,
+              color: context.colors.primary,
+              size: context.scale(20),
+            ),
           ),
           onPressed: _previousMonth,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
         ),
         Text(monthYear, style: monthTextStyle),
-        // Next month button - disabled (users can only go back)
         IconButton(
-          icon: Icon(
-            Icons.chevron_right,
-            color: Colors.grey[300], // Disabled color
-            size: context.scale(24),
+          icon: Container(
+            width: context.scale(30),
+            height: context.scale(30),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isNextMonthAllowed
+                  ? context.colors.primary.withValues(alpha: 0.1)
+                  : Colors.grey.withValues(alpha: 0.1),
+            ),
+            child: Icon(
+              Icons.chevron_right,
+              color: isNextMonthAllowed
+                  ? Colors.black87
+                  : Colors.grey.withValues(alpha: 0.5),
+              size: context.scale(20),
+            ),
           ),
-          onPressed: null, // Disabled
+          onPressed: isNextMonthAllowed ? _nextMonth : null,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
         ),
@@ -223,13 +285,14 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
 
   Widget _buildCalendarGrid(BuildContext context, List<DateTime> days) {
     return GridView.builder(
+      padding: EdgeInsets.zero, // Remove default padding
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
-        mainAxisSpacing: context.scaleHeight(8),
-        crossAxisSpacing: context.scale(8),
-        childAspectRatio: 1.0,
+        mainAxisSpacing: context.scaleHeight(4), // Reduced spacing
+        crossAxisSpacing: context.scale(4), // Reduced spacing
+        childAspectRatio: 1.1, // Make cells slightly wider to reduce height
       ),
       itemCount: days.length,
       itemBuilder: (context, index) {
@@ -252,6 +315,43 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
             : (widget.attendanceData[normalizedDate] ??
                   AttendanceStatus.notMarked);
         final hasStatus = status != AttendanceStatus.notMarked;
+
+        if (widget.dayBuilder != null) {
+          return GestureDetector(
+            onTap: () {
+              // Determine if selectable logic matches _buildDateCell
+              final today = DateTime.now();
+              final normalizedDate = DateTime(date.year, date.month, date.day);
+              final normalizedToday = DateTime(
+                today.year,
+                today.month,
+                today.day,
+              );
+              final isFutureDate = normalizedDate.isAfter(normalizedToday);
+              // Allow selection based on similar logic or just pass tap
+              // Allow selection if not future date OR if future dates are allowed
+              if (!isFutureDate || widget.allowFutureDates) {
+                _selectDate(date);
+              } else {
+                // If user wants to allow future dates selection for events, we might need to change this logic.
+                // For now, let's assume the caller handles logic or we use standard logic.
+                // Wait, for Calendar Page we DO want to select future dates!
+                // The existing logic inside _buildDateCell restricts future dates.
+                // We should probably allow the builder to handle tap or provide a param `allowFutureDates`.
+                // But to keep it simple and not break attendance, let's use the builder's tap if possible?
+                // Actually, let's just delegate the UI building. The onTap logic is inside _buildDateCell.
+                // If we use dayBuilder, we should wrap it with GestureDetector.
+                _selectDate(date);
+              }
+            },
+            child: widget.dayBuilder!(
+              context,
+              date,
+              isSelected,
+              isCurrentMonth,
+            ),
+          );
+        }
 
         return _buildDateCell(
           context,
@@ -279,7 +379,7 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
     final normalizedDate = DateTime(date.year, date.month, date.day);
     final normalizedToday = DateTime(today.year, today.month, today.day);
     final isFutureDate = normalizedDate.isAfter(normalizedToday);
-    final isSelectable = !isFutureDate;
+    final isSelectable = !isFutureDate || widget.allowFutureDates;
     final isSunday = date.weekday == 7;
 
     // Sundays are always holidays, so always show holiday color
@@ -289,8 +389,10 @@ class _AttendanceCalendarState extends State<AttendanceCalendar> {
     return GestureDetector(
       onTap: isSelectable ? () => _selectDate(date) : null,
       child: Opacity(
-        // Reduce opacity for future dates (not Sundays)
-        opacity: isFutureDate && !isSunday ? 0.4 : 1.0,
+        // Reduce opacity for future dates (not Sundays) only if future dates NOT allowed
+        opacity: isFutureDate && !isSunday && !widget.allowFutureDates
+            ? 0.4
+            : 1.0,
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,

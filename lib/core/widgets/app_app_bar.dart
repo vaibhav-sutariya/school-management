@@ -20,6 +20,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
   final List<Widget>? actions;
   final double? elevation;
+  final bool showBackButton;
 
   const AppAppBar({
     super.key,
@@ -32,6 +33,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.automaticallyImplyLeading = false,
     this.actions,
     this.elevation = 0,
+    this.showBackButton = true,
   });
 
   @override
@@ -44,7 +46,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: fgColor,
       elevation: elevation,
       automaticallyImplyLeading: automaticallyImplyLeading,
-      leading: _buildBackButton(context, fgColor),
+      leading: showBackButton ? _buildBackButton(context, fgColor) : null,
       title: Text(
         title,
         style: TextStyle(
@@ -53,12 +55,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: fgColor,
         ),
       ),
-      titleSpacing: 0,
+      titleSpacing: context.scale(16),
       // centerTitle: true,
-      actions: [
-        ...?actions,
-        _buildProfileImage(context, fgColor),
-      ],
+      actions: [...?actions, _buildProfileImage(context, fgColor)],
     );
   }
 
@@ -82,7 +81,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     return GestureDetector(
       onTap: onProfilePressed,
       child: Container(
-        margin: EdgeInsets.only(right: context.scale(8)),
+        margin: EdgeInsets.only(right: context.scale(12)), // Increased margin
         child: ClipRRect(
           borderRadius: BorderRadius.circular(context.scale(20)),
           child: profileImageUrl != null && profileImageUrl!.isNotEmpty
@@ -116,7 +115,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                   width: context.scale(40),
                   height: context.scale(40),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(context.scale(20)),
                   ),
                   child: Icon(
