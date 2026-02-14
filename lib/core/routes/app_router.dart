@@ -52,5 +52,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ExamTimeTableRoute.page),
     AutoRoute(page: PaperRoute.page),
     AutoRoute(page: ClassTestRoute.page),
+    AutoRoute(page: ReportCardRoute.page),
   ];
 }
