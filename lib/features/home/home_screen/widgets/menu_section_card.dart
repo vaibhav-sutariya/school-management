@@ -206,9 +206,9 @@ class MenuSectionCard extends StatelessWidget {
         break;
       case 'time table':
         context.router.push(const TimeTableRoute());
-        break;
-      case 'syllabus':
-        context.router.push(const SyllabusRoute());
+      case 'concern':
+      case 'academics -> concern':
+        context.router.push(const ConcernRoute());
         break;
       case 'assignment':
         context.router.push(const AssignmentRoute());
