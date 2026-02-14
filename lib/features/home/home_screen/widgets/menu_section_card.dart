@@ -256,6 +256,18 @@ class MenuSectionCard extends StatelessWidget {
         );
         break;
 
+      case 'exam time table':
+        context.router.push(const ExamTimeTableRoute());
+        break;
+
+      case 'paper':
+        context.router.push(const PaperRoute());
+        break;
+
+      case 'class test':
+        context.router.push(const ClassTestRoute());
+        break;
+
       default:
         // Handle other menu items
         break;

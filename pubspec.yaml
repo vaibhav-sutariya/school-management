@@ -65,6 +65,7 @@ dependencies:
   flutter_pdfview: ^1.4.4
   url_launcher: ^6.3.2
   webview_flutter: ^4.13.1
+  equatable: ^2.0.8
 
 dev_dependencies:
   flutter_test:
