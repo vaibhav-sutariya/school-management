@@ -48,5 +48,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: AssignmentRoute.page),
     AutoRoute(page: HolidayHwRoute.page),
     AutoRoute(page: PdfViewerRoute.page),
+    AutoRoute(page: AppWebViewRoute.page),
   ];
 }

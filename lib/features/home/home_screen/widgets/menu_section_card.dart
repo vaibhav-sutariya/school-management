@@ -4,6 +4,7 @@ import 'package:starter_app/cubit/theme_cubit.dart';
 
 import '../../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../../core/routes/app_router.gr.dart';
+import '../../../../../core/utils/social_media_launcher.dart';
 import '../data/category_theme_config.dart';
 import '../data/menu_data.dart';
 import 'menu_item.dart';
@@ -215,7 +216,46 @@ class MenuSectionCard extends StatelessWidget {
       case 'holiday hw':
         context.router.push(const HolidayHwRoute());
         break;
-      // Add more navigation cases as needed
+
+      // Social Media Interactions using Launcher
+      case 'facebook':
+        SocialMediaLauncher.launch(
+          context,
+          url: 'https://www.facebook.com/vaibhav.sutariya.75',
+          title: 'Facebook',
+        );
+        break;
+      case 'instagram':
+        SocialMediaLauncher.launch(
+          context,
+          url: 'https://www.instagram.com/wakeup_vs/?hl=en',
+          title: 'Instagram',
+        );
+        break;
+      case 'youtube':
+        SocialMediaLauncher.launch(
+          context,
+          url: 'https://www.youtube.com/@SwaminarayanGadi',
+          title: 'YouTube',
+          forceApp: true,
+        );
+        break;
+      case 'website':
+        SocialMediaLauncher.launch(
+          context,
+          url: 'https://www.swaminarayangadi.com/',
+          title: 'School Website',
+        );
+        break;
+      case 'google map':
+        SocialMediaLauncher.launch(
+          context,
+          url: 'https://maps.app.goo.gl/s6amhb2UYEyKhoB56',
+          title: 'Location',
+          forceApp: true,
+        );
+        break;
+
       default:
         // Handle other menu items
         break;
