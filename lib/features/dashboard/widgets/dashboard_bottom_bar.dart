@@ -114,7 +114,7 @@ class DashboardBottomBar extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF150E9F).withOpacity(0.5),
+                          color: context.colors.primary.withOpacity(0.5),
                           blurRadius: context.scale(8),
                           // spreadRadius: context.scale(1),
                           offset: Offset(0, context.scaleHeight(2)),
