@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:starter_app/core/routes/app_router.gr.dart';
 
 import 'auth_guard.dart';
+import '../../features/home/ptm/ptm_page.dart';
+import '../../features/home/achievement/achievement_page.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
@@ -60,5 +62,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ResetPasswordRoute.page),
     AutoRoute(page: AboutAppRoute.page),
     AutoRoute(page: NotificationRoute.page),
+    AutoRoute(page: PtmRoute.page),
+    AutoRoute(page: AchievementRoute.page),
   ];
 }
