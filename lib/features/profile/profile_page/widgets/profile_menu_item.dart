@@ -50,7 +50,7 @@ class ProfileMenuItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: context.textTheme.titleMedium?.copyWith(
+                  style: context.textTheme.titleLarge?.copyWith(
                     color: isDestructive
                         ? context.colors.error
                         : context.colors.surface900,

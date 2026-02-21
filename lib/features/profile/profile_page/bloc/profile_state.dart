@@ -10,7 +10,27 @@ abstract class ProfileState extends Equatable {
 class ProfileLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  const ProfileLoaded();
+  final String selectedAcademicYear;
+  final List<String> availableAcademicYears;
+
+  const ProfileLoaded({
+    this.selectedAcademicYear = '2025-2026',
+    this.availableAcademicYears = const ['2023-2024', '2024-2025', '2025-2026'],
+  });
+
+  ProfileLoaded copyWith({
+    String? selectedAcademicYear,
+    List<String>? availableAcademicYears,
+  }) {
+    return ProfileLoaded(
+      selectedAcademicYear: selectedAcademicYear ?? this.selectedAcademicYear,
+      availableAcademicYears:
+          availableAcademicYears ?? this.availableAcademicYears,
+    );
+  }
+
+  @override
+  List<Object?> get props => [selectedAcademicYear, availableAcademicYears];
 }
 
 class LogoutSuccess extends ProfileState {}

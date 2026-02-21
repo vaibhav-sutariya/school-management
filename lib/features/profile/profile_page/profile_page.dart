@@ -2,12 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/helpers/extensions/responsive_extensions.dart';
-import '../../../core/routes/app_router.gr.dart';
-import '../../../core/widgets/app_loader.dart';
-import '../../../cubit/theme_cubit.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:starter_app/core/routes/app_router.gr.dart';
+import 'package:starter_app/core/widgets/app_loader.dart';
+import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../home/home_screen/widgets/home_header.dart';
 import 'bloc/profile_bloc.dart';
+import 'widgets/academic_year_bottom_sheet.dart';
 import 'widgets/profile_menu_item.dart';
 
 @RoutePage()
@@ -94,31 +98,75 @@ class ProfilePage extends StatelessWidget {
                                     ProfileMenuItem(
                                       icon: Icons.calendar_today_rounded,
                                       text: 'Select Academic Year',
-                                      onTap: () {},
+                                      onTap: () {
+                                        final profileBloc = context
+                                            .read<ProfileBloc>();
+                                        showModalBottomSheet(
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) => BlocProvider.value(
+                                            value: profileBloc,
+                                            child:
+                                                const SelectAcademicYearBottomSheet(),
+                                          ),
+                                        );
+                                      },
                                     ),
                                     _buildDivider(context),
                                     ProfileMenuItem(
                                       icon: Icons.lock_outline_rounded,
                                       text: 'Reset Password',
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.router.push(
+                                          const ResetPasswordRoute(),
+                                        );
+                                      },
                                     ),
                                     _buildDivider(context),
                                     ProfileMenuItem(
                                       icon: Icons.star_outline_rounded,
                                       text: 'Rate our App',
-                                      onTap: () {},
+                                      onTap: () async {
+                                        final Uri url = Uri.parse(
+                                          'https://play.google.com/store/apps/details?id=info.sgadi.shangardarshan&hl=en_IN',
+                                        );
+                                        if (!await launchUrl(url)) {
+                                          if (context.mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  'Could not launch URL',
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
                                     ),
                                     _buildDivider(context),
                                     ProfileMenuItem(
                                       icon: Icons.share_outlined,
                                       text: 'Share',
-                                      onTap: () {},
+                                      onTap: () {
+                                        SharePlus.instance.share(
+                                          ShareParams(
+                                            text:
+                                                'Check out this amazing school management app: https://play.google.com/store/apps/details?id=info.sgadi.shangardarshan&hl=en_IN',
+                                          ),
+                                        );
+                                      },
                                     ),
                                     _buildDivider(context),
                                     ProfileMenuItem(
                                       icon: Icons.info_outline_rounded,
                                       text: 'About App',
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.router.push(
+                                          const AboutAppRoute(),
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
@@ -142,15 +190,73 @@ class ProfilePage extends StatelessWidget {
                                   text: 'Logout',
                                   isDestructive: true,
                                   onTap: () {
-                                    context.read<ProfileBloc>().add(
-                                      LogoutRequested(),
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext dialogContext) {
+                                        return AlertDialog(
+                                          title: Text(
+                                            'Confirm Logout',
+                                            style: context.textTheme.titleLarge
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: context.colors.primary,
+                                                ),
+                                          ),
+                                          content: Text(
+                                            'Are you sure you want to securely log out of your account?',
+                                            style: context.textTheme.bodyMedium
+                                                ?.copyWith(
+                                                  color:
+                                                      context.colors.surface800,
+                                                ),
+                                          ),
+                                          backgroundColor:
+                                              context.colors.background,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(dialogContext),
+                                              child: Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                  color:
+                                                      context.colors.surface500,
+                                                ),
+                                              ),
+                                            ),
+                                            FilledButton(
+                                              onPressed: () {
+                                                // 1. Dispatch background api call
+                                                context.read<ProfileBloc>().add(
+                                                  LogoutRequested(),
+                                                );
+                                                // 2. Clear stack and immediately navigate to root/login
+                                                context.router.replaceAll([
+                                                  const LoginRoute(),
+                                                ]);
+                                              },
+                                              style: FilledButton.styleFrom(
+                                                backgroundColor:
+                                                    context.colors.error,
+                                                foregroundColor: Colors.white,
+                                              ),
+                                              child: const Text('Logout'),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     );
                                   },
                                 ),
                               ),
                               SizedBox(height: context.scaleHeight(24)),
                               Text(
-                                'App Version : 2.0.28',
+                                'App Version : 1.0.0',
                                 style: context.textTheme.bodyMedium?.copyWith(
                                   color: context.colors.surface500,
                                 ),

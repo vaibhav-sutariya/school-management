@@ -16,6 +16,7 @@ import 'cubit/internet/internet_cubit.dart';
 import 'cubit/locale_cubit.dart';
 import 'cubit/theme_cubit.dart';
 import 'l10n/l10n.dart';
+import 'features/profile/multi_account/bloc/multi_account_bloc.dart';
 // 491B6D
 
 void main() async {
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
         BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+        BlocProvider<MultiAccountBloc>(create: (_) => MultiAccountBloc()),
       ],
       child: BlocBuilder<ThemeCubit, AppTheme>(
         builder: (context, themeState) {

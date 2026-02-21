@@ -8,3 +8,12 @@ abstract class ProfileEvent extends Equatable {
 }
 
 class LogoutRequested extends ProfileEvent {}
+
+class SelectAcademicYear extends ProfileEvent {
+  final String year;
+
+  const SelectAcademicYear(this.year);
+
+  @override
+  List<Object?> get props => [year];
+}
