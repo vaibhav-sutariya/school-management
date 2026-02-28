@@ -64,5 +64,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: NotificationRoute.page),
     AutoRoute(page: PtmRoute.page),
     AutoRoute(page: AchievementRoute.page),
+    AutoRoute(page: ReportCardRoute.page),
   ];
 }
