@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:starter_app/core/routes/app_router.gr.dart';
+import 'package:student_app/core/routes/app_router.gr.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/show_snackbar.dart';

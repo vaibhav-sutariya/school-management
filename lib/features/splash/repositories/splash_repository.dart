@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:starter_app/features/splash/model/validate_token_model.dart';
+import 'package:student_app/features/splash/model/validate_token_model.dart';
 
 import '../../../core/error/failures.dart';
 

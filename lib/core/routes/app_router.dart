@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:starter_app/core/routes/app_router.gr.dart';
+import 'package:student_app/core/routes/app_router.gr.dart';
 
 import 'auth_guard.dart';
-import '../../features/home/ptm/ptm_page.dart';
-import '../../features/home/achievement/achievement_page.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 import '../helpers/extensions/responsive_extensions.dart';
 

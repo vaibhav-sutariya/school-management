@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 import '../models/notice_model.dart';
 

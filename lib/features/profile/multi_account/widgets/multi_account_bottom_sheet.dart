@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:starter_app/core/routes/app_router.gr.dart';
+import 'package:student_app/core/routes/app_router.gr.dart';
 import '../../../../../core/helpers/extensions/responsive_extensions.dart';
 import '../../../../../cubit/theme_cubit.dart';
 import '../bloc/multi_account_bloc.dart';

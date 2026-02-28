@@ -13,13 +13,13 @@ import 'package:connectivity_plus/connectivity_plus.dart' as _i895;
 import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:starter_app/core/connection/connection_checker.dart' as _i635;
-import 'package:starter_app/core/di/register_module.dart' as _i981;
-import 'package:starter_app/features/pdf_viewer/repositories/pdf_repository.dart'
+import 'package:student_app/core/connection/connection_checker.dart' as _i635;
+import 'package:student_app/core/di/register_module.dart' as _i981;
+import 'package:student_app/features/pdf_viewer/repositories/pdf_repository.dart'
     as _i178;
-import 'package:starter_app/features/splash/repositories/splash_repository.dart'
+import 'package:student_app/features/splash/repositories/splash_repository.dart'
     as _i452;
-import 'package:starter_app/features/splash/repositories/splash_repository_impl.dart'
+import 'package:student_app/features/splash/repositories/splash_repository_impl.dart'
     as _i119;
 
 extension GetItInjectableX on _i174.GetIt {

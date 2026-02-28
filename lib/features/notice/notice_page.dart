@@ -1,10 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/core/widgets/app_app_bar.dart';
-import 'package:starter_app/core/widgets/end_of_list_indicator.dart';
-import 'package:starter_app/core/widgets/month_calendar.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/core/widgets/app_app_bar.dart';
+import 'package:student_app/core/widgets/end_of_list_indicator.dart';
+import 'package:student_app/core/widgets/month_calendar.dart';
 
 import 'bloc/notice_bloc.dart';
 import 'widgets/notice_card.dart';

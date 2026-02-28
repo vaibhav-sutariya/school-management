@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/core/widgets/app_app_bar.dart';
-import 'package:starter_app/core/widgets/text_field.dart' as app_text_field;
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/core/widgets/app_app_bar.dart';
+import 'package:student_app/core/widgets/text_field.dart' as app_text_field;
+import 'package:student_app/cubit/theme_cubit.dart';
 
 import 'bloc/reset_password_bloc.dart';
 import 'bloc/reset_password_event.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:starter_app/core/widgets/app_text_field.dart';
+import 'package:student_app/core/widgets/app_text_field.dart';
 
 class OtpInputRow extends StatelessWidget {
   const OtpInputRow({super.key});

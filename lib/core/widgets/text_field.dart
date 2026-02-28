@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 class TextField extends StatefulWidget {
   final TextEditingController? controller;

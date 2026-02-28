@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:starter_app/core/utils/preference_utils.dart';
+import 'package:student_app/core/utils/preference_utils.dart';
 
 import '../core/theme/app_theme.dart';
 import '../core/theme/dark_theme.dart';

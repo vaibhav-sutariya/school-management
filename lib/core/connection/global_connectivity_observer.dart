@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 import '../../cubit/internet/internet_cubit.dart';
 import '../../gen/assets.gen.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 import '../core/style/text_styles.dart';
 

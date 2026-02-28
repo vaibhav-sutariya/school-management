@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:starter_app/gen/assets.gen.dart';
+import 'package:student_app/gen/assets.gen.dart';
 
 /// Configuration for category-specific theming including background images and overlay colors
 class CategoryThemeConfig {

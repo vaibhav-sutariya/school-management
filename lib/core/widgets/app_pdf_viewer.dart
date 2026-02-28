@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:starter_app/core/widgets/app_loader.dart';
+import 'package:student_app/core/widgets/app_loader.dart';
 
 class AppPdfViewer extends StatefulWidget {
   final String filePath;

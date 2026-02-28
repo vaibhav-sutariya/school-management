@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:starter_app/core/connection/connection_checker.dart';
+import 'package:student_app/core/connection/connection_checker.dart';
 
 class InternetState with EquatableMixin {
   final bool isConnected;

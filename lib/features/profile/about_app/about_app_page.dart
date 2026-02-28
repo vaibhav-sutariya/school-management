@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/core/widgets/app_app_bar.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/core/widgets/app_app_bar.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 @RoutePage()

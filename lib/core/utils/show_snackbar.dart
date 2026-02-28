@@ -1,6 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 void showSnackBar(BuildContext context, String content) {
   ScaffoldMessenger.of(context)

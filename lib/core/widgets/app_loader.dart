@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 /// A simple and consistent loader widget used throughout the app.
 class AppLoader extends StatelessWidget {

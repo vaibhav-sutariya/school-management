@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
 
 import 'core/connection/global_connectivity_observer.dart';
 import 'core/di/injection.dart';

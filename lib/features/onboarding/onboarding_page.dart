@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/core/routes/app_router.gr.dart';
-import 'package:starter_app/core/utils/preference_utils.dart';
-import 'package:starter_app/core/widgets/app_primary_button.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/core/routes/app_router.gr.dart';
+import 'package:student_app/core/utils/preference_utils.dart';
+import 'package:student_app/core/widgets/app_primary_button.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 
 import 'models/onboarding_item.dart';
 import 'widgets/onboarding_indicator.dart';

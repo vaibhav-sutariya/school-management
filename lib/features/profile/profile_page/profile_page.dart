@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:share_plus/share_plus.dart';
-import 'package:starter_app/core/helpers/extensions/responsive_extensions.dart';
-import 'package:starter_app/core/routes/app_router.gr.dart';
-import 'package:starter_app/core/widgets/app_loader.dart';
-import 'package:starter_app/cubit/theme_cubit.dart';
+import 'package:student_app/core/helpers/extensions/responsive_extensions.dart';
+import 'package:student_app/core/routes/app_router.gr.dart';
+import 'package:student_app/core/widgets/app_loader.dart';
+import 'package:student_app/cubit/theme_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../home/home_screen/widgets/home_header.dart';

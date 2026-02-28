@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:starter_app/core/routes/app_router.gr.dart';
+import 'package:student_app/core/routes/app_router.gr.dart';
 
 import '../../../../../core/widgets/app_primary_button.dart';
 import '../../../../../core/widgets/app_text_field.dart';

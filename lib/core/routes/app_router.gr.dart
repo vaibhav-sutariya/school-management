@@ -12,105 +12,105 @@
 import 'package:auto_route/auto_route.dart' as _i50;
 import 'package:collection/collection.dart' as _i55;
 import 'package:flutter/material.dart' as _i51;
-import 'package:starter_app/core/widgets/app_web_view_page.dart' as _i5;
-import 'package:starter_app/core/widgets/scroll_aware_bottom_bar_controller.dart'
+import 'package:student_app/core/widgets/app_web_view_page.dart' as _i5;
+import 'package:student_app/core/widgets/scroll_aware_bottom_bar_controller.dart'
     as _i56;
-import 'package:starter_app/features/auth/screens/forgot_password/ui/forgot_password_page.dart'
+import 'package:student_app/features/auth/screens/forgot_password/ui/forgot_password_page.dart'
     as _i15;
-import 'package:starter_app/features/auth/screens/forgot_password/ui/new_password_page.dart'
+import 'package:student_app/features/auth/screens/forgot_password/ui/new_password_page.dart'
     as _i27;
-import 'package:starter_app/features/auth/screens/forgot_password/ui/password_success_page.dart'
+import 'package:student_app/features/auth/screens/forgot_password/ui/password_success_page.dart'
     as _i33;
-import 'package:starter_app/features/auth/screens/login/ui/login_page.dart'
+import 'package:student_app/features/auth/screens/login/ui/login_page.dart'
     as _i25;
-import 'package:starter_app/features/auth/screens/password_login/ui/password_login_page.dart'
+import 'package:student_app/features/auth/screens/password_login/ui/password_login_page.dart'
     as _i32;
-import 'package:starter_app/features/auth/screens/verification/ui/verification_page.dart'
+import 'package:student_app/features/auth/screens/verification/ui/verification_page.dart'
     as _i46;
-import 'package:starter_app/features/calendar/calendar_page.dart' as _i8;
-import 'package:starter_app/features/dashboard/dashboard_page.dart' as _i13;
-import 'package:starter_app/features/home/achievement/achievement_page.dart'
+import 'package:student_app/features/calendar/calendar_page.dart' as _i8;
+import 'package:student_app/features/dashboard/dashboard_page.dart' as _i13;
+import 'package:student_app/features/home/achievement/achievement_page.dart'
     as _i2;
-import 'package:starter_app/features/home/assignment/assignment_page.dart'
+import 'package:student_app/features/home/assignment/assignment_page.dart'
     as _i6;
-import 'package:starter_app/features/home/attendance/attendance_page.dart'
+import 'package:student_app/features/home/attendance/attendance_page.dart'
     as _i7;
-import 'package:starter_app/features/home/class_test/class_test_page.dart'
+import 'package:student_app/features/home/class_test/class_test_page.dart'
     as _i9;
-import 'package:starter_app/features/home/classwork/classwork_page.dart'
+import 'package:student_app/features/home/classwork/classwork_page.dart'
     as _i10;
-import 'package:starter_app/features/home/concern/add_concern/add_concern_page.dart'
+import 'package:student_app/features/home/concern/add_concern/add_concern_page.dart'
     as _i3;
-import 'package:starter_app/features/home/concern/concern_details/concern_details_page.dart'
+import 'package:student_app/features/home/concern/concern_details/concern_details_page.dart'
     as _i11;
-import 'package:starter_app/features/home/concern/concern_page.dart' as _i12;
-import 'package:starter_app/features/home/concern/models/concern_model.dart'
+import 'package:student_app/features/home/concern/concern_page.dart' as _i12;
+import 'package:student_app/features/home/concern/models/concern_model.dart'
     as _i52;
-import 'package:starter_app/features/home/exam_time_table/ui/exam_time_table_page.dart'
+import 'package:student_app/features/home/exam_time_table/ui/exam_time_table_page.dart'
     as _i14;
-import 'package:starter_app/features/home/gallery/gallery_details_screen/gallery_detail_page.dart'
+import 'package:student_app/features/home/gallery/gallery_details_screen/gallery_detail_page.dart'
     as _i16;
-import 'package:starter_app/features/home/gallery/gallery_screen/gallery_page.dart'
+import 'package:student_app/features/home/gallery/gallery_screen/gallery_page.dart'
     as _i18;
-import 'package:starter_app/features/home/gallery/gallery_screen/models/gallery_image_model.dart'
+import 'package:student_app/features/home/gallery/gallery_screen/models/gallery_image_model.dart'
     as _i54;
-import 'package:starter_app/features/home/gallery/gallery_screen/models/gallery_model.dart'
+import 'package:student_app/features/home/gallery/gallery_screen/models/gallery_model.dart'
     as _i53;
-import 'package:starter_app/features/home/gallery/viewer_screen/gallery_image_viewer_page.dart'
+import 'package:student_app/features/home/gallery/viewer_screen/gallery_image_viewer_page.dart'
     as _i17;
-import 'package:starter_app/features/home/gate_pass/gate_pass_page.dart'
+import 'package:student_app/features/home/gate_pass/gate_pass_page.dart'
     as _i19;
-import 'package:starter_app/features/home/holiday_hw/holiday_hw_page.dart'
+import 'package:student_app/features/home/holiday_hw/holiday_hw_page.dart'
     as _i20;
-import 'package:starter_app/features/home/home_screen/home_page.dart' as _i21;
-import 'package:starter_app/features/home/homework/homework_page.dart' as _i22;
-import 'package:starter_app/features/home/leave/add_leave/add_leave_page.dart'
+import 'package:student_app/features/home/home_screen/home_page.dart' as _i21;
+import 'package:student_app/features/home/homework/homework_page.dart' as _i22;
+import 'package:student_app/features/home/leave/add_leave/add_leave_page.dart'
     as _i4;
-import 'package:starter_app/features/home/leave/leave_detail_screen/leave_detail_page.dart'
+import 'package:student_app/features/home/leave/leave_detail_screen/leave_detail_page.dart'
     as _i23;
-import 'package:starter_app/features/home/leave/leave_screen/leave_page.dart'
+import 'package:student_app/features/home/leave/leave_screen/leave_page.dart'
     as _i24;
-import 'package:starter_app/features/home/meal_menu/meal_menu_page.dart'
+import 'package:student_app/features/home/meal_menu/meal_menu_page.dart'
     as _i26;
-import 'package:starter_app/features/home/paper/paper_page.dart' as _i31;
-import 'package:starter_app/features/home/ptm/ptm_page.dart' as _i36;
-import 'package:starter_app/features/home/remarks/remark_details_screen/remark_detail_page.dart'
+import 'package:student_app/features/home/paper/paper_page.dart' as _i31;
+import 'package:student_app/features/home/ptm/ptm_page.dart' as _i36;
+import 'package:student_app/features/home/remarks/remark_details_screen/remark_detail_page.dart'
     as _i37;
-import 'package:starter_app/features/home/remarks/remarks_screen/models/remark_model.dart'
+import 'package:student_app/features/home/remarks/remarks_screen/models/remark_model.dart'
     as _i57;
-import 'package:starter_app/features/home/remarks/remarks_screen/remarks_page.dart'
+import 'package:student_app/features/home/remarks/remarks_screen/remarks_page.dart'
     as _i38;
-import 'package:starter_app/features/home/report_card/report_card_page.dart'
+import 'package:student_app/features/home/report_card/report_card_page.dart'
     as _i39;
-import 'package:starter_app/features/home/syllabus/syllabus_page.dart' as _i44;
-import 'package:starter_app/features/home/time_table/ui/time_table_page.dart'
+import 'package:student_app/features/home/syllabus/syllabus_page.dart' as _i44;
+import 'package:student_app/features/home/time_table/ui/time_table_page.dart'
     as _i45;
-import 'package:starter_app/features/home/videos/detail/video_detail_page.dart'
+import 'package:student_app/features/home/videos/detail/video_detail_page.dart'
     as _i47;
-import 'package:starter_app/features/home/videos/videos_screen/models/video_item_model.dart'
+import 'package:student_app/features/home/videos/videos_screen/models/video_item_model.dart'
     as _i59;
-import 'package:starter_app/features/home/videos/videos_screen/models/video_model.dart'
+import 'package:student_app/features/home/videos/videos_screen/models/video_model.dart'
     as _i58;
-import 'package:starter_app/features/home/videos/videos_screen/videos_page.dart'
+import 'package:student_app/features/home/videos/videos_screen/videos_page.dart'
     as _i49;
-import 'package:starter_app/features/home/videos/viewer_screen/video_viewer_page.dart'
+import 'package:student_app/features/home/videos/viewer_screen/video_viewer_page.dart'
     as _i48;
-import 'package:starter_app/features/notice/notice_page.dart' as _i28;
-import 'package:starter_app/features/notifications/notification_page.dart'
+import 'package:student_app/features/notice/notice_page.dart' as _i28;
+import 'package:student_app/features/notifications/notification_page.dart'
     as _i29;
-import 'package:starter_app/features/onboarding/onboarding_page.dart' as _i30;
-import 'package:starter_app/features/pdf_viewer/pdf_viewer_page.dart' as _i34;
-import 'package:starter_app/features/profile/about_app/about_app_page.dart'
+import 'package:student_app/features/onboarding/onboarding_page.dart' as _i30;
+import 'package:student_app/features/pdf_viewer/pdf_viewer_page.dart' as _i34;
+import 'package:student_app/features/profile/about_app/about_app_page.dart'
     as _i1;
-import 'package:starter_app/features/profile/profile_page/profile_page.dart'
+import 'package:student_app/features/profile/profile_page/profile_page.dart'
     as _i35;
-import 'package:starter_app/features/profile/reset_password/reset_password_page.dart'
+import 'package:student_app/features/profile/reset_password/reset_password_page.dart'
     as _i40;
-import 'package:starter_app/features/profile/student_profile/student_profile_page.dart'
+import 'package:student_app/features/profile/student_profile/student_profile_page.dart'
     as _i42;
-import 'package:starter_app/features/splash/screens/ui/splash_screen.dart'
+import 'package:student_app/features/splash/screens/ui/splash_screen.dart'
     as _i41;
-import 'package:starter_app/features/summary/summary_page.dart' as _i43;
+import 'package:student_app/features/summary/summary_page.dart' as _i43;
 
 /// generated route for
 /// [_i1.AboutAppPage]
